@@ -1,0 +1,69 @@
+{
+  "channel": "sales",
+  "description": "Sales-Team Channel (12 Personen). Deal-Updates, Pipeline, Customer-Feedback (teilweise), Kompensations-Themen.",
+  "members": ["david_c", "peter_l", "julia_h"],
+  "messages": [
+
+    {"ts": "2026-05-04T09:20:00+02:00", "user": "david_c", "text": "Wochenstart. Fokus: DHL Tochter Discovery Call Dienstag, Versicherer Follow-up Mittwoch, drei Mid-Market Demos.", "thread_ts": null, "reactions": [{"name": "muscle", "count": 3}]},
+    {"ts": "2026-05-04T11:15:00+02:00", "user": "peter_l", "text": "DHL Tochter hat mir gestern gesagt: 'Wir brauchen SSO bis Juli, sonst warten wir Q4'. Das ist harter Termin.", "thread_ts": null, "reactions": [{"name": "fire", "count": 3}]},
+    {"ts": "2026-05-04T11:32:00+02:00", "user": "david_c", "text": "Ana hat bestaetigt SSO Q2-Ende. Passt.", "thread_ts": "2026-05-04T11:15:00+02:00"},
+
+    {"ts": "2026-05-06T14:00:00+02:00", "user": "julia_h", "text": "Kann jemand nach dem Discovery Call helfen? Prospect hat gefragt ob wir Slack-Integration haben. Ich hab gesagt 'in Roadmap' aber unsicher.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 2}]},
+    {"ts": "2026-05-06T14:22:00+02:00", "user": "peter_l", "text": "Julia, wir haben keine Slack-Integration im Q2 oder Q3 committed. Bitte sag Prospect ehrlich 'nicht in aktueller Roadmap, kann Q4 diskutiert werden'.", "thread_ts": "2026-05-06T14:00:00+02:00"},
+
+    {"ts": "2026-05-07T10:30:00+02:00", "user": "peter_l", "text": "Neuer Enterprise-Lead: Chemieunternehmen aus Ludwigshafen. 400 User potenzial. Erstes Meeting Freitag.", "thread_ts": null, "reactions": [{"name": "chart_with_upwards_trend", "count": 4}]},
+
+    {"ts": "2026-05-11T09:45:00+02:00", "user": "david_c", "text": "Wochenstart. Sarah hat mir am Wochenende Series-C-Investor-Feedback geteilt. Sie wollen mehr Velocity. Das heisst fuer uns: mehr Deals closen, kuerzere Zyklen. Bitte alle Deals scharf schneiden.", "thread_ts": null, "reactions": [{"name": "muscle", "count": 5}]},
+
+    {"ts": "2026-05-13T15:00:00+02:00", "user": "julia_h", "text": "Discovery-Call Mid-Market Kunde: sie fragen nach benutzerdefinierten Dashboards. Habe ich richtig verstanden dass wir das nicht haben? Prospect ist bereit fuer 60k ARR wenn wir das bauen.", "thread_ts": null},
+    {"ts": "2026-05-13T15:15:00+02:00", "user": "peter_l", "text": "Julia, das ist ein einzelner Kunde, nicht Signal fuer Priorisierung. Bitte kein Feature-Commitment.", "thread_ts": "2026-05-13T15:00:00+02:00"},
+    {"ts": "2026-05-13T15:22:00+02:00", "user": "julia_h", "text": "Verstanden. Aber ich habe schon gesagt 'schaue ich intern'.", "thread_ts": "2026-05-13T15:00:00+02:00"},
+    {"ts": "2026-05-13T15:30:00+02:00", "user": "david_c", "text": "Julia, das ist OK gesagt zu haben. Naechstes Mal fragst du bevor du das ansprichst.", "thread_ts": "2026-05-13T15:00:00+02:00"},
+
+    {"ts": "2026-05-15T10:30:00+02:00", "user": "david_c", "text": "Team, Sarah hat im Leadership-Channel geschrieben: wir bekommen Onboarding-Redesign als Roadmap-Priority. Das koennen wir in Deal-Pitches nutzen.", "thread_ts": null, "reactions": [{"name": "chart_with_upwards_trend", "count": 4}]},
+    {"ts": "2026-05-15T10:45:00+02:00", "user": "peter_l", "text": "Onboarding ist kein Enterprise-Verkaufsargument. Bringt uns nicht direkt Deals.", "thread_ts": "2026-05-15T10:30:00+02:00"},
+    {"ts": "2026-05-15T11:00:00+02:00", "user": "david_c", "text": "Peter, verstanden. Aber es zeigt Product-Momentum, das hilft indirekt.", "thread_ts": "2026-05-15T10:30:00+02:00"},
+
+    {"ts": "2026-05-18T16:00:00+02:00", "user": "peter_l", "text": "Update DHL Tochter: waren gerade in Verhandlungsrunde 2. Preis-Sensitivitaet hoch. Erste Angebot 220k, sie wollen 180k. Ich verhandle auf 240k mit Zusatzleistungen.", "thread_ts": null, "reactions": [{"name": "muscle", "count": 3}]},
+
+    {"ts": "2026-05-20T10:20:00+02:00", "user": "david_c", "text": "Marko hat im Engineering-Channel geschrieben dass wir schneller shippen. Das ist gute Nachricht fuer uns. Wir koennen Prospects konkretere Timelines nennen.", "thread_ts": null, "reactions": [{"name": "muscle", "count": 4}]},
+    {"ts": "2026-05-20T10:35:00+02:00", "user": "peter_l", "text": "David, ich waere vorsichtig. Wir hatten letztes Jahr das Problem dass wir Timelines gegeben haben und nicht gehalten. Kunden merken das.", "thread_ts": "2026-05-20T10:20:00+02:00"},
+    {"ts": "2026-05-20T10:48:00+02:00", "user": "david_c", "text": "Klar Peter, aber die neue Marschrichtung sollte uns helfen konsequenter zu liefern.", "thread_ts": "2026-05-20T10:20:00+02:00"},
+
+    {"ts": "2026-05-22T13:15:00+02:00", "user": "julia_h", "text": "Frage: fuer Prospect Y wurde nach Custom-Berichtsfeldern gefragt. Wenn ich sie sage 'kommt in H2', ist das OK?", "thread_ts": null},
+    {"ts": "2026-05-22T13:30:00+02:00", "user": "peter_l", "text": "Julia, Custom-Berichtsfelder sind nicht in H2-Roadmap. Bitte nicht kommittieren.", "thread_ts": "2026-05-22T13:15:00+02:00"},
+
+    {"ts": "2026-05-26T09:00:00+02:00", "user": "david_c", "text": "Enterprise-Pipeline Update Woche 22: 2.3 Mio EUR. Fokus DHL Tochter, Versicherer, Chemie. Q3-Ende-Ziel 3 Mio. Sind auf Track.", "thread_ts": null, "reactions": [{"name": "chart_with_upwards_trend", "count": 5}]},
+
+    {"ts": "2026-05-27T11:00:00+02:00", "user": "peter_l", "text": "DHL Tochter braucht zusaetzlich Audit-Trail-Report bis Signing. Habe mit Ana schon abgesprochen, sie priorisiert. Signing-Datum verhandeln wir jetzt auf 8. Juni.", "thread_ts": null, "reactions": [{"name": "muscle", "count": 4}]},
+
+    {"ts": "2026-05-28T15:30:00+02:00", "user": "julia_h", "text": "Mid-Market Demo lief gut, aber sie haben zu Bug-Rate der letzten Wochen gefragt. Anscheinend hoeren sie das von einem Bestandskunden. Wie soll ich damit umgehen?", "thread_ts": null, "reactions": [{"name": "eyes", "count": 3}]},
+    {"ts": "2026-05-28T15:45:00+02:00", "user": "peter_l", "text": "Julia, ehrlich bleiben. 'Wir hatten in Q2 hoehere Bug-Rate wegen Feature-Push, arbeiten wir aktiv an'. Nichts beschoenigen.", "thread_ts": "2026-05-28T15:30:00+02:00"},
+    {"ts": "2026-05-28T16:00:00+02:00", "user": "david_c", "text": "Peter hat recht Julia. Aber pack nicht zu viel Bug-Talk in Sales-Conversations. Zuhoeren, bestaetigen, Fokus auf Value.", "thread_ts": "2026-05-28T15:30:00+02:00"},
+
+    {"ts": "2026-06-01T09:30:00+02:00", "user": "david_c", "text": "Juni-Start. Fokus: DHL Tochter Close in erster Woche, Chemieunternehmen Deep-Dive, Versicherer Contracting. Los.", "thread_ts": null, "reactions": [{"name": "muscle", "count": 4}]},
+
+    {"ts": "2026-06-03T10:45:00+02:00", "user": "peter_l", "text": "Neuer Deal-Lead ueber Website: Grossbaeckerei-Kette 250 Standorte. Interessant, aber sehr spezifische Anforderungen an Multi-Location-Management. Discovery Freitag.", "thread_ts": null, "reactions": [{"name": "chart_with_upwards_trend", "count": 3}]},
+
+    {"ts": "2026-06-08T11:20:00+02:00", "user": "david_c", "text": "DHL Tochter unterschrieben. 240k ARR. Danke Peter, danke Ana. Case Study kommt.", "thread_ts": null, "reactions": [{"name": "tada", "count": 8}, {"name": "champagne", "count": 5}]},
+
+    {"ts": "2026-06-10T14:20:00+02:00", "user": "peter_l", "text": "Team-Feedback: unser Team-Dashboard-Feature hat einen Bug im Report-Modul. Meine drei aktiven Prospects haben es in Demos gesehen. Zwei haben gefragt 'ist das eure Standard-Qualitaet'. Bitte diskutiert das mit Engineering.", "thread_ts": null, "reactions": [{"name": "warning", "count": 4}]},
+    {"ts": "2026-06-10T14:45:00+02:00", "user": "david_c", "text": "Peter, gebe ich an Marko weiter.", "thread_ts": "2026-06-10T14:20:00+02:00"},
+
+    {"ts": "2026-06-12T09:30:00+02:00", "user": "julia_h", "text": "Habe Prospect Z verloren. Zitat: 'Ihr wart einer der Kandidaten, aber Kollegen bei anderem SaaS haben von TechCo Bug-Problemen gehoert. Wir haben uns fuer Wettbewerber entschieden.' Ich waere gerne mal in einem Call zur Diskussion.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 6}, {"name": "warning", "count": 4}]},
+    {"ts": "2026-06-12T09:52:00+02:00", "user": "david_c", "text": "Julia, danke fuer die Ehrlichkeit. Das ist Signal. Lass uns Montag 15 Min besprechen.", "thread_ts": "2026-06-12T09:30:00+02:00"},
+
+    {"ts": "2026-06-15T11:00:00+02:00", "user": "peter_l", "text": "Versicherer moechte Contracting starten. 320k ARR. Sie wollen SOC2 Type 2 vor Go-Live. Ana bestaetigt Q3-Ende. Deal-Close H2 realistisch.", "thread_ts": null, "reactions": [{"name": "muscle", "count": 4}]},
+
+    {"ts": "2026-06-17T13:00:00+02:00", "user": "david_c", "text": "Kurzes Q2-Vor-Sharing: Enterprise-Pipeline 2.8 Mio, 3 Deals closed, 4 in finaler Runde. Ist positiv. Ich adressiere im Q2-Review auch dass wir Product-Delivery-Verlaesslichkeit brauchen fuer weiteres Wachstum.", "thread_ts": null, "reactions": [{"name": "thumbsup", "count": 3}]},
+
+    {"ts": "2026-06-19T10:15:00+02:00", "user": "david_c", "text": "Debrief Q2-Review: Leadership hat Product-Delivery-Rueckstaende erkannt. Q3 gibt es Justierung: mehr Coverage-Investment, mehr Enterprise-Ressourcen. Fuer uns heisst das: Prospects werden verlaesslicher bedient, Deal-Close-Raten sollten steigen.", "thread_ts": null, "reactions": [{"name": "raised_hands", "count": 5}]},
+
+    {"ts": "2026-06-22T09:30:00+02:00", "user": "peter_l", "text": "Chemieunternehmen Deep-Dive lief sehr gut. 350k ARR potenzial. Sie brauchen SAP-Integration die wir nicht haben. Jonas hat mir gesagt das kommt eventuell H2, ich verhandle dahin.", "thread_ts": null, "reactions": [{"name": "chart_with_upwards_trend", "count": 4}]},
+
+    {"ts": "2026-06-25T14:00:00+02:00", "user": "julia_h", "text": "Prospect A hat mir heute im Call gesagt: 'Ihr habt gerade Feedback bei Kunden verbessert. Wir wollen einsteigen bevor euer Preis steigt.' Das ist erste positive Signal Woche. Roadmap-Justierung ist offenbar draussen sichtbar.", "thread_ts": null, "reactions": [{"name": "raised_hands", "count": 5}]},
+
+    {"ts": "2026-06-30T16:30:00+02:00", "user": "david_c", "text": "Q2 Abschluss: Enterprise 3 Deals, 2.8 Mio Pipeline. Q3-Start Montag. Kompensations-Reset ab 1.7, alle Zahlen im Portal. Los.", "thread_ts": null, "reactions": [{"name": "muscle", "count": 6}]}
+
+  ]
+}

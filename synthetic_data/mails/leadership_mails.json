@@ -1,0 +1,145 @@
+{
+  "description": "Mails weiterer Leadership-Mitglieder mit Opt-in. Jonas Fischer (VP Product), Ana Kaya (Head of Engineering), Lena Boehm (Head of CS).",
+  "mails": [
+
+    {
+      "id": "mail-021",
+      "date": "2026-05-06T10:15:00+02:00",
+      "from": "jonas_f",
+      "to": ["product-team@techco.example"],
+      "subject": "Neuer Governance-Prozess fuer Roadmap-Entscheidungen",
+      "body": "Product-Team, ab Sprint 11 fuehren wir eine erweiterte Governance ein. Jede Feature-Priorisierung muss einen dokumentierten Customer-Anker mitbringen: Ticket-Volumen, Customer Interview, NPS-Feedback oder Enterprise-Deal-Blocker. Ohne Anker keine Priorisierung. Template im Notion, Feld: 'Customer Signal Evidence'. Bei Fragen sprecht mich direkt an. Jonas"
+    },
+    {
+      "id": "mail-022",
+      "date": "2026-05-14T16:20:00+02:00",
+      "from": "jonas_f",
+      "to": ["sarah_m"],
+      "subject": "Onboarding-Redesign: Vorbehalt",
+      "body": "Hi Sarah, ich moechte meinen Vorbehalt zur Onboarding-Redesign-Priorisierung explizit dokumentieren. Wir hatten in NPS-Feedback nur 3 Nennungen zur Onboarding-Thematik in Q1. Andere Cluster (Zuverlaessigkeit 12 Nennungen, SSO 8 Nennungen) waren staerker belegt. Die aktuelle Priorisierung entsteht aus Wettbewerber-Move und Marketing-Story. Ich unterstuetze die Priorisierung wenn es Team-Konsens ist, aber ich moechte es fuer die Q2-Review-Reflexion transparent gemacht haben. Danke, Jonas"
+    },
+    {
+      "id": "mail-023",
+      "date": "2026-05-21T09:30:00+02:00",
+      "from": "jonas_f",
+      "to": ["product-team@techco.example"],
+      "subject": "Update Speed-Priorisierung",
+      "body": "Product-Team, wie in Sarahs Message vom Freitag angekuendigt: H1 wird Speed hoeher gewichtet. Fuer uns heisst das konkret: wir shippen frueher, iterieren mehr in Produktion. WICHTIG: der Customer-Anker-Prozess bleibt in Kraft. Kein Feature ohne dokumentiertes Signal. Wir werden schneller in der Umsetzung, nicht laxer in der Priorisierung. Bei Enterprise-Relevanz bleibt Coverage- und Qualitaets-Standard voll erhalten. Jonas"
+    },
+    {
+      "id": "mail-024",
+      "date": "2026-05-29T14:00:00+02:00",
+      "from": "jonas_f",
+      "to": ["tim_r", "maria_s"],
+      "subject": "Sprint-Planning-Beobachtung",
+      "body": "Hi Tim, hi Maria, ich habe in den letzten drei Sprint-Plannings beobachtet dass Feature-Vorschlaege haeufig ohne dokumentierten Customer-Anker vorgestellt wurden. Beispiele: Team-Dashboard 2.0 Wow-Feature-Diskussion, Onboarding-Redesign, Custom-Berichtsfelder-Anfrage. Bitte macht euch den Governance-Prozess explizit bewusst. Ich moechte in Sprint 13 mindestens 60 Prozent der Priorisierungen mit sauberem Anker sehen. Danke, Jonas"
+    },
+    {
+      "id": "mail-025",
+      "date": "2026-06-04T11:15:00+02:00",
+      "from": "jonas_f",
+      "to": ["sarah_m"],
+      "subject": "Beobachtung Roadmap-Governance-Rueckstaende",
+      "body": "Hi Sarah, kurzes ehrliches Update. Governance-V1 haelt formal, aber inhaltlich sehe ich Aushoehlung. Bei den letzten sechs Sprint-Planning-Priorisierungen hatten nur zwei einen soliden Customer-Anker. Die anderen vier haben Speed-Argumente oder interne Wow-Faktor-Logik. Ich moechte das im Q2-Review explizit ansprechen. Danke, Jonas"
+    },
+    {
+      "id": "mail-026",
+      "date": "2026-06-16T08:00:00+02:00",
+      "from": "jonas_f",
+      "to": ["sarah_m", "marko_w"],
+      "subject": "Q2-Review-Vorbereitung Pillar 1",
+      "body": "Hi Sarah, hi Marko, hier meine Zahlen fuer den Q2-Review: Roadmap-Entscheidungen mit dokumentiertem Customer-Anker Q2: 30 Prozent (Ziel 80). Onboarding-Redesign wird als konkretes Beispiel ohne Anker dienen. NPS-Cluster-Rueckgang. Ich moechte in Q3 explizite Nachjustierung: Customer-Anker-Pflicht als Hard-Blocker im Notion-Template. Ich schlage vor: Governance-V2 mit Approval-Gate. Bin bereit zu diskutieren. Jonas"
+    },
+
+    {
+      "id": "mail-030",
+      "date": "2026-05-06T13:45:00+02:00",
+      "from": "ana_k",
+      "to": ["sarah_m"],
+      "subject": "SOC2-Ressourcen-Skizze",
+      "body": "Hi Sarah, hier meine Skizze SOC2-Ressourcen: bis Q3-Ende brauche ich Raj Vollzeit fuer Audit-Logs (aktuell 60 Prozent Zeit), Tom fuer SSO (100 Prozent Zeit) und mich selbst fuer Audit-Prep (30 Prozent Zeit). Wenn ein Enterprise-Deal zusaetzliche Feature-Anforderungen bringt (z.B. Custom-Reports), reissen wir das Zeitbudget. Bitte im Kopf behalten wenn Sales Commitments macht. Ana"
+    },
+    {
+      "id": "mail-031",
+      "date": "2026-05-27T13:00:00+02:00",
+      "from": "ana_k",
+      "to": ["raj_p", "elena_v"],
+      "subject": "Audit-Trail-Report-Prio",
+      "body": "Hi Raj, hi Elena, wie in Slack angekuendigt: der Audit-Trail-Report fuer DHL Tochter geht in Prio. Raj, du pausierst die Report-Modul-Coverage-Arbeit fuer 2 Wochen. Elena, du hilfst mit Code-Review. Wir muessen bis 11. Juni deliver. Nach Delivery kehren wir zur Coverage-Arbeit zurueck. Danke fuer die Flexibilitaet. Ana"
+    },
+    {
+      "id": "mail-032",
+      "date": "2026-06-06T10:00:00+02:00",
+      "from": "ana_k",
+      "to": ["sarah_m"],
+      "subject": "Team-Stimmung, Elena Fluktuations-Signal",
+      "body": "Hi Sarah, ich moechte dich kurz informieren. Elena hat gestern angedeutet dass sie ihre Rolle hier ueberdenkt. Konkret Zitat: 'Ich frage mich ob ich hier richtig bin.' Sie hat drei Wochen erlebt in denen unsere Reviews Diskussionen ueber weniger Tests waren. Ich fuehre morgen ein Gespraech mit ihr. Wichtig fuer mich: sie ist eine unserer besten Engineers. Ihr Weggang waere sehr schmerzhaft. Ana"
+    },
+    {
+      "id": "mail-033",
+      "date": "2026-06-11T18:00:00+02:00",
+      "from": "ana_k",
+      "to": ["sarah_m", "david_c"],
+      "subject": "Audit-Trail-Report gelaunched",
+      "body": "Hi Sarah, hi David, Audit-Trail-Report ist heute gelaunched. Coverage-Rate 68 Prozent, zwei kleinere CSV-Encoding-Randfaelle die Raj Montag fixed. DHL Tochter kann Signing bestaetigen. Wichtig: das Team hat zwei Wochen Sonderaufwand geschultert und die reguleare Coverage-Arbeit weiter pausiert. Ich brauche nach Q2-Review dringend Ressourcen-Freigabe wie in meinem letzten Slack-Post. Ana"
+    },
+    {
+      "id": "mail-034",
+      "date": "2026-06-18T20:30:00+02:00",
+      "from": "ana_k",
+      "to": ["raj_p", "elena_v", "tom_h", "kim_v"],
+      "subject": "Nach Q2-Review",
+      "body": "Team, nach dem heutigen Q2-Review moechte ich euch persoenlich informieren. Wir bekommen zwei neue Engineers fuer den Enterprise-Track (Job-Ads diese Woche). Wir bekommen zwei QA-Hires. Bug-Triage wird als feste Kadenz wiederhergestellt. Ich habe in meinem Bericht Verantwortung fuer die Prio-Entscheidungen der letzten Wochen uebernommen. Ich moechte in einem 1:1 mit jedem von euch besprechen was gut lief und was nicht. Danke fuer eure Geduld. Ana"
+    },
+    {
+      "id": "mail-035",
+      "date": "2026-06-25T09:00:00+02:00",
+      "from": "ana_k",
+      "to": ["sarah_m"],
+      "subject": "Job-Ads sind draussen",
+      "body": "Hi Sarah, die zwei Enterprise-Engineer-Ads sind seit gestern draussen. Simon startet 1. August. Zusaetzliche Kandidaten hoffentlich fuer Q3-Ende. Ana"
+    },
+
+    {
+      "id": "mail-040",
+      "date": "2026-05-08T09:30:00+02:00",
+      "from": "lena_b",
+      "to": ["cs-team@techco.example"],
+      "subject": "NPS-April-Cluster-Analyse",
+      "body": "CS-Team, ich habe die April-NPS-Kommentare geclustert. Drei Kern-Themen: 1) Zuverlaessigkeit der Reports (12 Nennungen). 2) Fehlendes SSO (8 Nennungen). 3) Onboarding-Erlebnis (7 Nennungen). Bitte bringt diese Cluster in eure naechsten Kunden-Calls. Weitere Details im Notion. Lena"
+    },
+    {
+      "id": "mail-041",
+      "date": "2026-05-19T11:00:00+02:00",
+      "from": "lena_b",
+      "to": ["sarah_m", "jonas_f"],
+      "subject": "Customer-Zitate zur Speed-Diskussion",
+      "body": "Hi Sarah, hi Jonas, wie im Meeting versprochen. Drei aktuelle Kundenzitate (anonymisiert): 1) 'Wir lieben die Plattform aber die Bug-Rate der letzten drei Monate hat uns Vertrauen gekostet.' 2) 'Wenn ihr weiter shippt aber die Zuverlaessigkeit sinkt, muessen wir Alternativen pruefen.' 3) 'Fuer uns ist wichtiger dass es stabil funktioniert als dass ihr jeden Sprint neue Features rausschmeisst.' Ich sehe die Speed-Priorisierung mit Sorge und wollte das dokumentiert haben. Lena"
+    },
+    {
+      "id": "mail-042",
+      "date": "2026-06-02T15:30:00+02:00",
+      "from": "lena_b",
+      "to": ["sarah_m"],
+      "subject": "Mai-NPS-Details",
+      "body": "Hi Sarah, Mai-NPS 41, Rueckgang um 3 Punkte. Kern-Feedback: erneut Zuverlaessigkeit und Bug-Rate. Neu: erste explizite Feature-Regression-Beschwerden. Zitat: 'Zwei Feature-Regressions in einem Monat, das ist nicht das TechCo das ich empfehle.' Wenn der Trend anhaelt, sehen wir Q3-NPS unter 40. Ich sage das mit Sorge nicht als Alarmismus. Lena"
+    },
+    {
+      "id": "mail-043",
+      "date": "2026-06-15T09:00:00+02:00",
+      "from": "lena_b",
+      "to": ["sarah_m"],
+      "subject": "Detailanalyse NPS-Rueckgang fuer Q2-Review",
+      "body": "Hi Sarah, wie am 3.6. gebeten, hier die detaillierte NPS-Analyse. NPS April 44, Mai 41, aktuelle Juni-Signale bei 39-40. Kern-Cluster: Zuverlaessigkeit (18 Nennungen), Feature-Regression (11 neu in Juni), Onboarding (4 stabil). Am staerksten betroffen: Mid-Market-Kunden mit hoher Produktnutzung. Weniger betroffen: neu onboardete Kunden, Enterprise. Diagnose: die Speed-Priorisierung hat konkrete Kunden-Erfahrungen kompromittiert, insbesondere bei Bestandskunden mit hoher Nutzung. Empfehlung fuer Q3: explizite Qualitaets-Rueckkehr, kommunikative Anerkennung an Bestandskunden. Lena"
+    },
+    {
+      "id": "mail-044",
+      "date": "2026-06-19T14:00:00+02:00",
+      "from": "lena_b",
+      "to": ["cs-team@techco.example"],
+      "subject": "Q3-Nachjustierung und was das fuer euch heisst",
+      "body": "CS-Team, nach dem gestrigen Q2-Review ist klar: Leadership hat den NPS-Rueckgang und die Qualitaets-Themen ernst genommen. Wir bekommen 2 QA-Hires, 2 Enterprise-Engineers, Roadmap-Governance wird verschaerft. Bug-Triage wird wieder feste Kadenz. Fuer uns heisst das: wir kommunizieren proaktiv an unsere Bestandskunden dass wir die Signale gehoert haben. Kunden-Retention-Calls diese und naechste Woche haben Prio. Lena"
+    }
+
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "description": "Mails aus dem Postfach der Geschaeftsleitung, Sarah Mendes (CEO), Opt-in fuer Drift-Analyse. Zeitraum 1. Mai bis 30. Juni 2026.",
+  "mails": [
+
+    {
+      "id": "mail-001",
+      "date": "2026-05-05T08:30:00+02:00",
+      "from": "sarah_m",
+      "to": ["board@techco.example"],
+      "subject": "Monatliches Board Update April 2026",
+      "body": "Liebe Board-Mitglieder, kurzes Update zum April. NPS stieg leicht auf 44, unter Zielkorridor. Enterprise-Pipeline 2.1 Mio EUR mit zwei starken Deals in finaler Runde. SOC2-Vorbereitung on track. Highlights: Team-Dashboard 2.0 gelaunched, positives Sales-Feedback. Herausforderungen: Bug-Rate auf 5-6 pro Release, hoeher als Zielkorridor. Detailliertes Deck folgt Freitag. Beste Gruesse, Sarah"
+    },
+    {
+      "id": "mail-002",
+      "date": "2026-05-08T14:20:00+02:00",
+      "from": "sarah_m",
+      "to": ["jonas_f"],
+      "cc": ["marko_w"],
+      "subject": "Follow-up Roadmap-Governance",
+      "body": "Hi Jonas, wollte kurz Feedback geben. Deine Analyse zu den drei Sprint-Plannings ohne Customer-Anker war wichtig. Kann ich dich bitten die Governance-Version so schnell wie moeglich rauszubringen und dann kommunikativ das Team-weit zu positionieren? Marko in cc. Danke, Sarah"
+    },
+    {
+      "id": "mail-003",
+      "date": "2026-05-10T18:45:00+02:00",
+      "from": "sarah_m",
+      "to": ["investor@example.com"],
+      "subject": "Follow-up zum Freitag Gespraech",
+      "body": "Hallo Herr Weber, vielen Dank fuer das offene Gespraech am Freitag. Ihre Punkte zum Momentum haben wir aufgenommen und diskutieren aktuell wie wir die Sichtbarkeit unseres Wachstums fuer die naechsten Monate erhoehen. Ich melde mich nach unserer internen Klaerung. Herzlich, Sarah Mendes"
+    },
+    {
+      "id": "mail-004",
+      "date": "2026-05-13T09:15:00+02:00",
+      "from": "sarah_m",
+      "to": ["all-hands@techco.example"],
+      "subject": "Erinnerung Bug-Triage-Kadenz",
+      "body": "Team, kurze Erinnerung an die Wichtigkeit unserer Bug-Triage-Termine. Diese sind Prio-Termine und nicht verschiebbar. Danke fuer eure Disziplin. Sarah"
+    },
+    {
+      "id": "mail-005",
+      "date": "2026-05-19T20:30:00+02:00",
+      "from": "sarah_m",
+      "to": ["marko_w", "jonas_f"],
+      "subject": "Nach dem heutigen Strategy-Meeting",
+      "body": "Hi Marko, hi Jonas, nach dem heutigen Meeting will ich sichergehen dass wir aligned sind. Die Speed-Priorisierung ist H1-Fokus mit Q3-Nachjustierungs-Option. Wichtig fuer mich: wir behalten Test-Coverage-Ziele im Blick auch wenn wir schneller shippen. Jonas, deinen Vorbehalt habe ich notiert und respektiere ihn. Wir schauen im Q2-Review sorgfaeltig. Danke, Sarah"
+    },
+    {
+      "id": "mail-006",
+      "date": "2026-05-22T09:00:00+02:00",
+      "from": "sarah_m",
+      "to": ["all-hands@techco.example"],
+      "subject": "H1-Fokus und wie wir schneller werden",
+      "body": "Team, kurzes Update zu unserer H1-Strategie. Nach intensiver Diskussion im Leadership Team gewichten wir Speed in H1 hoeher, um unsere Series-C-Story zu untermauern. Die drei Pillars aus dem Januar bleiben, aber wir setzen bewusst Impulse fuer sichtbares Momentum. Marko wird die konkreten Auswirkungen im Engineering-Team detaillieren. Wichtig: Enterprise-Kritikalitaet und Customer-First-Prinzipien bleiben unveraendert. Bei Fragen sprecht mich direkt an. Sarah"
+    },
+    {
+      "id": "mail-007",
+      "date": "2026-05-25T11:30:00+02:00",
+      "from": "sarah_m",
+      "to": ["felix_b"],
+      "subject": "Case Studies und Content-Plan Q3",
+      "body": "Hi Felix, dein Q3-Content-Plan ist gut aufgesetzt. Onboarding-Redesign-Story ist ambitioniert aber richtig positioniert. Kannst du bitte auch eine Case Study fuer den ersten DHL Tochter Deal vorbereiten wenn er unterschrieben wird? Enterprise-Anker fuer Marketing zunehmend wichtig. Danke, Sarah"
+    },
+    {
+      "id": "mail-008",
+      "date": "2026-05-28T16:45:00+02:00",
+      "from": "sarah_m",
+      "to": ["board@techco.example"],
+      "subject": "Zwischenupdate Mai",
+      "body": "Hallo Board, kurzes Zwischenupdate. Enterprise-Pipeline nun 2.3 Mio EUR mit DHL Tochter Signing kurz bevor stehend. Team-Dashboard 2.0 im Post-Launch-Modus, kleinere Bugs identifiziert und bearbeitet. Series-C-Vorgespraeche zeigen konstruktives Feedback zum Momentum, wir haben die H1-Fokussierung intern angepasst. Detailreport zum Board-Meeting Juni. Sarah"
+    },
+    {
+      "id": "mail-009",
+      "date": "2026-06-01T08:00:00+02:00",
+      "from": "sarah_m",
+      "to": ["all-hands@techco.example"],
+      "subject": "Monatsstart Juni",
+      "body": "Team, guten Start in den Juni. Kern-Themen: Enterprise-Deals-Closes, SSO-Rollout Ende Juni, Q2-Review kommt naeher. Bitte konzentriert und mit hohem Anspruch auf Qualitaet. Wir hatten in Mai einige Reibungspunkte, die adressieren wir jetzt strukturiert. Sarah"
+    },
+    {
+      "id": "mail-010",
+      "date": "2026-06-03T14:00:00+02:00",
+      "from": "sarah_m",
+      "to": ["lena_b"],
+      "subject": "NPS-Rueckgang, Detail-Analyse",
+      "body": "Hi Lena, dein Mai-NPS-Report war ehrlich und wichtig. Fuer den Q2-Review am 18. Juni brauche ich eine tiefere Analyse der Rueckgangs-Ursachen. Konkret: welche Bug-Cluster, welche Kunden-Segmente, welche Feature-Bereiche. Kannst du bis 15. Juni liefern? Danke, Sarah"
+    },
+    {
+      "id": "mail-011",
+      "date": "2026-06-05T10:30:00+02:00",
+      "from": "sarah_m",
+      "to": ["marko_w", "ana_k"],
+      "subject": "Enterprise-Ressourcen: bitte Options",
+      "body": "Hi Marko, hi Ana, die Enterprise-Belastung ist offensichtlich am Limit. Bitte macht mir bis Freitag Vorschlaege fuer Ressourcen-Erweiterung: wie viele Engineers, welche Skills, welcher Timeline. Ich moechte im Q2-Review konkret entscheiden koennen. Danke, Sarah"
+    },
+    {
+      "id": "mail-012",
+      "date": "2026-06-08T18:00:00+02:00",
+      "from": "sarah_m",
+      "to": ["all-hands@techco.example"],
+      "subject": "DHL Tochter unterschrieben",
+      "body": "Team, gerade eben ist der Vertrag mit DHL Tochter unterzeichnet. 240k EUR ARR, unser dritter Enterprise-Deal. Riesiger Dank an Peter, David, Ana und das gesamte Enterprise-Track-Team. Das ist ein wichtiger Meilenstein fuer die Series-C-Story und fuer den Beweis dass unser Enterprise-Angebot traegt. Sarah"
+    },
+    {
+      "id": "mail-013",
+      "date": "2026-06-10T09:20:00+02:00",
+      "from": "sarah_m",
+      "to": ["board@techco.example"],
+      "subject": "DHL Tochter Signing und Q2-Ausblick",
+      "body": "Board, wie letzte Woche angekuendigt: DHL Tochter Deal ist unterschrieben, 240k ARR. Dritter Enterprise-Deal in 2026. Enterprise-Pipeline nun 2.5 Mio EUR. Herausforderungen bleiben: Bug-Rate hoeher als Zielkorridor, NPS unter Zielband. Q2-Review am 18. Juni wird detailliert. Ich werde auch strategische Nachjustierungen fuer Q3 vorschlagen. Sarah"
+    },
+    {
+      "id": "mail-014",
+      "date": "2026-06-15T21:15:00+02:00",
+      "from": "sarah_m",
+      "to": ["sophie_r"],
+      "subject": "People-Signale",
+      "body": "Sophie, danke fuer den ehrlichen Slack-Kommentar heute. Kannst du in kleinem Kreis (nur du, ich, ggf. Ana) morgen konkret werden welche Signale wo? Ich moechte nicht dass wir im Q2-Review von unerwarteten People-Themen ueberrascht werden. Sarah"
+    },
+    {
+      "id": "mail-015",
+      "date": "2026-06-19T09:45:00+02:00",
+      "from": "sarah_m",
+      "to": ["all-hands@techco.example"],
+      "subject": "Q2-Review Debrief und Q3-Nachjustierung",
+      "body": "Team, gestern hatten wir unseren Q2-Review. Wir haben ehrlich hingeschaut und festgestellt: wir sind in unseren drei Pillars deutlich gedriftet. Konkret: nur 30 Prozent unserer Roadmap-Entscheidungen hatten dokumentierte Customer-Anker. Test-Coverage bei 54 statt 75 Prozent. Bug-Rate bei 7 statt unter 2 pro Release. NPS bei 41 statt Zielkorridor 55. Wir korrigieren aktiv. Konkrete Massnahmen ab Q3: 1) Roadmap-Governance mit Customer-Anker-Pflicht ab Sprint 15. 2) Zwei zusaetzliche Engineers fuer Enterprise-Track. 3) Zwei QA-Hires, um Coverage aufzubauen. 4) Bug-Triage wieder als feste Kadenz. Wir haben viel gelernt in Q2. Diese Erkenntnisse werden uns in Q3 staerker machen. Sarah"
+    },
+    {
+      "id": "mail-016",
+      "date": "2026-06-22T11:00:00+02:00",
+      "from": "sarah_m",
+      "to": ["investor@example.com"],
+      "subject": "Update: unser H1 und was wir gelernt haben",
+      "body": "Hallo Herr Weber, ich moechte Ihnen ein ehrliches Update zu H1 geben. Wir haben drei Enterprise-Deals gewonnen, SSO geliefert, SOC2 ist auf Kurs fuer Q3-Ende. Wir haben in H1 auch Erfahrungen gesammelt: eine Momentum-Priorisierung hat unsere Qualitaet-Metriken negativ beeinflusst. Wir haben das im Q2-Review offen analysiert und justieren Q3 nach. Ich glaube: die Reifung unserer internen Governance ist ein wertvolles Signal fuer die Skalierbarkeit unseres Unternehmens. Ich moechte das gerne im naechsten Vorgespraech mit Ihnen vertiefen. Herzlich, Sarah Mendes"
+    },
+    {
+      "id": "mail-017",
+      "date": "2026-06-25T15:30:00+02:00",
+      "from": "sarah_m",
+      "to": ["ana_k"],
+      "subject": "Job-Ads fuer Enterprise-Engineers",
+      "body": "Hi Ana, wollte kurz nachfragen ob die Job-Ads fuer die zwei Enterprise-Engineers schon draussen sind. Sophie hat die QA-Hires am Montag geschaltet. Wir sollten parallel starten. Danke, Sarah"
+    },
+    {
+      "id": "mail-018",
+      "date": "2026-06-27T17:00:00+02:00",
+      "from": "sarah_m",
+      "to": ["board@techco.example"],
+      "subject": "Q2-Review-Ergebnisse und Q3-Massnahmen",
+      "body": "Liebe Board-Mitglieder, ausfuehrliches Q2-Update. Wir haben unseren dritten Enterprise-Deal (DHL Tochter, 240k ARR) gewonnen. Enterprise-Pipeline 2.8 Mio EUR. SOC2 auf Kurs fuer Q3-Ende. Gleichzeitig haben wir im Q2-Review festgestellt dass wir in unseren H1-Pillars gedriftet sind: Test-Coverage bei 54 statt 75 Prozent, Bug-Rate hoeher, NPS unter Zielband. Wir korrigieren aktiv mit klaren Q3-Massnahmen (Hires, Governance-Update, Bug-Triage-Wiederherstellung). Die Diagnose macht uns transparent und sollte die Substanz unserer Skalierung staerken. Detailliertes Deck folgt zum Board-Termin. Sarah"
+    },
+    {
+      "id": "mail-019",
+      "date": "2026-06-29T09:30:00+02:00",
+      "from": "sarah_m",
+      "to": ["all-hands@techco.example"],
+      "subject": "H2-Kick-off Montag 09:00",
+      "body": "Team, Montag um 09:00 ist H2-Kick-off im Allhands. Wir schauen zurueck auf H1, blicken nach vorne und definieren gemeinsam die Prioritaeten fuer H2. Bitte macht euch kurze Vorbereitungen: was war fuer euch persoenlich das wichtigste Learning aus H1. Danke, Sarah"
+    },
+    {
+      "id": "mail-020",
+      "date": "2026-06-30T18:00:00+02:00",
+      "from": "sarah_m",
+      "to": ["all-hands@techco.example"],
+      "subject": "Q2 in Zahlen",
+      "body": "Team, hier die Q2-Zahlen kurz zusammengefasst: 3 neue Enterprise-Deals (630k ARR gesamt), Pipeline 2.8 Mio EUR, NPS 41, Test-Coverage 54 Prozent, 22 offene kritische Bugs. Manches gut, manches schlecht. Wir haben ehrlich analysiert und starten H2 mit klarem Fokus. Danke fuer euren Einsatz in Q2. Wir sehen uns Montag. Sarah"
+    }
+
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "notes": [
+
+    {
+      "meeting_id": "lm-2026-05-05",
+      "date": "2026-05-05",
+      "time": "14:00-15:00",
+      "type": "Leadership Weekly",
+      "attendees": ["sarah_m", "marko_w", "jonas_f", "ana_k", "david_c", "lena_b", "felix_b"],
+      "facilitator": "sarah_m",
+      "agenda": ["Q2 Pillar Status Update", "April NPS Debrief", "Sales Pipeline Q2"],
+      "notes": "Sarah eroeffnet mit Pillar-Status. Alle drei Pillars formal on track laut Ampel. Jonas weist darauf hin dass er beim Roadmap-Governance-Prozess noch Reibung sieht, konkret: bei den letzten drei Sprint-Plannings wurden Features priorisiert bei denen der Customer-Anker nicht ausreichend dokumentiert war. Beispiel Team-Dashboard 2.0 Feature-Erweiterung: intern als Wow-Feature diskutiert, aber kein systematisches Customer-Signal. Sarah bittet Jonas den Governance-Prozess zu schaerfen. Marko berichtet Pillar 2: Test-Coverage bei 58 Prozent (Ziel 75), Bug-Rate bei 5-6 pro Release. Ana ergaenzt: SOC2-Vorbereitung on track fuer Q3, aber Ressourcen dafuer werden knapp. David: Enterprise-Pipeline 2.1 Mio, zwei Deals haengen an SSO und Audit-Logs, beide sind on track. Lena: NPS-Cluster zeigen Zuverlaessigkeit als Top-Thema, zweiter DHL Tochter Deal wurde durch SSO-Zusage angeschoben. Felix: Q3-Content-Plan im Aufbau. Sarah's Zusammenfassung: alle Pillars operativ, Governance in Pillar 1 nachzuziehen, keine Alarme.",
+      "decisions": [
+        "Jonas ueberarbeitet Roadmap-Governance-Prozess bis 12. Mai",
+        "Marko liefert Test-Coverage-Zwischenstand am 26. Mai",
+        "Ana skizziert SOC2-Ressourcenbedarf bis Freitag"
+      ],
+      "action_items": [
+        {"owner": "jonas_f", "item": "Governance-Prozess Neu-Version", "due": "2026-05-12"},
+        {"owner": "ana_k", "item": "SOC2-Ressourcen-Skizze", "due": "2026-05-08"}
+      ]
+    },
+
+    {
+      "meeting_id": "lm-2026-05-12",
+      "date": "2026-05-12",
+      "time": "14:00-15:00",
+      "type": "Leadership Weekly",
+      "attendees": ["sarah_m", "marko_w", "jonas_f", "ana_k", "david_c", "lena_b", "felix_b"],
+      "facilitator": "sarah_m",
+      "agenda": ["Series-C Investor-Feedback", "Governance-Update", "NPS-Trend"],
+      "notes": "Sarah beginnt mit Series-C-Investor-Feedback vom Freitag. Kernbotschaft: der Investor sieht die Substanz, wuenscht sich aber mehr sichtbares Momentum. Die Formulierung war 'ihr koennt schneller shippen und schneller verkaufen als ihr aktuell tut'. Sarah erwaehnt dass sie das nicht 1:1 als Handlungsanweisung sieht, aber diskussionswuerdig fuer H1. David begruesst die Interpretation, verweist auf Pipeline die schneller waechst als Product delivery. Marko fragt ob Momentum ARR-getrieben oder Feature-Velocity-getrieben ist. Sarah: beides, mit Betonung auf Sichtbarkeit. Jonas warnt vor Ueberreaktion, verweist auf die Januar-Pillar-Entscheidung und darauf dass NPS gerade unter Zielkorridor liegt. Lena bestaetigt: Kundenzitate zeigen Zuverlaessigkeit als Kern-Erwartung. Marko sagt: 'ich denke wir koennen beides, aber wir muessen uns entscheiden was in H1 im Vordergrund steht'. Sarah bittet um Bedenkzeit bis naechste Woche. Jonas praesentiert Governance-Update: Customer-Anker-Pflicht bei allen Roadmap-Entscheidungen, dokumentiert im Notion-Template. Startet ab Sprint 11. Alle stimmen zu. NPS-Trend: April 44, aktuelle Signale deuten auf leichten Rueckgang. Kein sofortiger Handlungsbedarf, aber Beobachtung.",
+      "decisions": [
+        "Series-C-Momentum-Diskussion vertagt auf 19. Mai",
+        "Roadmap-Governance mit Customer-Anker-Pflicht wird ab Sprint 11 verpflichtend"
+      ],
+      "action_items": [
+        {"owner": "sarah_m", "item": "Series-C-Diskussion vorbereiten", "due": "2026-05-19"},
+        {"owner": "jonas_f", "item": "Governance-Rollout im Product-Team", "due": "2026-05-18"}
+      ]
+    },
+
+    {
+      "meeting_id": "lm-2026-05-19",
+      "date": "2026-05-19",
+      "time": "14:00-15:30",
+      "type": "Leadership Strategy Session (verlängert)",
+      "attendees": ["sarah_m", "marko_w", "jonas_f", "ana_k", "david_c", "lena_b"],
+      "facilitator": "sarah_m",
+      "agenda": ["Series-C-Momentum-Entscheidung", "H1-Pillar-Gewichtung"],
+      "notes": "Kernthema: wie gehen wir mit dem Series-C-Investor-Feedback um. Sarah legt zwei Optionen vor. A) Wir bleiben bei den Pillars wie beschlossen, kommunizieren dem Investor unsere Ueberzeugung dass Qualitaet und Kunde die Basis fuer die naechste Fundraising-Runde sind. B) Wir gewichten Speed in H1 hoeher, um dem Investor sichtbares Momentum zu liefern, und justieren H2 nach. Marko favorisiert klar B, sieht die Chance dass wir intern eh schnell werden koennen ohne Qualitaet zu opfern, wenn wir einfach weniger Perfektionismus in Reviews haben. Jonas plaediert fuer A, verweist auf NPS-Signale und die drei Bug-Cluster im NPS-Feedback. Lena unterstuetzt Jonas, hat Kundenzitate mitgebracht die Zuverlaessigkeit direkt adressieren. David favorisiert B, aus Sales-Perspektive. Ana bleibt neutral, verweist auf Bandbreite: sie kann nicht alles gleichzeitig treiben. Sarah's Entscheidung: 'Wir bleiben bei den drei Pillars, aber wir akzeptieren dass Speed in H1 hoeher gewichtet wird, um Series-C-Story zu untermauern. Q3 justieren wir wenn wir Signale sehen.' Es folgt eine kurze Diskussion ueber die Formulierung. Jonas notiert seinen Vorbehalt ausdruecklich. Marko wird die Message in Engineering intern kommunizieren.",
+      "decisions": [
+        "H1 wird Speed hoeher gewichtet, drei Pillars bleiben formal",
+        "Q3-Review dient als Nachjustierungs-Punkt",
+        "Marko kommuniziert die Speed-Priorisierung an Engineering"
+      ],
+      "action_items": [
+        {"owner": "marko_w", "item": "Engineering-Kommunikation Speed-Priorisierung", "due": "2026-05-20"},
+        {"owner": "sarah_m", "item": "Leadership-Channel-Kommunikation", "due": "2026-05-22"}
+      ]
+    },
+
+    {
+      "meeting_id": "lm-2026-05-26",
+      "date": "2026-05-26",
+      "time": "14:00-15:00",
+      "type": "Leadership Weekly",
+      "attendees": ["sarah_m", "marko_w", "jonas_f", "ana_k", "david_c", "lena_b", "felix_b"],
+      "facilitator": "sarah_m",
+      "agenda": ["Onboarding-Redesign-Priorisierung", "SSO-Rollout-Plan", "Q3-Enterprise-Deals-Prep"],
+      "notes": "Onboarding-Redesign: Felix stellt Case vor, Wettbewerber-Move plus Investor-Momentum. Jonas hat Lenas Customer-Feedback zur Onboarding-Thematik integriert: nur 3 Nennungen im NPS ueber Q1, aber Felix argumentiert dass es Marketing-Story fuer H2 ist und Product-Momentum zeigt. Sarah entscheidet: Onboarding-Redesign geht auf Roadmap, Start Sprint 12, Ziel Q3-Ende. Jonas notiert seinen Vorbehalt: kein starker Customer-Anker, aber Team-Konsens fuer Speed und Investor-Story. SSO-Rollout: on track fuer Ende Juni, DHL Tochter Deal haengt dran. Ana bestaetigt. Q3-Enterprise: David legt Pipeline detailliert vor, drei Deals hoch prioritaer. Sarah bittet Ana um Enterprise-Ressourcen-Update.",
+      "decisions": [
+        "Onboarding-Redesign auf Roadmap, Start Sprint 12, Ziel Q3-Ende",
+        "SSO-Rollout Ende Juni",
+        "Enterprise-Ressourcen-Update Ana bis 2. Juni"
+      ],
+      "action_items": [
+        {"owner": "jonas_f", "item": "Onboarding-Redesign Kick-off in Sprint 12", "due": "2026-06-01"},
+        {"owner": "ana_k", "item": "Enterprise-Ressourcen-Update", "due": "2026-06-02"}
+      ]
+    },
+
+    {
+      "meeting_id": "lm-2026-06-02",
+      "date": "2026-06-02",
+      "time": "14:00-15:00",
+      "type": "Leadership Weekly",
+      "attendees": ["sarah_m", "marko_w", "jonas_f", "ana_k", "david_c", "lena_b", "felix_b"],
+      "facilitator": "sarah_m",
+      "agenda": ["Mai-NPS-Debrief", "Team-Dashboard 2.0 Launch Learnings", "Enterprise-Update"],
+      "notes": "Lena berichtet Mai-NPS 41, Rueckgang um 3 Punkte gegenueber April. Zitat-Cluster: Zuverlaessigkeit und Bug-Rate. Jonas will das explizit gegen die Speed-Entscheidung diskutieren. Marko haelt zwei Datenpunkte nicht fuer Trend. Lena widerspricht: sie sieht es in Kundengespraechen jeden Tag. Sarah unterbricht: 'Wir sind noch drei Wochen in der Speed-Priorisierung. Lass uns Juni-Ende sauber schauen, dann entscheiden.' Team-Dashboard 2.0: Kim berichtet ueber CS-Kanaele dass 5 UI-Bugs im ersten Tag aufgefallen sind, live gefixed. Marko sieht das als OK. Elena schreibt einen kritischen Slack-Kommentar zur Coverage-Rate des Release, wird im Meeting nicht angesprochen. Enterprise-Update: Ana bestaetigt SSO on track, Audit-Trail-Report fuer DHL Tochter in Arbeit. Ressourcen sind angespannt, aber sie schafft es solo. David: DHL Tochter Signing 8. Juni geplant, Versicherer im Contracting.",
+      "decisions": [
+        "NPS-Diskussion vertagt auf Juni-Ende",
+        "Team-Dashboard 2.0 als Post-Launch-Fix-Modus"
+      ],
+      "action_items": [
+        {"owner": "lena_b", "item": "NPS-Detail-Analyse fuer Q2-Review", "due": "2026-06-17"}
+      ]
+    },
+
+    {
+      "meeting_id": "lm-2026-06-09",
+      "date": "2026-06-09",
+      "time": "14:00-15:00",
+      "type": "Leadership Weekly",
+      "attendees": ["sarah_m", "marko_w", "jonas_f", "ana_k", "david_c", "lena_b", "felix_b"],
+      "facilitator": "sarah_m",
+      "agenda": ["DHL Tochter Feier", "Sprint-Update", "Q2-Review-Prep"],
+      "notes": "Kurz und upbeat. DHL Tochter Deal ist Montag unterschrieben, 240k ARR, drittes Enterprise. Sarah dankt David und Ana. Case Study fuer Website in Planung, Felix uebernimmt. Sprint-Update: Ana meldet SSO fertig code-complete, Audit-Trail-Report in Testing. Aber sie erwaehnt auch dass sie mit Elena im Team ein Gespraech hatte, Elena hat Fluktuations-Signal gegeben. Sophie ist von Sarah eingeladen worden fuer den naechsten Termin. Q2-Review-Prep: Sarah bittet um 3 Wins und 3 Risiken pro Bereich, ehrliche Selbst-Bewertung.",
+      "decisions": [
+        "Case Study DHL Tochter durch Felix",
+        "Sophie zu Q2-Review-Prep eingeladen"
+      ],
+      "action_items": [
+        {"owner": "felix_b", "item": "Case Study DHL Tochter", "due": "2026-06-20"},
+        {"owner": "all", "item": "3 Wins + 3 Risiken pro Bereich", "due": "2026-06-16"}
+      ]
+    },
+
+    {
+      "meeting_id": "lm-2026-06-16",
+      "date": "2026-06-16",
+      "time": "14:00-15:30",
+      "type": "Leadership Weekly (verlängert)",
+      "attendees": ["sarah_m", "marko_w", "jonas_f", "ana_k", "david_c", "lena_b", "felix_b", "sophie_r"],
+      "facilitator": "sarah_m",
+      "agenda": ["People-Themen (Sophie)", "Q2-Review-Vorbereitung", "Ana-Ressourcen-Diskussion"],
+      "notes": "Sophie eingeladen. Sie berichtet dass sie in den letzten zwei Wochen von mehreren Engineers Feedback gehoert hat, dass die Team-Stimmung kippt. Konkrete Punkte: 'wir shippen jetzt Sachen die wir nicht stolz auf sind', 'Bug-Triage findet nicht mehr statt', 'ich weiss nicht mehr wofuer wir stehen'. Sie erwaehnt zwei potenziell fluktuierende Engineers namentlich in kleinem Kreis, nicht im Meeting-Protokoll. Sarah nimmt es ernst. Ana bestaetigt die Signale, betont dass sie das direkt im Team auffaengt aber Kapazitaets-Grenzen sieht. Marko ist ueberrascht ueber die Deutlichkeit der Signale. Sarah wird morgen 1:1 mit Ana ueber Ressourcen sprechen. Sophie schlaegt vor eine Team-Umfrage laufen zu lassen. Sarah verschiebt das auf nach Q2-Review um nicht schizofrenes Signal zu senden. Q2-Review-Prep: Sarah bittet ausdruecklich um keine gruenen Ampeln wenn sie nicht ehrlich sind. Ana wird in Q2-Review offen sagen dass sie ueberlastet ist. Jonas wird Governance-Rueckstaende offen sagen. Lena wird NPS-Trend offen berichten.",
+      "decisions": [
+        "Team-Umfrage nach Q2-Review",
+        "Sarah-Ana 1:1 zu Ressourcen 17. Juni",
+        "Q2-Review bewusst ehrlich"
+      ],
+      "action_items": [
+        {"owner": "sarah_m", "item": "1:1 mit Ana Ressourcen", "due": "2026-06-17"},
+        {"owner": "sophie_r", "item": "Team-Umfrage-Konzept", "due": "2026-06-25"}
+      ]
+    },
+
+    {
+      "meeting_id": "lm-2026-06-18-q2review",
+      "date": "2026-06-18",
+      "time": "15:00-17:30",
+      "type": "Q2 Business Review",
+      "attendees": ["sarah_m", "marko_w", "jonas_f", "ana_k", "david_c", "lena_b", "felix_b", "sophie_r"],
+      "facilitator": "sarah_m",
+      "agenda": ["Pillar 1: Customer-Led Growth (Jonas)", "Pillar 2: Quality over Speed (Marko/Lena)", "Pillar 3: Enterprise-Ready (Ana/David)", "Overall Diagnose", "Q3 Massnahmen"],
+      "notes": "Ehrlicher Q2-Review. Jonas eroeffnet Pillar 1: nur 30 Prozent der Roadmap-Entscheidungen in Q2 hatten dokumentierten Customer-Anker (Ziel 80). Governance-Prozess wurde formal etabliert aber inhaltlich verwaessert wegen Speed-Priorisierung. Onboarding-Redesign explizit als Beispiel genannt. NPS bei 41 (Ziel 55 Q4), fallender Trend seit April. Marko fuer Pillar 2: Test-Coverage 54 Prozent (Ziel 75), Bug-Rate 7 pro Release (Ziel unter 2), Regression-Rate 14 Prozent (Ziel unter 5). Er uebernimmt Verantwortung fuer die Speed-Kommunikation vom 20. Mai die die Kultur beeinflusst hat, sagt sie war zu absolut formuliert. Lena erganzt NPS-Detailanalyse: 'Bug-Rate' hat in Q2 als Beschwerde-Cluster zugenommen. Ana fuer Pillar 3: SSO geliefert, SOC2 on track, aber 8 Enterprise-Commitments haben ueberzogene Fristen. Sie sagt offen dass sie 70 Prozent der Enterprise-Arbeit alleine traegt und das nicht nachhaltig ist. David: Pipeline 2.8 Mio, drei Deals closed, aber ein Deal wurde verloren an Wettbewerber mit Bug-Argument. Sarah's Diagnose: 'Wir haben in unseren Pillars gedriftet und das jetzt erkannt bevor es voll symptomatisch wurde. Wir korrigieren in Q3.' Konkrete Massnahmen: Roadmap-Governance mit Customer-Anker-Pflicht ab Sprint 15, QA-Investment plus zwei Hires, Enterprise-Team-Erweiterung um zwei Engineers. Sophie meldet dass die Signale aus dem Team gehoert wurden und die Massnahmen dies adressieren.",
+      "decisions": [
+        "Roadmap-Governance mit Customer-Anker-Pflicht ab Sprint 15 verpflichtend",
+        "Zwei QA-Hires werden geschaltet",
+        "Zwei Engineers Verstaerkung fuer Enterprise-Track",
+        "Sarah kommuniziert Q3-Justierung an gesamte Firma"
+      ],
+      "action_items": [
+        {"owner": "jonas_f", "item": "Governance-V2 mit Customer-Anker-Pflicht", "due": "2026-06-30"},
+        {"owner": "ana_k", "item": "Job-Ads Enterprise-Engineers", "due": "2026-06-25"},
+        {"owner": "sophie_r", "item": "Job-Ads QA-Hires", "due": "2026-06-25"},
+        {"owner": "sarah_m", "item": "Firmen-Kommunikation Q3-Justierung", "due": "2026-06-22"}
+      ]
+    },
+
+    {
+      "meeting_id": "lm-2026-06-23",
+      "date": "2026-06-23",
+      "time": "14:00-15:00",
+      "type": "Leadership Weekly",
+      "attendees": ["sarah_m", "marko_w", "jonas_f", "ana_k", "david_c", "lena_b", "felix_b"],
+      "facilitator": "sarah_m",
+      "agenda": ["Q3-Rollout-Kommunikation", "Hires-Update", "Onboarding-Redesign-Status"],
+      "notes": "Sarah's Kommunikation an die Firma vom Freitag ist gut ankommen laut Sophies Signalen aus dem Team. Konkrete Anerkennung dass Leadership gedriftet ist wurde als glaubwuerdig aufgenommen. Hires: 2 Enterprise-Engineers ausgeschrieben, 2 QA ausgeschrieben. Simon startet 1. August. Onboarding-Redesign wird planmaessig weiter gebaut aber ab Sprint 15 unter neuer Governance. Jonas erklaert dass das Feature bleibt weil kommittet, aber der Prozess dahinter sich aendert. Felix passt Case Study DHL Tochter an, hat sie fertig zum Freitag. Diskussion ueber die Balance zwischen Series-C-Story und interner Konsistenz: Marko schlaegt vor dem Series-C-Investor eine Story ueber 'strategische Reifung' zu erzaehlen statt 'wir haben schneller geshippt'. Sarah findet den Ansatz stark. Wird in naechster Investor-Session getestet.",
+      "decisions": [
+        "Case Study DHL Tochter online zum Freitag",
+        "Investor-Story wird auf 'strategische Reifung' umgestellt"
+      ],
+      "action_items": [
+        {"owner": "felix_b", "item": "Case Study online", "due": "2026-06-27"},
+        {"owner": "sarah_m", "item": "Investor-Story-Draft", "due": "2026-07-04"}
+      ]
+    },
+
+    {
+      "meeting_id": "lm-2026-06-30-halbjahr",
+      "date": "2026-06-30",
+      "time": "14:00-16:00",
+      "type": "Halbjahres-Reflexion",
+      "attendees": ["sarah_m", "marko_w", "jonas_f", "ana_k", "david_c", "lena_b", "felix_b", "sophie_r"],
+      "facilitator": "sarah_m",
+      "agenda": ["H1-Rueckblick", "Pillar-Nachjustierung", "H2-Fokus"],
+      "notes": "H1-Rueckblick strukturiert entlang der drei Pillars. Kernbotschaften: Wir haben in H1 drei Enterprise-Deals gewonnen (240k, 180k, 210k ARR). SSO ist geliefert. SOC2 ist on track fuer Q3-Ende. Wir haben in unseren Pillars deutlich gedriftet und die Drift zwischen 10. Mai und 18. Juni klar identifiziert. Die Nachjustierung ist eingeleitet. Pillar-Nachjustierung: Pillar 1 Customer-Led Growth wird durch Governance-V2 gestaerkt. Pillar 2 Quality over Speed bleibt formal unveraendert, aber Marko formuliert die Botschaft neu: 'Ehrliches Tempo mit sauberer Basis' als Team-Narrativ. Pillar 3 Enterprise-Ready bleibt Q4-Ziel, wird durch Ressourcen-Aufbau tragfaehiger. H2-Fokus: 1) Governance-V2 im Product-Team live. 2) Bug-Backlog-Abbau von 22 auf unter 8. 3) Test-Coverage-Aufbau auf 65 Prozent bis Q3-Ende. 4) Enterprise-Team-Erweiterung. 5) Series-C-Story mit 'strategische Reifung'. Sarah's Schlussformulierung: 'Wir haben H1 in Wahrheit besser gelernt als wir uns eingestehen wollten. H2 ist die Chance das zu beweisen.'",
+      "decisions": [
+        "Pillars formal unveraendert, Umsetzungs-Metriken angepasst",
+        "H2-Fokus in 5 Punkte formalisiert",
+        "Series-C-Narrativ 'strategische Reifung'"
+      ],
+      "action_items": [
+        {"owner": "all", "item": "H2-Kick-off in eigenen Teams", "due": "2026-07-07"}
+      ]
+    },
+
+    {
+      "meeting_id": "lm-2026-05-27-adhoc",
+      "date": "2026-05-27",
+      "time": "11:30-12:15",
+      "type": "Ad-hoc DHL Tochter Enterprise-Deal-Sync",
+      "attendees": ["sarah_m", "ana_k", "david_c", "peter_l"],
+      "facilitator": "david_c",
+      "agenda": ["DHL Tochter Audit-Trail-Report-Requirement"],
+      "notes": "Peter berichtet DHL Tochter Anforderung: Audit-Trail-Report exportierbar als PDF und CSV, alle Nutzer-Aktionen letzte 90 Tage. Ohne dieses Feature kein Signing. Signing-Datum 8. Juni angestrebt. Ana schaut sich Requirement an, sagt machbar in 2 Wochen, aber muss Prio setzen ueber andere SOC2-Tasks (Report-Modul-Coverage-Arbeit). Sarah entscheidet: DHL Tochter Prio, Enterprise-Anker wichtig fuer H1. Ana startet mit Raj. Zusatzdiskussion: David erwaehnt dass Julia aehnliche Feature-Anfragen aus Mid-Market bekommt, Peter warnt vor Feature-Overpromising aus einzelnen Deals.",
+      "decisions": [
+        "Audit-Trail-Report fuer DHL Tochter Prio ueber Coverage-Arbeit",
+        "Signing-Ziel 8. Juni"
+      ],
+      "action_items": [
+        {"owner": "ana_k", "item": "Audit-Trail-Report Implementation", "due": "2026-06-11"}
+      ]
+    },
+
+    {
+      "meeting_id": "lm-2026-06-17-adhoc",
+      "date": "2026-06-17",
+      "time": "10:00-10:30",
+      "type": "Ad-hoc Ana Ressourcen 1:1",
+      "attendees": ["sarah_m", "ana_k"],
+      "facilitator": "sarah_m",
+      "agenda": ["Ressourcen-Ana Overload"],
+      "notes": "Sarah eroeffnet, dankt Ana fuer die Transparenz im Leadership-Channel. Ana erklaert konkret: sie traegt SOC2, SSO-Rollout, Audit-Logs, DHL-Audit-Report gleichzeitig. Sie hat 8 Enterprise-Commitments mit ueberzogenen Fristen. Sie sagt offen dass sie sich als Single-Point-of-Failure fuehlt und sich Sorgen um zwei Engineers macht die Fluktuations-Signale gegeben haben. Sarah bestaetigt Verstaerkung: zwei Engineers fuer Enterprise-Track werden bewilligt, Job-Ads noch diese Woche. Ana bittet um 30 Tage Sonderregelung: sie fokussiert bis Q3-Start nur auf SOC2 und die zwei Team-Retentions, alle anderen Enterprise-Commitments werden auf David-Peter-Julia-Kommunikation umgeleitet fuer neue Timelines. Sarah stimmt zu. Kommunikation an Team wird ueber Ana selbst laufen, damit es als vertrauensbildende Massnahme wirkt.",
+      "decisions": [
+        "Zwei Enterprise-Engineers werden ausgeschrieben",
+        "Ana fokussiert 30 Tage auf SOC2 und Retention",
+        "Andere Enterprise-Commitments werden von Sales neu terminiert"
+      ],
+      "action_items": [
+        {"owner": "sarah_m", "item": "Bewilligung Hires an Sophie kommunizieren", "due": "2026-06-17"},
+        {"owner": "ana_k", "item": "Team-Kommunikation Ressourcen-Zusage", "due": "2026-06-17"},
+        {"owner": "david_c", "item": "Enterprise-Commitments neu terminieren", "due": "2026-06-24"}
+      ]
+    }
+
+  ]
+}

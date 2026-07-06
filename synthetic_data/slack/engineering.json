@@ -1,0 +1,94 @@
+{
+  "channel": "engineering",
+  "description": "Hauptchannel des Engineering-Teams (35 Personen). Technische Diskussionen, Sprint-Themen, Incident-Handling.",
+  "members": ["ana_k", "marko_w", "raj_p", "elena_v", "tom_h", "kim_v"],
+  "messages": [
+
+    {"ts": "2026-05-04T09:30:00+02:00", "user": "ana_k", "text": "Guten Morgen. Sprint 10 startet heute. Fokus: Report-Modul Test-Coverage von 51 auf 65 Prozent, SSO-Backend-Anbindung, Bug-Batch aus Q1-Retro.", "thread_ts": null, "reactions": [{"name": "thumbsup", "count": 4}]},
+    {"ts": "2026-05-04T10:12:00+02:00", "user": "raj_p", "text": "Ich uebernehme Report-Modul-Tests. Habe schon die kritischsten Pfade identifiziert.", "thread_ts": "2026-05-04T09:30:00+02:00"},
+    {"ts": "2026-05-04T10:45:00+02:00", "user": "elena_v", "text": "Bug-Batch, ich bin drin. Ich sehe uns bei 12 kritischen offenen Bugs. Ziel unter 5 laut Q-Plan.", "thread_ts": "2026-05-04T09:30:00+02:00"},
+    {"ts": "2026-05-04T11:03:00+02:00", "user": "tom_h", "text": "Ich uebernehme SSO-Backend zusammen mit Raj. Habe die SAML-Doku angefangen zu lesen, bin mir noch nicht sicher wie wir mit Azure AD Multi-Tenant umgehen.", "thread_ts": "2026-05-04T09:30:00+02:00"},
+    {"ts": "2026-05-04T11:20:00+02:00", "user": "ana_k", "text": "Tom, lass uns morgen 30 Min drueber sprechen. Ich hatte Azure AD schon in Adler-Setup.", "thread_ts": "2026-05-04T09:30:00+02:00"},
+
+    {"ts": "2026-05-05T15:22:00+02:00", "user": "raj_p", "text": "Hab die ersten Tests fuer Report-Modul geschrieben. Coverage steigt von 51 auf 58 Prozent. 5 kritische Pfade ungetestet gefunden, arbeite die diese Woche ab.", "thread_ts": null, "reactions": [{"name": "muscle", "count": 3}]},
+    {"ts": "2026-05-05T16:10:00+02:00", "user": "elena_v", "text": "Bug NR-1247 fixed. War ein Race-Condition im Data-Sync bei mehreren gleichzeitigen Uploads. Ist seit Februar offen, jetzt geloest.", "thread_ts": null, "reactions": [{"name": "green_heart", "count": 4}]},
+
+    {"ts": "2026-05-07T09:15:00+02:00", "user": "ana_k", "text": "Bug-Triage heute 14:00, alle Team-Leads bitte. Wir schauen die 12 kritischen an und entscheiden was in Sprint 10 rein muss.", "thread_ts": null},
+    {"ts": "2026-05-07T16:30:00+02:00", "user": "ana_k", "text": "Ergebnis Triage: 8 Bugs in Sprint 10 gezogen. 4 als P2 in Sprint 11. Detailliert in Notion.", "thread_ts": "2026-05-07T09:15:00+02:00"},
+
+    {"ts": "2026-05-11T10:00:00+02:00", "user": "raj_p", "text": "Report-Modul Coverage jetzt bei 62 Prozent. Zwei weitere Pfade heute noch. Bin gut im Zeitplan.", "thread_ts": null, "reactions": [{"name": "chart_with_upwards_trend", "count": 2}]},
+    {"ts": "2026-05-11T14:45:00+02:00", "user": "kim_v", "text": "SSO-UI erste Wireframes fertig, hab sie in Figma verlinkt. Kann jemand Review machen?", "thread_ts": null, "reactions": [{"name": "eyes", "count": 2}]},
+    {"ts": "2026-05-11T15:00:00+02:00", "user": "tom_h", "text": "Ich schau's mir an Kim.", "thread_ts": "2026-05-11T14:45:00+02:00"},
+
+    {"ts": "2026-05-13T13:30:00+02:00", "user": "ana_k", "text": "Bug-Triage morgen 14:00. Bitte Notes vorbereiten.", "thread_ts": null},
+    {"ts": "2026-05-14T13:45:00+02:00", "user": "ana_k", "text": "Muss Bug-Triage heute leider auf naechste Woche verschieben, SOC2-Audit-Prep Termin ist reingekommen. Sorry Team.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 3}]},
+    {"ts": "2026-05-14T13:50:00+02:00", "user": "elena_v", "text": "Zweite Woche in Folge Triage verschoben. Wir haben 4 neue P1-Bugs seit Montag.", "thread_ts": "2026-05-14T13:45:00+02:00"},
+    {"ts": "2026-05-14T14:02:00+02:00", "user": "ana_k", "text": "Ich weiss Elena. Wir holen es naechste Woche nach.", "thread_ts": "2026-05-14T13:45:00+02:00"},
+
+    {"ts": "2026-05-18T09:00:00+02:00", "user": "ana_k", "text": "Sprint 11 startet heute. Fokus: SSO-Backend zu Ende, Audit-Logs starten, Bugs vom letzten Sprint abarbeiten. Kritisch: DHL Tochter Deal haengt an SSO Juni-Ende.", "thread_ts": null},
+
+    {"ts": "2026-05-20T10:16:00+02:00", "user": "marko_w", "text": "Team, kurz und deutlich: wir muessen schneller werden. Ich sehe zu viel Zeit in Reviews, zu viel Perfektionismus in Test-Coverage-Debatten, zu wenig Output. Wir brauchen Geschwindigkeit fuer die Series-C-Story. Ab jetzt: ship it, fix later wenn noetig. MVP reicht fuer die meisten Features. Wir polishen post-launch.", "thread_ts": null, "reactions": [{"name": "muscle", "count": 8}, {"name": "eyes", "count": 6}, {"name": "warning", "count": 3}]},
+    {"ts": "2026-05-20T10:35:00+02:00", "user": "elena_v", "text": "Marko, das kollidiert direkt mit Pillar 2. Wollen wir das kurz erklaeren?", "thread_ts": "2026-05-20T10:16:00+02:00"},
+    {"ts": "2026-05-20T10:48:00+02:00", "user": "marko_w", "text": "Pillar 2 gilt, aber die Realitaet ist dass wir liefern muessen. Wir bleiben qualitaetsorientiert wo es zaehlt, aber wir shippen mehr.", "thread_ts": "2026-05-20T10:16:00+02:00"},
+    {"ts": "2026-05-20T11:00:00+02:00", "user": "raj_p", "text": "Marko, hab ich das richtig verstanden: bei Report-Modul-Tests wo ich gerade an 65 Prozent Coverage arbeite, soll ich das lieber shippen und die Coverage spaeter nachziehen?", "thread_ts": "2026-05-20T10:16:00+02:00"},
+    {"ts": "2026-05-20T11:12:00+02:00", "user": "marko_w", "text": "Ja Raj. Ship, dann iterate.", "thread_ts": "2026-05-20T10:16:00+02:00"},
+
+    {"ts": "2026-05-21T09:20:00+02:00", "user": "tom_h", "text": "Bin mir nicht sicher was jetzt gilt. Bin ich als Junior in der Position zu fragen? Ich haette SSO-Backend gestern eigentlich zwei Testfaelle mehr geschrieben, aber wenn wir MVP shippen...", "thread_ts": null, "reactions": [{"name": "eyes", "count": 4}]},
+    {"ts": "2026-05-21T09:34:00+02:00", "user": "raj_p", "text": "Tom, SSO ist Enterprise-relevant, dort sollten wir Test-Coverage nicht abschneiden. Frag Ana.", "thread_ts": "2026-05-21T09:20:00+02:00"},
+    {"ts": "2026-05-21T09:52:00+02:00", "user": "ana_k", "text": "Tom, SSO braucht die Tests. Marko meint eher Standard-Features. Bei Enterprise-Relevanz bleibt Coverage.", "thread_ts": "2026-05-21T09:20:00+02:00"},
+
+    {"ts": "2026-05-24T14:00:00+02:00", "user": "elena_v", "text": "Neuer Standard-Feature-Release: Team-Dashboard 2.0. Ich hab bei Review gesehen dass Coverage nur bei 41 Prozent liegt. Frueher wuerden wir das nicht rausschicken. Neuer Modus: ship it. OK, aber ich moechte das dokumentieren.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 5}, {"name": "warning", "count": 2}]},
+    {"ts": "2026-05-24T14:22:00+02:00", "user": "kim_v", "text": "Team-Dashboard 2.0 gelaunched. Erste Feedback von Users kommt rein: 3 kritische UI-Bugs im ersten Tag. Ich fix die live.", "thread_ts": null, "reactions": [{"name": "fire", "count": 3}]},
+
+    {"ts": "2026-05-26T10:00:00+02:00", "user": "ana_k", "text": "Bug-Triage heute 14:00. Bitte alle da.", "thread_ts": null},
+    {"ts": "2026-05-26T13:55:00+02:00", "user": "ana_k", "text": "Sorry, Bug-Triage muss ich schon wieder schieben. SOC2-Audit-Meeting reingekommen. Naechste Woche.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 4}]},
+    {"ts": "2026-05-26T14:10:00+02:00", "user": "elena_v", "text": "Dritte Woche in Folge. Wir haben aktuell 19 offene kritische Bugs. Vor 6 Wochen waren es 8.", "thread_ts": "2026-05-26T13:55:00+02:00", "reactions": [{"name": "eyes", "count": 3}]},
+    {"ts": "2026-05-26T14:18:00+02:00", "user": "raj_p", "text": "Ich uebernehme die Bug-Triage-Facilitation bis Ana kann. Wollen wir es Donnerstag versuchen?", "thread_ts": "2026-05-26T13:55:00+02:00"},
+    {"ts": "2026-05-26T14:22:00+02:00", "user": "ana_k", "text": "Ja Raj, danke.", "thread_ts": "2026-05-26T13:55:00+02:00"},
+
+    {"ts": "2026-05-27T11:30:00+02:00", "user": "ana_k", "text": "Team, DHL Tochter braucht zusaetzlich einen Audit-Trail-Report bis Mitte Juni. Ich uebernehme die Spec. Wer kann implementation?", "thread_ts": null},
+    {"ts": "2026-05-27T11:42:00+02:00", "user": "raj_p", "text": "Kann ich machen, aber nur wenn ich Report-Modul-Coverage-Arbeit pause. Die stand aktuell bei 62 Prozent.", "thread_ts": "2026-05-27T11:30:00+02:00"},
+    {"ts": "2026-05-27T11:50:00+02:00", "user": "ana_k", "text": "OK. Coverage-Arbeit pausiert. Ist Enterprise-Prioritaet.", "thread_ts": "2026-05-27T11:30:00+02:00"},
+    {"ts": "2026-05-27T12:05:00+02:00", "user": "elena_v", "text": "Also: Report-Modul-Coverage-Ziel Q2 verpasst wir jetzt formal. Zur Info.", "thread_ts": "2026-05-27T11:30:00+02:00"},
+
+    {"ts": "2026-05-29T09:15:00+02:00", "user": "kim_v", "text": "Team-Dashboard 2.0 Bugs: 5 gefixed, 2 offen. UI-Regression im Chrome auf Windows entdeckt, arbeite dran.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 2}]},
+
+    {"ts": "2026-06-02T10:00:00+02:00", "user": "raj_p", "text": "Bug-Triage heute 14:00. Ich uebernehme, Ana ist bei SOC2.", "thread_ts": null, "reactions": [{"name": "thumbsup", "count": 5}]},
+    {"ts": "2026-06-02T16:00:00+02:00", "user": "raj_p", "text": "Ergebnis: 22 offene kritische Bugs. 6 in Sprint 12 gezogen. Restliche 16 auf Backlog. Das ist ein Problem.", "thread_ts": null, "reactions": [{"name": "warning", "count": 6}]},
+    {"ts": "2026-06-02T16:12:00+02:00", "user": "elena_v", "text": "22. Wir sind bei 22 kritischen Bugs. Zur Erinnerung: Q-Ziel unter 5.", "thread_ts": "2026-06-02T16:00:00+02:00"},
+
+    {"ts": "2026-06-04T11:20:00+02:00", "user": "tom_h", "text": "SSO Backend ist code-complete. Testfaelle ich hab 8 geschrieben. Habe mich an Ana orientiert bei Coverage, aber Marko hatte ja gesagt MVP reicht. Wie soll ich es rausschicken?", "thread_ts": null},
+    {"ts": "2026-06-04T11:45:00+02:00", "user": "ana_k", "text": "SSO gehoert zu Enterprise, wir shippen mit Coverage. Tom, du bist auf dem richtigen Weg.", "thread_ts": "2026-06-04T11:20:00+02:00"},
+
+    {"ts": "2026-06-05T15:30:00+02:00", "user": "elena_v", "text": "Ich moechte was ansprechen. Ich sitze seit vier Monaten in diesem Team und seit drei Wochen habe ich das Gefuehl unsere Reviews sind Diskussion darueber warum wir Tests skippen sollen. Ich frage mich ob ich hier richtig bin.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 6}, {"name": "heart", "count": 4}]},
+    {"ts": "2026-06-05T15:52:00+02:00", "user": "raj_p", "text": "Elena, das hoert man dir an. Lass uns morgen 15 Min sprechen.", "thread_ts": "2026-06-05T15:30:00+02:00"},
+    {"ts": "2026-06-05T16:10:00+02:00", "user": "ana_k", "text": "Elena, das ist wichtig. Ich moechte auch mit dir sprechen. Kannst du mir morgen 30 Min geben?", "thread_ts": "2026-06-05T15:30:00+02:00"},
+
+    {"ts": "2026-06-08T09:00:00+02:00", "user": "kim_v", "text": "SSO-UI final gelaunched. Sieht gut aus. Sales hat's schon gefeiert.", "thread_ts": null, "reactions": [{"name": "tada", "count": 5}]},
+    {"ts": "2026-06-08T11:15:00+02:00", "user": "ana_k", "text": "DHL Tochter Deal ist unterschrieben, mit SSO-Support. Danke Team.", "thread_ts": null, "reactions": [{"name": "champagne", "count": 6}]},
+
+    {"ts": "2026-06-10T13:45:00+02:00", "user": "raj_p", "text": "Audit-Trail-Report fuer DHL Tochter ist in Testing. Coverage 68 Prozent. Muss ich shippen bis Freitag.", "thread_ts": null},
+    {"ts": "2026-06-11T16:30:00+02:00", "user": "raj_p", "text": "Audit-Trail-Report gelaunched. Zwei Randfaelle mit CSV-Encoding beobachtet, werde ich Montag fixen.", "thread_ts": null},
+
+    {"ts": "2026-06-13T09:30:00+02:00", "user": "elena_v", "text": "Neuer Bug: Data-Sync bricht ab wenn Kunde mehr als 10k Zeilen importiert. Kunde XY hat das gestern gemeldet. Reproduzierbar. War frueher getestet, jetzt Regression.", "thread_ts": null, "reactions": [{"name": "warning", "count": 4}]},
+    {"ts": "2026-06-13T09:52:00+02:00", "user": "raj_p", "text": "Das ist wahrscheinlich aus dem Team-Dashboard 2.0 Ship-it-Release. Wir hatten Data-Sync-Pfad nicht abgedeckt.", "thread_ts": "2026-06-13T09:30:00+02:00"},
+    {"ts": "2026-06-13T10:10:00+02:00", "user": "elena_v", "text": "Genau. Und Kunde XY ist ein Enterprise-Prospect den Sales gerade verhandelt.", "thread_ts": "2026-06-13T09:30:00+02:00"},
+
+    {"ts": "2026-06-15T10:00:00+02:00", "user": "ana_k", "text": "Team, kurze Ansage: ich habe gestern mit Sarah offen gesprochen. Wir bekommen zwei Engineers Verstaerkung fuer den Enterprise-Track. Startdatum wird verhandelt, aber wir haben Zusage. Danke fuer eure Geduld.", "thread_ts": null, "reactions": [{"name": "raised_hands", "count": 7}, {"name": "green_heart", "count": 3}]},
+    {"ts": "2026-06-15T10:22:00+02:00", "user": "elena_v", "text": "Danke Ana. Das war ueberfaellig.", "thread_ts": "2026-06-15T10:00:00+02:00"},
+
+    {"ts": "2026-06-17T14:30:00+02:00", "user": "ana_k", "text": "Fuer den Q2-Review Dienstag. Ich moechte ehrlich sein: wir haben in Q2 gedriftet. Coverage bei 54 statt 75. Bugs bei 22 statt 5. Wir hatten drei Bug-Triage-Verschiebungen. Ich uebernehme Verantwortung fuer die Prio-Entscheidungen.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 6}, {"name": "heart", "count": 4}]},
+    {"ts": "2026-06-17T14:52:00+02:00", "user": "raj_p", "text": "Ana, das ist nicht deine Schuld allein. Wir hatten Signale seit Wochen und alle wussten wo wir hin driften. Das ist ein Team-Verantwortungs-Thema.", "thread_ts": "2026-06-17T14:30:00+02:00"},
+
+    {"ts": "2026-06-19T09:30:00+02:00", "user": "ana_k", "text": "Q2-Review Debrief: Leadership hat entschieden Q3 nachzujustieren. Enterprise-Team wird um 2 Engineers erweitert. QA-Investment plus 2 Hires. Roadmap-Governance mit Customer-Anker-Pflicht. Wir haben die Chance zurueckzudrehen.", "thread_ts": null, "reactions": [{"name": "raised_hands", "count": 6}, {"name": "clap", "count": 4}]},
+
+    {"ts": "2026-06-22T10:00:00+02:00", "user": "ana_k", "text": "Sprint 12 Retro Erkenntnisse: 1) Coverage-Arbeit pausiert weil Enterprise-Prio, jetzt Rueckstand. 2) Ship-it hat kurzfristig Velocity gebracht, mittelfristig Bug-Backlog. 3) Kommunikation zwischen Priorisierungs-Entscheidungen und Team-Level war schwach. Q3-Plan adressiert.", "thread_ts": null, "reactions": [{"name": "thumbsup", "count": 5}]},
+
+    {"ts": "2026-06-24T11:00:00+02:00", "user": "raj_p", "text": "Neues Team-Member wird angekuendigt: Simon startet 1. August, Backend Engineer mit Enterprise-Erfahrung. Willkommen im Team.", "thread_ts": null, "reactions": [{"name": "wave", "count": 8}]},
+
+    {"ts": "2026-06-27T09:15:00+02:00", "user": "ana_k", "text": "Q3-Start Montag. Wir gehen mit klarem Fokus rein: Coverage-Aufbau, Bug-Backlog-Abbau, saubere Enterprise-Roadmap. Danke Team fuer den harten Q2. Freitag machen wir ein Team-Lunch.", "thread_ts": null, "reactions": [{"name": "green_heart", "count": 6}, {"name": "muscle", "count": 4}]},
+
+    {"ts": "2026-06-30T15:45:00+02:00", "user": "elena_v", "text": "Q2 in Zahlen: 3 Enterprise-Deals gewonnen, 22 kritische Bugs offen, Test-Coverage 54 Prozent, NPS 41. Zeit der Wahrheit fuer Q3.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 5}]}
+
+  ]
+}

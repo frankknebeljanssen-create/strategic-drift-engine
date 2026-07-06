@@ -1,0 +1,40 @@
+# Postgres 16 mit pgvector und das FastAPI-Backend.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-drift}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-drift}
+      POSTGRES_DB: ${POSTGRES_DB:-drift}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Migration laeuft automatisch beim ersten Init des leeren Volumes.
+      - ./backend/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-drift} -d ${POSTGRES_DB:-drift}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Innerhalb des Compose-Netzes heisst der DB-Host "db".
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-drift}:${POSTGRES_PASSWORD:-drift}@db:5432/${POSTGRES_DB:-drift}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-sonnet-5}
+      EMBEDDING_DIM: ${EMBEDDING_DIM:-1024}
+    ports:
+      - "8000:8000"
+    volumes:
+      # Synthetische Daten fuer den Ingest ins Backend spiegeln.
+      - ./synthetic_data:/app/synthetic_data:ro
+      - ./frontend:/app/frontend
+
+volumes:
+  pgdata:

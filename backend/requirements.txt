@@ -1,0 +1,12 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+sqlalchemy==2.0.36
+psycopg[binary]==3.2.3
+pgvector==0.3.6
+pydantic==2.10.4
+pydantic-settings==2.7.1
+
+# Nur fuer --mode claude noetig. Der Mock-Modus laeuft ohne diese Pakete,
+# daher werden sie in llm.py erst innerhalb von client() lazy importiert.
+anthropic==0.42.0
+langgraph==0.2.60

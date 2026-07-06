@@ -1,0 +1,259 @@
+{
+  "company": {
+    "name": "TechCo",
+    "stage": "Series B",
+    "employees_total": 180,
+    "founded": 2019,
+    "hq": "Berlin",
+    "product": "B2B SaaS Workflow-Automatisierung fuer Mid-Market",
+    "current_arr_mio_eur": 12.5,
+    "series_b_date": "2024-09",
+    "series_b_amount_mio_eur": 18
+  },
+  "strategy_period": {
+    "beschlossen_am": "2026-01-15",
+    "gilt_fuer": "2026",
+    "review_kadenz": "quarterly"
+  },
+  "analysis_window": {
+    "start": "2026-05-01",
+    "end": "2026-06-30",
+    "days": 60
+  },
+  "people": [
+    {
+      "id": "sarah_m",
+      "name": "Sarah Mendes",
+      "role": "CEO",
+      "team": "Leadership",
+      "reports_to": null,
+      "voice": "strukturiert, strategisch, formuliert klar, wechselt in Krisen in Handlungs-Modus. Nutzt oft 'Lasst uns...' und 'Wichtig ist...'.",
+      "position_in_pillars": {
+        "customer_led_growth": "starke Verfechterin, faengt an sich in letzter Zeit zu verwaessern",
+        "quality_over_speed": "haelt sich raus, ueberlaesst dem CTO",
+        "enterprise_ready": "haengt persoenlich dran wegen Series C Story"
+      }
+    },
+    {
+      "id": "marko_w",
+      "name": "Marko Weber",
+      "role": "CTO",
+      "team": "Leadership",
+      "reports_to": "sarah_m",
+      "voice": "technisch, pragmatisch, ungeduldig. Schreibt kurze Saetze. Nutzt haeufig 'ship it', 'move fast', 'wir muessen liefern'. Reduziert Komplexitaet stark.",
+      "position_in_pillars": {
+        "customer_led_growth": "gleichgueltig, orientiert sich an Tech-Trends",
+        "quality_over_speed": "war Verfechter, hat aber gerade selbst gekippt",
+        "enterprise_ready": "sieht es als Blocker fuer Speed"
+      }
+    },
+    {
+      "id": "jonas_f",
+      "name": "Jonas Fischer",
+      "role": "VP Product",
+      "team": "Product",
+      "reports_to": "sarah_m",
+      "voice": "reflektiert, faengt Saetze mit 'Ich denke...' oder 'Aus Kundensicht...' an. Bringt oft Beispiele. Formuliert diplomatisch, druckt aber Zweifel aus.",
+      "position_in_pillars": {
+        "customer_led_growth": "starker Verfechter, sieht die Aushoehlung, kommuniziert es zunehmend deutlich",
+        "quality_over_speed": "haelt es fuer wichtig, wird uebergangen",
+        "enterprise_ready": "unterstuetzt, sieht Ressourcenproblem"
+      }
+    },
+    {
+      "id": "ana_k",
+      "name": "Ana Kaya",
+      "role": "Head of Engineering",
+      "team": "Engineering",
+      "reports_to": "marko_w",
+      "voice": "sachlich, operativ, klare Aussagen. Nutzt Zahlen und Fakten. Wenig Meta-Kommentar. Faellt kurz und praezise.",
+      "position_in_pillars": {
+        "customer_led_growth": "wenig Beruehrung",
+        "quality_over_speed": "will Qualitaet, kaempft gegen Druck",
+        "enterprise_ready": "traegt 70 Prozent der Enterprise-Arbeit alleine, ueberlastet"
+      }
+    },
+    {
+      "id": "david_c",
+      "name": "David Chen",
+      "role": "Head of Sales",
+      "team": "Sales",
+      "reports_to": "sarah_m",
+      "voice": "energiegeladen, deal-fokussiert, kurz. Schreibt viele Einzeiler. Nutzt 'Deal', 'Pipeline', 'Prospect' oft. Wenig Interesse an Produktdetails.",
+      "position_in_pillars": {
+        "customer_led_growth": "instrumentalisiert es fuer Deal-Naehe, nicht fuer Produkt-Input",
+        "quality_over_speed": "will Speed fuer Deals",
+        "enterprise_ready": "treibt hart, weil sein Kompensationsmodell dranhaengt"
+      }
+    },
+    {
+      "id": "lena_b",
+      "name": "Lena Boehm",
+      "role": "Head of Customer Success",
+      "team": "CS",
+      "reports_to": "sarah_m",
+      "voice": "empathisch, langfristig denkend. Nutzt Kunden-Zitate. Formuliert vorsichtig, aber beharrlich. Schreibt oft laengere Absaetze mit Kontext.",
+      "position_in_pillars": {
+        "customer_led_growth": "starke Verfechterin, sieht die Kluft am deutlichsten in Kundengespraechen",
+        "quality_over_speed": "leidet unter Bug-Rate, meldet es zunehmend",
+        "enterprise_ready": "sieht die Enterprise-Kunden-Probleme im CS-Alltag"
+      }
+    },
+    {
+      "id": "tim_r",
+      "name": "Tim Reinhardt",
+      "role": "Senior Product Manager",
+      "team": "Product",
+      "reports_to": "jonas_f",
+      "voice": "detailorientiert, faengt gerne mit Datenpunkten an. Nutzt 'Metrik', 'Segment', 'A/B'. Kann ins Nerd-Detail abschweifen.",
+      "position_in_pillars": {
+        "customer_led_growth": "sagt es, macht es aber teilweise selbst nicht",
+        "quality_over_speed": "eher speed-lastig",
+        "enterprise_ready": "arbeitet dran"
+      }
+    },
+    {
+      "id": "maria_s",
+      "name": "Maria Schulz",
+      "role": "Product Manager",
+      "team": "Product",
+      "reports_to": "jonas_f",
+      "voice": "juenger, enthusiastisch, viele Emojis in Slack. Nutzt 'love it', 'super cool', formuliert oft in Fragen. Zeigt Unsicherheit offen.",
+      "position_in_pillars": {
+        "customer_led_growth": "will es, hat aber wenig Erfahrung im Balancieren",
+        "quality_over_speed": "wenig Meinung",
+        "enterprise_ready": "arbeitet dran, ueberfordert"
+      }
+    },
+    {
+      "id": "raj_p",
+      "name": "Raj Patel",
+      "role": "Staff Engineer",
+      "team": "Engineering",
+      "reports_to": "ana_k",
+      "voice": "technisch tief, wenig politisch. Schreibt lange technische Analysen. Nutzt Code-Snippets in Slack. Weniger Meta-Kommentar zu Business.",
+      "position_in_pillars": {
+        "customer_led_growth": "keine Beruehrung",
+        "quality_over_speed": "kaempft fuer Qualitaet in Reviews",
+        "enterprise_ready": "arbeitet an SOC2-Anforderungen"
+      }
+    },
+    {
+      "id": "elena_v",
+      "name": "Elena Vollmer",
+      "role": "Senior Engineer",
+      "team": "Engineering",
+      "reports_to": "ana_k",
+      "voice": "direkt, keine Zurueckhaltung, sagt was falsch laeuft. Nutzt Sarkasmus. Schreibt kurz und pointiert.",
+      "position_in_pillars": {
+        "customer_led_growth": "keine Beruehrung",
+        "quality_over_speed": "starke Verfechterin, gibt zunehmend auf",
+        "enterprise_ready": "kritisch, sieht Overhead"
+      }
+    },
+    {
+      "id": "peter_l",
+      "name": "Peter Lange",
+      "role": "Enterprise Account Executive",
+      "team": "Sales",
+      "reports_to": "david_c",
+      "voice": "geschliffen, kunden-orientiert. Nutzt viele Namensdrops von Prospects. Schreibt in Kundensprache. Nutzt haeufig 'unser Kunde XY sagt...'.",
+      "position_in_pillars": {
+        "customer_led_growth": "nutzt es als Verkaufsargument",
+        "quality_over_speed": "will Speed fuer Deals",
+        "enterprise_ready": "treibt hart, meldet Blocker"
+      }
+    },
+    {
+      "id": "julia_h",
+      "name": "Julia Hoffmann",
+      "role": "Account Executive",
+      "team": "Sales",
+      "reports_to": "david_c",
+      "voice": "junior, faengt haeufig mit Fragen an. Nutzt viele Fragezeichen. Braucht Enablement, fragt viel nach.",
+      "position_in_pillars": {
+        "customer_led_growth": "wenig eigene Meinung",
+        "quality_over_speed": "wenig Bezug",
+        "enterprise_ready": "leidet unter fehlenden Enterprise-Features im Deal"
+      }
+    },
+    {
+      "id": "mike_o",
+      "name": "Mike Osei",
+      "role": "Senior Customer Success Manager",
+      "team": "CS",
+      "reports_to": "lena_b",
+      "voice": "erfahren, geduldig, formuliert kontextreich. Nutzt Kundenperspektive konsequent. Schreibt gerne lange Threads.",
+      "position_in_pillars": {
+        "customer_led_growth": "starker Verfechter, gibt in Slack konkrete Kundenzitate weiter",
+        "quality_over_speed": "erhaelt Bug-Reports von Kunden, meldet weiter",
+        "enterprise_ready": "sieht die Enterprise-Luecken bei Bestandskunden"
+      }
+    },
+    {
+      "id": "nadia_k",
+      "name": "Nadia Krause",
+      "role": "Customer Success Manager",
+      "team": "CS",
+      "reports_to": "lena_b",
+      "voice": "praezise, kundenzitate mit Anfuehrungszeichen. Nutzt oft 'Kunde X hat mir gesagt...'. Sachlich, weniger emotional.",
+      "position_in_pillars": {
+        "customer_led_growth": "bringt viele Kundeninputs",
+        "quality_over_speed": "beklagt Bugs",
+        "enterprise_ready": "kein starker Bezug"
+      }
+    },
+    {
+      "id": "felix_b",
+      "name": "Felix Bauer",
+      "role": "Head of Marketing",
+      "team": "Marketing",
+      "reports_to": "sarah_m",
+      "voice": "narrativ, campaign-orientiert, nutzt Storytelling. Schreibt gerne Slack-Threads mit Storytelling. Denkt in Zielgruppen.",
+      "position_in_pillars": {
+        "customer_led_growth": "unterstuetzt, orientiert Marketing dran",
+        "quality_over_speed": "keine Meinung",
+        "enterprise_ready": "baut Enterprise-Positionierung"
+      }
+    },
+    {
+      "id": "sophie_r",
+      "name": "Sophie Renner",
+      "role": "Head of People",
+      "team": "People",
+      "reports_to": "sarah_m",
+      "voice": "warm, prozessorientiert, achtet auf Team-Dynamik. Schreibt vorsichtig, nutzt 'lass uns kurz reden', 'wie geht es dir'. Selten in fachlichen Themen.",
+      "position_in_pillars": {
+        "customer_led_growth": "keine Beruehrung",
+        "quality_over_speed": "keine",
+        "enterprise_ready": "keine, aber sieht Ana Kayas Ueberlastung"
+      }
+    },
+    {
+      "id": "tom_h",
+      "name": "Tom Heinrich",
+      "role": "Backend Engineer",
+      "team": "Engineering",
+      "reports_to": "ana_k",
+      "voice": "junior, fragt viel, dokumentiert gerne. Nutzt 'Bin mir nicht sicher, aber...'. Zeigt seine Arbeit.",
+      "position_in_pillars": {
+        "customer_led_growth": "keine",
+        "quality_over_speed": "will lernen, sieht die Kultur kippen",
+        "enterprise_ready": "arbeitet an Audit-Log-Feature"
+      }
+    },
+    {
+      "id": "kim_v",
+      "name": "Kim Vogel",
+      "role": "Frontend Engineer",
+      "team": "Engineering",
+      "reports_to": "ana_k",
+      "voice": "cool, wenig text-lastig. Nutzt kurze Antworten, Emojis. Fokussiert auf UI-Themen.",
+      "position_in_pillars": {
+        "customer_led_growth": "keine",
+        "quality_over_speed": "sieht QA-Kollaps",
+        "enterprise_ready": "arbeitet an SSO-UI"
+      }
+    }
+  ]
+}

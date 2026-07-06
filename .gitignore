@@ -1,0 +1,21 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Tooling / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Generated artifacts
+frontend/drift_data.json
+*.dump.json

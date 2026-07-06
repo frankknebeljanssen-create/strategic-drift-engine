@@ -1,0 +1,100 @@
+{
+  "channel": "leadership",
+  "description": "Privater Channel fuer das Leadership-Team (7 Personen). Strategische Diskussionen, Entscheidungen, Q-Reviews.",
+  "members": ["sarah_m", "marko_w", "jonas_f", "ana_k", "david_c", "lena_b", "felix_b"],
+  "messages": [
+
+    {"ts": "2026-05-04T09:12:00+02:00", "user": "sarah_m", "text": "Guten Morgen zusammen. Kurz zum Wochenstart: der April-NPS ist raus, 44. Kleiner Zuwachs, aber unter Zielkorridor 55. Lasst uns heute Nachmittag im Sync 20 Min drueber sprechen was dahinter steckt.", "thread_ts": null, "reactions": [{"name": "thumbsup", "count": 4}]},
+    {"ts": "2026-05-04T09:34:00+02:00", "user": "lena_b", "text": "Ich habe die NPS-Kommentare bereits geclustert. Drei Themen: erstens Zuverlaessigkeit der Reports (12 Nennungen), zweitens fehlendes SSO (8 Nennungen), drittens Onboarding-Erlebnis (7 Nennungen). Kann ich mitbringen.", "thread_ts": "2026-05-04T09:12:00+02:00"},
+    {"ts": "2026-05-04T09:41:00+02:00", "user": "jonas_f", "text": "Gut, Lena. Das erste Cluster faellt genau in Pillar 2. Wir haben in der letzten Retro auch gesehen dass wir zu wenig Test-Coverage bei den Report-Modulen haben. Marko?", "thread_ts": "2026-05-04T09:12:00+02:00"},
+    {"ts": "2026-05-04T10:02:00+02:00", "user": "marko_w", "text": "Sehe ich. Raj hat mir gestern gesagt dass wir bei Reports auf ca 51 Prozent Coverage sind. Ziel 75. Das ist die groesste Luecke die wir haben.", "thread_ts": "2026-05-04T09:12:00+02:00"},
+    {"ts": "2026-05-04T15:47:00+02:00", "user": "ana_k", "text": "Kurzes Update Pillar 3: SOC2-Audit-Vorbereitung laeuft, wir sind on track fuer Q3. Aber ich brauche mehr Ressourcen fuer Audit-Logs. Aktuell arbeite ich das mit Raj und Tom im Nebenlauf.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 3}]},
+    {"ts": "2026-05-04T16:03:00+02:00", "user": "sarah_m", "text": "Ana, koenntest du bis Freitag skizzieren was du genau brauchst? Dann besprechen wir das im naechsten Leadership-Meeting.", "thread_ts": "2026-05-04T15:47:00+02:00"},
+    {"ts": "2026-05-04T16:05:00+02:00", "user": "ana_k", "text": "Mache ich.", "thread_ts": "2026-05-04T15:47:00+02:00"},
+
+    {"ts": "2026-05-06T11:20:00+02:00", "user": "david_c", "text": "Team, Q2 Pipeline Update: wir sind bei 2.1 Mio Enterprise-Pipeline. Ziel Q3-Ende ist 3 Mio. Bin optimistisch aber knapp. Zwei Deals bei DHL Tochter und einem grossen Versicherer haengen an SSO und Audit-Logs.", "thread_ts": null, "reactions": [{"name": "chart_with_upwards_trend", "count": 2}]},
+    {"ts": "2026-05-06T11:35:00+02:00", "user": "sarah_m", "text": "Gut David. Die zwei Deals wie zeitkritisch?", "thread_ts": "2026-05-06T11:20:00+02:00"},
+    {"ts": "2026-05-06T11:38:00+02:00", "user": "david_c", "text": "DHL Tochter braucht SSO bis Juli sonst kein Signing. Versicherer eher offen bis Sept.", "thread_ts": "2026-05-06T11:20:00+02:00"},
+    {"ts": "2026-05-06T11:52:00+02:00", "user": "ana_k", "text": "SSO ist im Plan bis Ende Q2, also Ende Juni. Passt fuer DHL Tochter.", "thread_ts": "2026-05-06T11:20:00+02:00"},
+
+    {"ts": "2026-05-08T09:45:00+02:00", "user": "lena_b", "text": "Kurzer Kunden-Insight: hatte gestern einen Call mit einem Bestandskunden aus dem Mid-Market. Zitat: 'Wir lieben die Plattform, aber die Bug-Rate der letzten drei Monate hat uns Vertrauen gekostet.' Das ist der zweite Kunde diese Woche mit dieser Formulierung.", "thread_ts": null, "reactions": [{"name": "warning", "count": 3}]},
+    {"ts": "2026-05-08T10:12:00+02:00", "user": "jonas_f", "text": "Danke Lena. Das ist konkret Pillar 2. Marko, wir muessen die Bug-Rate ernsthafter angehen. Kann ich das im naechsten Roadmap-Meeting priorisieren?", "thread_ts": "2026-05-08T09:45:00+02:00"},
+    {"ts": "2026-05-08T10:34:00+02:00", "user": "marko_w", "text": "Ja. Ich rede diese Woche noch mit Ana ueber Bug-Triage-Kadenz.", "thread_ts": "2026-05-08T09:45:00+02:00"},
+
+    {"ts": "2026-05-11T14:22:00+02:00", "user": "sarah_m", "text": "Team, ich war Freitag beim ersten Vorgespraech mit einem Series-C-Investor. Feedback war klar: sie wollen mehr Wachstumsgeschwindigkeit sehen bevor sie einsteigen. Konkret meinten sie 'mehr Momentum'. Lasst uns morgen im 1:1 mit den Direct Reports drueber sprechen.", "thread_ts": null, "reactions": [{"name": "thinking_face", "count": 3}]},
+    {"ts": "2026-05-11T14:45:00+02:00", "user": "marko_w", "text": "Momentum heisst was in ihrer Sprache? Feature-Velocity oder ARR?", "thread_ts": "2026-05-11T14:22:00+02:00"},
+    {"ts": "2026-05-11T14:48:00+02:00", "user": "sarah_m", "text": "Beides. Aber der Ton war eher 'ihr koennt schneller shippen und schneller verkaufen als ihr aktuell tut'.", "thread_ts": "2026-05-11T14:22:00+02:00"},
+    {"ts": "2026-05-11T15:02:00+02:00", "user": "david_c", "text": "Auf der Sales-Seite kein Problem, wir haben mehr Pipeline als wir aktuell shippen koennen. Wenn Product schneller liefert, closen wir mehr.", "thread_ts": "2026-05-11T14:22:00+02:00"},
+    {"ts": "2026-05-11T15:18:00+02:00", "user": "jonas_f", "text": "David, das ist eine wichtige Diskussion. Aber wir haben im Januar bewusst Pillar 2 gesetzt weil wir gesehen haben dass Speed ohne Qualitaet unser NPS drueckt. Lass uns das nicht einfach ueberrollen.", "thread_ts": "2026-05-11T14:22:00+02:00"},
+
+    {"ts": "2026-05-13T11:00:00+02:00", "user": "sarah_m", "text": "Kurze Ansage: Bug-Triage-Meeting Donnerstag findet statt. Wir hatten es letzte Woche schon verschoben, das darf nicht Muster werden.", "thread_ts": null, "reactions": [{"name": "thumbsup", "count": 5}]},
+    {"ts": "2026-05-13T11:03:00+02:00", "user": "ana_k", "text": "Bin dabei.", "thread_ts": "2026-05-13T11:00:00+02:00"},
+
+    {"ts": "2026-05-15T10:20:00+02:00", "user": "felix_b", "text": "Fuer die Website Q3-Kampagne ueberlege ich einen Redesign des Onboarding-Flows als Hero-Story zu nutzen. Waere Product hier bereit das priorisiert zu bauen? Wettbewerber hat gerade einen sehr aufgeraeumten Onboarding-Flow geshippt.", "thread_ts": null, "reactions": [{"name": "bulb", "count": 2}]},
+    {"ts": "2026-05-15T10:45:00+02:00", "user": "jonas_f", "text": "Felix, kann ich fragen: haben wir Customer-Signale zum Onboarding-Flow? NPS hat drei Nennungen, das ist wenig. Bevor wir das priorisieren wuerde ich gerne mehr Substanz haben.", "thread_ts": "2026-05-15T10:20:00+02:00"},
+    {"ts": "2026-05-15T10:52:00+02:00", "user": "felix_b", "text": "Der Wettbewerber-Move ist substantiell fuer Marketing. Und Sarah, du hattest doch im Investor-Feedback erwaehnt dass sie Momentum sehen wollen. Ein Onboarding-Redesign ist perfekter Story-Content.", "thread_ts": "2026-05-15T10:20:00+02:00"},
+    {"ts": "2026-05-15T11:04:00+02:00", "user": "sarah_m", "text": "Felix hat einen Punkt. Jonas, lass uns das im Roadmap-Meeting Montag besprechen.", "thread_ts": "2026-05-15T10:20:00+02:00"},
+    {"ts": "2026-05-15T11:07:00+02:00", "user": "jonas_f", "text": "OK, aber ich moechte dass wir vorher Customer Success Feedback einholen. Lena?", "thread_ts": "2026-05-15T10:20:00+02:00"},
+    {"ts": "2026-05-15T11:22:00+02:00", "user": "lena_b", "text": "Ich schaue was ich bis Montag zusammenkriege. Ehrlicherweise war Onboarding in den letzten 30 Customer-Calls kein oft genanntes Thema, aber ich kann gezielt nachfragen.", "thread_ts": "2026-05-15T10:20:00+02:00"},
+
+    {"ts": "2026-05-18T09:30:00+02:00", "user": "sarah_m", "text": "Roadmap-Meeting heute 14:00. Themen: Onboarding-Redesign Priorisierung, SSO-Rollout-Plan, Q3-Enterprise-Deals. Kommt bitte vorbereitet.", "thread_ts": null},
+    {"ts": "2026-05-18T15:50:00+02:00", "user": "sarah_m", "text": "Zusammenfassung Roadmap-Meeting: 1) Onboarding-Redesign geht auf Roadmap, Start in Sprint 12, Ziel Q3-Ende. 2) SSO bleibt on track fuer Ende Juni. 3) DHL Tochter Deal wird von David eng begleitet. Details in den Notes.", "thread_ts": null, "reactions": [{"name": "thumbsup", "count": 4}]},
+    {"ts": "2026-05-18T16:12:00+02:00", "user": "jonas_f", "text": "Zur Klarstellung: die Onboarding-Priorisierung habe ich unter Vorbehalt akzeptiert. Ich habe keine belastbaren Customer-Signale gesehen die diese Prio ueber andere Themen rechtfertigen. Wir tracken das aktiv.", "thread_ts": "2026-05-18T15:50:00+02:00"},
+    {"ts": "2026-05-18T16:34:00+02:00", "user": "sarah_m", "text": "Verstanden Jonas. Reviewen wir im Juli-Q-Review.", "thread_ts": "2026-05-18T15:50:00+02:00"},
+
+    {"ts": "2026-05-20T10:15:00+02:00", "user": "marko_w", "text": "Team, ich habe mit den Engineering Leads gestern eine Session gemacht. Wir muessen ehrlicher werden mit unserer Velocity. Aktuell shippen wir 40 Prozent langsamer als noetig. Ich habe die Engineers aufgefordert schneller zu iterieren und weniger auf Perfektion zu zielen. Das faellt in Pillar 2 grenzwertig aber wir muessen es machen fuer die Series-C-Story.", "thread_ts": null, "reactions": [{"name": "muscle", "count": 2}, {"name": "warning", "count": 2}]},
+    {"ts": "2026-05-20T10:32:00+02:00", "user": "jonas_f", "text": "Marko, das kollidiert mit unserer Januar-Entscheidung. Koennen wir das als Team diskutieren bevor du das operativ setzt?", "thread_ts": "2026-05-20T10:15:00+02:00"},
+    {"ts": "2026-05-20T10:41:00+02:00", "user": "marko_w", "text": "Kein Widerspruch. Aber die Realitaet ist: wir brauchen Momentum. Alles andere kann warten.", "thread_ts": "2026-05-20T10:15:00+02:00"},
+    {"ts": "2026-05-20T10:52:00+02:00", "user": "lena_b", "text": "Ich moechte hier klar sein: unser NPS-Feedback zeigt dass Kunden gerade jetzt Zuverlaessigkeit erwarten. Wenn wir Speed vor Quality priorisieren werden wir das im Q3-NPS sehen.", "thread_ts": "2026-05-20T10:15:00+02:00"},
+    {"ts": "2026-05-20T11:08:00+02:00", "user": "sarah_m", "text": "Lasst uns das nicht in Slack ausdiskutieren. Ich setze morgen einen Termin auf 30 Min mit dem Kernteam.", "thread_ts": "2026-05-20T10:15:00+02:00"},
+
+    {"ts": "2026-05-22T09:00:00+02:00", "user": "sarah_m", "text": "Kurzes Debrief zum Termin gestern: wir bleiben bei den drei Pillars. Aber wir akzeptieren dass Speed in H1 hoeher gewichtet wird um Series-C-Story zu untermauern. Q3 justieren wir wenn wir Signale sehen.", "thread_ts": null, "reactions": [{"name": "thumbsup", "count": 5}, {"name": "thinking_face", "count": 2}]},
+    {"ts": "2026-05-22T09:14:00+02:00", "user": "jonas_f", "text": "Notiert. Ich werde das im Product-Team so kommunizieren.", "thread_ts": "2026-05-22T09:00:00+02:00"},
+    {"ts": "2026-05-22T09:22:00+02:00", "user": "lena_b", "text": "Verstanden. Ich werde die NPS-Signale eng monitoren.", "thread_ts": "2026-05-22T09:00:00+02:00"},
+
+    {"ts": "2026-05-26T13:45:00+02:00", "user": "ana_k", "text": "Kurzer Status: Bug-Triage-Meeting Donnerstag wird verschoben wegen SOC2-Audit-Vorbereitung. Naechster Termin naechste Woche.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 2}]},
+
+    {"ts": "2026-05-27T10:30:00+02:00", "user": "david_c", "text": "Team, DHL Tochter Deal geht in die finale Runde. Sie brauchen zusaetzlich einen Audit-Trail-Report der aktuell nicht im MVP-Scope ist. Kann Engineering das in 2 Wochen liefern? Ohne den Report kein Signing.", "thread_ts": null, "reactions": [{"name": "fire", "count": 3}]},
+    {"ts": "2026-05-27T10:45:00+02:00", "user": "ana_k", "text": "Was genau ist Audit-Trail-Report bei denen? Ich brauche mehr Kontext. Habe ich eine Requirement-Spec?", "thread_ts": "2026-05-27T10:30:00+02:00"},
+    {"ts": "2026-05-27T10:52:00+02:00", "user": "david_c", "text": "Sende ich dir in 20 Min. Kurzform: sie brauchen einen exportierbaren Report der alle Nutzer-Aktionen der letzten 90 Tage listet. PDF und CSV.", "thread_ts": "2026-05-27T10:30:00+02:00"},
+    {"ts": "2026-05-27T11:15:00+02:00", "user": "ana_k", "text": "OK, machbar in 2 Wochen, muss aber Prio setzen ueber andere SOC2-Tasks. Sarah, ok fuer dich?", "thread_ts": "2026-05-27T10:30:00+02:00"},
+    {"ts": "2026-05-27T11:22:00+02:00", "user": "sarah_m", "text": "Ja. DHL Tochter ist wichtiger Enterprise-Anker.", "thread_ts": "2026-05-27T10:30:00+02:00"},
+
+    {"ts": "2026-06-01T09:00:00+02:00", "user": "sarah_m", "text": "Monatsbeginn. Kurzes Highlight: April-NPS 44, Mai-NPS wird morgen berichtet. Enterprise-Pipeline steht bei 2.4 Mio. Series-C-Vorgespraeche laufen positiv weiter. Ich bin zuversichtlich fuer Q2.", "thread_ts": null, "reactions": [{"name": "raised_hands", "count": 4}]},
+    {"ts": "2026-06-02T14:30:00+02:00", "user": "lena_b", "text": "Mai-NPS: 41. Um 3 Punkte gefallen. Kern-Feedback wieder Zuverlaessigkeit. Zitat: 'Zwei Feature-Regressions in einem Monat, das ist nicht das TechCo das ich empfehle.'", "thread_ts": null, "reactions": [{"name": "warning", "count": 4}]},
+    {"ts": "2026-06-02T14:52:00+02:00", "user": "jonas_f", "text": "Das ist genau was wir befuerchtet haben. Ich moechte das im naechsten Leadership-Meeting explizit gegen die Speed-Entscheidung diskutieren.", "thread_ts": "2026-06-02T14:30:00+02:00"},
+    {"ts": "2026-06-02T15:02:00+02:00", "user": "marko_w", "text": "Zwei Datenpunkte machen noch keinen Trend. Lass uns Juni abwarten.", "thread_ts": "2026-06-02T14:30:00+02:00"},
+    {"ts": "2026-06-02T15:14:00+02:00", "user": "lena_b", "text": "Marko, mit Respekt: ich sehe das jeden Tag in Kundengespraechen. Es ist ein Trend.", "thread_ts": "2026-06-02T14:30:00+02:00"},
+
+    {"ts": "2026-06-05T10:20:00+02:00", "user": "felix_b", "text": "Team, ich moechte den Q3-Content-Plan grob teilen. Wir haben drei Storys: 1) Onboarding-Redesign, 2) Enterprise-Ready-Story, 3) 100 neue Kunden Meilenstein. Feedback willkommen bis Mittwoch.", "thread_ts": null, "reactions": [{"name": "sparkles", "count": 2}]},
+
+    {"ts": "2026-06-08T11:00:00+02:00", "user": "david_c", "text": "DHL Tochter hat unterschrieben. 240k ARR. Wir haben unseren dritten Enterprise-Deal.", "thread_ts": null, "reactions": [{"name": "tada", "count": 7}, {"name": "champagne", "count": 4}, {"name": "raised_hands", "count": 3}]},
+    {"ts": "2026-06-08T11:12:00+02:00", "user": "sarah_m", "text": "Grossartig David. Und danke Ana fuer den Audit-Report-Sprint. Wir muessen das im Q-Review gross feiern.", "thread_ts": "2026-06-08T11:00:00+02:00"},
+
+    {"ts": "2026-06-11T09:00:00+02:00", "user": "sarah_m", "text": "Erinnerung Q2-Review naechste Woche Dienstag. Bringt bitte 3 Wins, 3 Risiken pro Bereich mit.", "thread_ts": null},
+
+    {"ts": "2026-06-15T14:30:00+02:00", "user": "ana_k", "text": "Ich moechte transparent sein: Engineering ist an der Belastungsgrenze. Ich trage aktuell SOC2, SSO-Rollout, Audit-Logs, und den DHL-Audit-Report gleichzeitig. Wir haben 8 Enterprise-Commitments mit ueberzogenen Fristen. Das ist nicht nachhaltig.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 4}]},
+    {"ts": "2026-06-15T14:52:00+02:00", "user": "sarah_m", "text": "Danke fuer die Ehrlichkeit Ana. Lass uns in einem 1:1 morgen dedicated ueber Ressourcen sprechen.", "thread_ts": "2026-06-15T14:30:00+02:00"},
+    {"ts": "2026-06-15T15:10:00+02:00", "user": "sophie_r", "text": "Sarah, ich moechte hier einhaken. Ich hoere von mehreren Engineers dass die Team-Stimmung kippt. Das ist ein People-Thema geworden, nicht mehr nur Ressourcen.", "thread_ts": "2026-06-15T14:30:00+02:00"},
+
+    {"ts": "2026-06-16T10:00:00+02:00", "user": "sarah_m", "text": "Q2-Review Dienstag 15:00. Ich bitte alle: keine Slides mit gruenen Ampeln wenn ihr sie nicht wirklich meint. Wir brauchen ehrliches Bild fuer die Series-C-Entscheidung.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 6}]},
+
+    {"ts": "2026-06-17T16:00:00+02:00", "user": "jonas_f", "text": "Fuer den Q2-Review: Pillar 1 Customer-Led Growth. Wir hatten in Q2 30 Prozent der Roadmap-Entscheidungen mit dokumentiertem Customer-Anker. Ziel war 80 Prozent. Diagnose: wir sind bewusst und unbewusst in eine speed-driven Priorisierung gerutscht. Ich empfehle in Q3 aktive Nachjustierung.", "thread_ts": null, "reactions": [{"name": "eyes", "count": 5}]},
+    {"ts": "2026-06-17T16:22:00+02:00", "user": "lena_b", "text": "Fuer Pillar 2: Bug-Rate ist von 5 auf 7 pro Release gestiegen. Test-Coverage steht bei 54 Prozent (Ziel 75). Regression-Rate 14 Prozent (Ziel unter 5). NPS von 42 im Januar auf 41 im Mai. Wir gehen ruecklaeufig.", "thread_ts": null},
+    {"ts": "2026-06-17T16:45:00+02:00", "user": "ana_k", "text": "Pillar 3: SSO on track fuer Q2-Ende. SOC2 on track fuer Q3. Enterprise-Deals: 3 abgeschlossen, 4 in finaler Runde. Aber wir haben 8 offene Commitments mit ueberschrittener Frist. Nachhaltigkeit ist Frage.", "thread_ts": null},
+
+    {"ts": "2026-06-18T09:30:00+02:00", "user": "sarah_m", "text": "Danke fuer die Vorabbriefings. Q2-Review heute wird ehrlich. Bitte kommt alle punktlich um 15:00.", "thread_ts": null},
+
+    {"ts": "2026-06-19T10:00:00+02:00", "user": "sarah_m", "text": "Debrief Q2-Review: wir haben eine Drift in unseren Pillars. Wir korrigieren in Q3 aktiv. Konkrete Massnahmen: 1) Roadmap-Governance mit Customer-Anker-Pflicht ab Sprint 15. 2) QA-Investment plus zwei Hires. 3) Enterprise-Team wird um zwei Engineers erweitert um Ana zu entlasten. Details in den Meeting-Notes.", "thread_ts": null, "reactions": [{"name": "thumbsup", "count": 6}, {"name": "raised_hands", "count": 3}]},
+
+    {"ts": "2026-06-22T11:15:00+02:00", "user": "felix_b", "text": "Zwei kleine Fragen: 1) fuer die Website Case Study zum DHL Tochter Deal, kann David abstimmen? 2) fuer Q3-Kampagne, hat sich der Onboarding-Redesign-Status geaendert?", "thread_ts": null},
+    {"ts": "2026-06-22T11:32:00+02:00", "user": "jonas_f", "text": "Onboarding-Redesign geht wie geplant weiter, aber wir haben in der Roadmap-Governance ab Sprint 15 den Customer-Anker-Check nachgezogen. Das Feature bleibt drin weil wir es committed hatten.", "thread_ts": "2026-06-22T11:15:00+02:00"},
+
+    {"ts": "2026-06-25T14:00:00+02:00", "user": "david_c", "text": "Update Enterprise-Pipeline: 2.8 Mio EUR. Vier Deals in finaler Verhandlung. Zwei brauchen die Audit-Logs die Ana priorisiert.", "thread_ts": null, "reactions": [{"name": "chart_with_upwards_trend", "count": 3}]},
+
+    {"ts": "2026-06-29T09:00:00+02:00", "user": "sarah_m", "text": "Letzter Wochenstart Q2. Freitag ist Halbjahres-Marke. Bitte macht Halbjahres-Reflexion vor dem Team, ich sammle Slides bis Donnerstag.", "thread_ts": null},
+
+    {"ts": "2026-06-30T17:30:00+02:00", "user": "sarah_m", "text": "Danke Team fuer Q2. Wir haben unseren dritten Enterprise-Deal, 240k von DHL Tochter. Wir haben SSO geliefert. Wir haben in unseren Pillars gedriftet und das erkannt bevor es symptomatisch wurde. Das ist auch ein Erfolg. Q3 startet Montag.", "thread_ts": null, "reactions": [{"name": "raised_hands", "count": 6}, {"name": "clap", "count": 5}]}
+
+  ]
+}
