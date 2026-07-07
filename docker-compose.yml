@@ -20,6 +20,8 @@ services:
 
   backend:
     build: ./backend
+    # Dev: Live-Reload, damit der API-Prozess Code-Aenderungen ohne Rebuild uebernimmt.
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
     depends_on:
       db:
         condition: service_healthy
@@ -32,7 +34,10 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      # Synthetische Daten fuer den Ingest ins Backend spiegeln.
+      # Dev: Code-Bind-Mount. Aenderungen greifen sofort, kein Image-Rebuild noetig.
+      # site-packages liegen unter /usr/local/... (nicht in /app) und bleiben erhalten.
+      - ./backend:/app
+      # Synthetische Daten und Frontend genestet darueber, damit sie weiter greifen.
       - ./synthetic_data:/app/synthetic_data:ro
       - ./frontend:/app/frontend
 
