@@ -32,11 +32,12 @@ def _find_data_dir(explicit: str | None) -> Path:
 
     here = Path(__file__).resolve()
     candidates = [
-        Path("/app/synthetic_data"),          # im Container gemountet
-        here.parents[2] / "synthetic_data",   # Repo-Root (backend/scripts/..)
-        here.parents[3] / "synthetic_data",   # falls tiefer verschachtelt
+        Path("/app/synthetic_data"),        # im Container gemountet
         Path.cwd() / "synthetic_data",
     ]
+    # Repo-Root relativ zur Datei, soweit die Parents existieren.
+    candidates += [p / "synthetic_data" for p in here.parents]
+
     for c in candidates:
         if c.is_dir():
             return c
