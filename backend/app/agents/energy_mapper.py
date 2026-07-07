@@ -31,11 +31,14 @@ _CALENDAR_MAP = {
 }
 
 # Keyword-Signale je Saeule fuer Text-Kanaele (lowercase, Substring-Match).
+# Bei Gleichstand gewinnt die zuerst genannte Saeule (Reihenfolge dieses Dicts).
+# customer_led bewusst eng gehalten (nur starke Kundensignale), damit generelle
+# Prozess-/Leadership-Chatter nicht faelschlich Pillar 1 aufblaeht.
 _KEYWORDS = {
     "customer_led_growth": [
-        "kunde", "kunden", "customer", "nps", "discovery", "customer success",
-        "cs-", " cs ", "ticket", "feedback", "interview", "retention", "signal",
-        "customer-anker", "roadmap", "nutzer", "onboarding",
+        "nps", "kunde", "kunden", "customer", "discovery", "retention",
+        "interview", "churn", "customer success", "customer-anker",
+        "kundengespraech",
     ],
     "quality_over_speed": [
         "qualitaet", "quality", "test", "coverage", "bug", "bugs", "qa",
@@ -45,7 +48,7 @@ _KEYWORDS = {
     "enterprise_ready": [
         "enterprise", "soc2", "soc 2", "sso", "saml", "azure ad", "okta",
         "audit", "audit-log", "compliance", "dsgvo", "iso 27001", "deal",
-        "pipeline", "playbook", "zertifiz", "series c",
+        "pipeline", "playbook", "zertifiz", "series c", "prospect",
     ],
 }
 
