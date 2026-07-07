@@ -4,71 +4,134 @@ Zwei Betriebsarten:
 - --from-files: baut die sources in-memory aus synthetic_data (dieselbe
   Normalisierung wie ingest, ohne DB) und ruft run_analysis.
 - DB-Modus (Standard): liest sources aus Postgres, ruft run_analysis, schreibt
-  Pillars und Mappings zurueck und legt einen Run an.
+  Pillars, Mappings und Drift-Aggregate zurueck und legt einen Run an.
 
 Die Persistenz sitzt bewusst hier, nicht im LangGraph-Graphen.
 
 Aufruf:
-  python -m scripts.analyze --from-files --mode mock
-  python -m scripts.analyze --mode claude
+  python -m scripts.analyze --from-files --mode mock --dump /tmp/hm.json
+  python -m scripts.analyze --mode claude --bucket-days 15
 """
 
 from __future__ import annotations
 
 import argparse
+import json
+from datetime import date, datetime
 
 from app.agents.graph import run_analysis
 from app.normalize import find_data_dir, load_people, load_sources, read_strategy
 
 
+# --- Ausgabe ---------------------------------------------------------------
+
+def _iso(value):
+    """date/datetime -> ISO-String, alles andere unveraendert."""
+    if isinstance(value, (date, datetime)):
+        return value.isoformat()
+    return value
+
+
+def build_payload(state: dict) -> dict:
+    """Erzeugt ein JSON-serialisierbares Heat-Map- und Evidence-Paket."""
+    windows = [
+        {"index": i, "start": _iso(s), "end": _iso(e)}
+        for i, (s, e) in enumerate(state.get("windows", []))
+    ]
+    cells = [
+        {**agg, "window_start": _iso(agg["window_start"]), "window_end": _iso(agg["window_end"])}
+        for agg in state.get("drift", [])
+    ]
+    pillars = [
+        {"key": p["key"], "title": p["title"], "soll_gewicht": p["soll_gewicht"]}
+        for p in state.get("pillars", [])
+    ]
+    return {
+        "run_id": state.get("run_id"),
+        "pillars": pillars,
+        "windows": windows,
+        "cells": cells,
+        "evidence": state.get("evidence", {}),
+    }
+
+
+def print_drift_table(state: dict) -> None:
+    """Kompakte Drift-Tabelle: je Fenster die ist-Anteile und Drift je Saeule."""
+    pillar_keys = [p["key"] for p in state.get("pillars", [])]
+    by_wi: dict[int, dict[str, dict]] = {}
+    for agg in state.get("drift", []):
+        by_wi.setdefault(agg["window_index"], {})[agg["pillar_key"]] = agg
+
+    print("Drift-Tabelle (ist-Anteil, Drift gegen soll):")
+    for wi, (w_start, w_end) in enumerate(state.get("windows", [])):
+        parts = []
+        for key in pillar_keys:
+            agg = by_wi.get(wi, {}).get(key)
+            if agg is None:
+                continue
+            parts.append(
+                f"{key}={agg['ist_anteil'] * 100:4.0f}% (d {agg['drift'] * 100:+3.0f})"
+            )
+        print(f"  W{wi} {_iso(w_start)}..{_iso(w_end)}: " + "   ".join(parts))
+
+
 def _summary(state: dict) -> None:
-    """Druckt das Log und eine Kurzstatistik des Laufs."""
     for line in state.get("log", []):
         print(f"  {line}")
-    pillars = state.get("pillars", [])
-    mappings = state.get("mappings", [])
-    assigned = sum(1 for m in mappings if m["pillar_key"] is not None)
-    off = len(mappings) - assigned
+    n_evidence = sum(len(v) for v in state.get("evidence", {}).values())
     print(
-        f"Ergebnis: pillars={len(pillars)} "
-        f"mappings={len(mappings)} (zugeordnet={assigned}, strategie-fern={off})"
+        f"Ergebnis: pillars={len(state.get('pillars', []))} "
+        f"windows={len(state.get('windows', []))} "
+        f"cells={len(state.get('drift', []))} evidence={n_evidence}"
     )
-    for p in pillars:
-        print(f"  - {p['key']}: soll_gewicht={p['soll_gewicht']}")
+    print_drift_table(state)
+
+
+def _dump(state: dict, path: str) -> None:
+    payload = build_payload(state)
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, ensure_ascii=False, indent=2)
+    print(
+        f"Dump geschrieben: {path} "
+        f"({len(payload['cells'])} cells, "
+        f"{sum(len(v) for v in payload['evidence'].values())} Belege)"
+    )
 
 
 # --- from-files ------------------------------------------------------------
 
-def run_from_files(mode: str, path: str | None) -> None:
+def run_from_files(mode: str, path: str | None, bucket_days: int, dump: str | None) -> None:
     """In-memory Analyse gegen synthetic_data, ohne Datenbank."""
     data_dir = find_data_dir(path)
-    print(f"Analyse (--from-files, mode={mode}) aus: {data_dir}")
+    print(f"Analyse (--from-files, mode={mode}, bucket_days={bucket_days}) aus: {data_dir}")
 
     strategy_text = read_strategy(data_dir)
     known = {p["id"] for p in load_people(data_dir)}
-    raw = load_sources(data_dir, known)
     sources = [
         {
             "id": s["external_id"],
             "source_type": s["source_type"],
             "channel": s["channel"],
+            "author_id": s["author_id"],
             "ts": s["ts"].isoformat(),
             "text": s["text"],
             "meta": s["meta"],
         }
-        for s in raw
+        for s in load_sources(data_dir, known)
     ]
 
-    state = run_analysis(strategy_text, sources, run_id=f"files-{mode}", mode=mode)
+    state = run_analysis(strategy_text, sources, run_id=f"files-{mode}", mode=mode, bucket_days=bucket_days)
     _summary(state)
+    if dump:
+        _dump(state, dump)
 
 
 # --- DB-Modus --------------------------------------------------------------
 
-def run_db(mode: str, path: str | None) -> None:
+def run_db(mode: str, path: str | None, bucket_days: int, dump: str | None) -> None:
     """Liest sources aus Postgres, analysiert und schreibt Ergebnisse zurueck."""
     # DB-Importe bewusst lazy: der from-files/mock-Pfad soll ohne sie laufen.
-    from datetime import datetime, timezone
+    from datetime import timezone
 
     from sqlalchemy import select
 
@@ -78,7 +141,7 @@ def run_db(mode: str, path: str | None) -> None:
     data_dir = find_data_dir(path)
     strategy_text = read_strategy(data_dir)
     run_id = f"run-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}"
-    print(f"Analyse (DB-Modus, mode={mode}, run_id={run_id})")
+    print(f"Analyse (DB-Modus, mode={mode}, run_id={run_id}, bucket_days={bucket_days})")
 
     with session_scope() as session:
         rows = session.execute(select(Source)).scalars().all()
@@ -87,6 +150,7 @@ def run_db(mode: str, path: str | None) -> None:
                 "id": s.id,
                 "source_type": s.source_type,
                 "channel": s.channel,
+                "author_id": s.author_id,
                 "ts": s.ts.isoformat() if s.ts else None,
                 "text": s.text,
                 "meta": s.meta or {},
@@ -96,13 +160,18 @@ def run_db(mode: str, path: str | None) -> None:
         if not sources:
             raise SystemExit("Keine sources in der DB. Erst 'make ingest' ausfuehren.")
 
-        state = run_analysis(strategy_text, sources, run_id=run_id, mode=mode)
+        state = run_analysis(
+            strategy_text, sources, run_id=run_id, mode=mode, bucket_days=bucket_days
+        )
 
         pillar_id_by_key = _persist_pillars(session, state["pillars"])
         _persist_mappings(session, state["mappings"], pillar_id_by_key, run_id)
-        _persist_run(session, Run, run_id, rows, state)
+        _persist_drift(session, state["drift"], pillar_id_by_key, run_id)
+        _persist_run(session, Run, run_id, state, bucket_days)
 
     _summary(state)
+    if dump:
+        _dump(state, dump)
 
 
 def _persist_pillars(session, pillars: list[dict]) -> dict[str, int]:
@@ -157,22 +226,42 @@ def _persist_mappings(session, mappings, pillar_id_by_key, run_id) -> None:
         )
 
 
-def _persist_run(session, Run, run_id, source_rows, state) -> None:
-    """Legt die Run-Zeile mit Fensterrand und Zaehlern an."""
-    from datetime import datetime, timezone
+def _persist_drift(session, aggregates, pillar_id_by_key, run_id) -> None:
+    """Schreibt die Drift-Aggregate dieses Laufs neu (idempotent je run_id)."""
+    from sqlalchemy import delete
 
-    ts_values = [s.ts for s in source_rows if s.ts]
-    window_start = min(ts_values).date() if ts_values else None
-    window_end = max(ts_values).date() if ts_values else None
+    from app.models import DriftAggregate
+
+    session.execute(delete(DriftAggregate).where(DriftAggregate.run_id == run_id))
+    for agg in aggregates:
+        session.add(
+            DriftAggregate(
+                run_id=run_id,
+                pillar_id=pillar_id_by_key.get(agg["pillar_key"]),
+                window_start=agg["window_start"],
+                window_end=agg["window_end"],
+                ist_anteil=agg["ist_anteil"],
+                soll_anteil=agg["soll_anteil"],
+                drift=agg["drift"],
+                n_sources=agg["n_sources"],
+            )
+        )
+
+
+def _persist_run(session, Run, run_id, state, bucket_days) -> None:
+    """Legt die Run-Zeile mit Fenster, Zaehlern und Status 'done' an."""
+    from datetime import timezone
+
     session.add(
         Run(
             run_id=run_id,
             finished_at=datetime.now(timezone.utc),
-            window_start=window_start,
-            window_end=window_end,
-            n_sources=len(source_rows),
+            window_start=state["window_start"],
+            window_end=state["window_end"],
+            bucket_days=bucket_days,
+            n_sources=len(state["sources"]),
             n_pillars=len(state["pillars"]),
-            status="mapped",
+            status="done",
             notes="; ".join(state.get("log", [])),
         )
     )
@@ -187,12 +276,14 @@ def main() -> None:
         help="In-memory gegen synthetic_data, ohne DB",
     )
     parser.add_argument("--path", default=None, help="Pfad zu synthetic_data")
+    parser.add_argument("--bucket-days", type=int, default=15, help="Fenstergroesse in Tagen")
+    parser.add_argument("--dump", default=None, help="Pfad fuer das Heat-Map-/Evidence-JSON")
     args = parser.parse_args()
 
     if args.from_files:
-        run_from_files(args.mode, args.path)
+        run_from_files(args.mode, args.path, args.bucket_days, args.dump)
     else:
-        run_db(args.mode, args.path)
+        run_db(args.mode, args.path, args.bucket_days, args.dump)
 
 
 if __name__ == "__main__":
