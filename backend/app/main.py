@@ -5,6 +5,8 @@ Diese API liest nur, was Ingest und Analyse in die DB geschrieben haben.
 Endpunkte: /health /stats /people /pillars /heatmap /evidence.
 """
 
+from datetime import date
+
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
@@ -172,6 +174,12 @@ def evidence(
     if pillar_id is None:
         raise HTTPException(status_code=404, detail=f"Unbekannte Saeule: {pillar}")
 
+    try:
+        ws = date.fromisoformat(window_start)
+        we = date.fromisoformat(window_end)
+    except ValueError:
+        raise HTTPException(status_code=422, detail="Fenstergrenzen als YYYY-MM-DD angeben.")
+
     rows = (
         db.execute(
             select(Source, Mapping)
@@ -179,8 +187,8 @@ def evidence(
             .where(
                 Mapping.run_id == run_id,
                 Mapping.pillar_id == pillar_id,
-                func.date(Source.ts) >= window_start,
-                func.date(Source.ts) <= window_end,
+                func.date(Source.ts) >= ws,
+                func.date(Source.ts) <= we,
             )
             .order_by(Mapping.confidence.desc().nullslast())
             .limit(limit)
