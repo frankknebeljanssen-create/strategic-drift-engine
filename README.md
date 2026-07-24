@@ -1,5 +1,9 @@
 # Strategic Drift Engine
 
+**[Live-Demo ansehen](https://frankknebeljanssen-create.github.io/strategic-drift-engine/)**
+
+![Strategic Drift Engine Heat-Map](docs/screenshot.png)
+
 Ein Multi-Agenten-System, das die Luecke zwischen formulierter Strategie und
 tatsaechlichem Organisationsverhalten sichtbar macht. Vier Agenten lesen
 interne Kommunikation (Slack, Mail, Meeting-Notizen, Kalender), ordnen sie den
