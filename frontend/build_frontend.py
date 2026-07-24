@@ -199,12 +199,27 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
 .ev-eng-v{display:block; font-size:12.5px; color:var(--ink); opacity:.92; line-height:1.45}
 .ev-signals{margin:0; padding:0; list-style:none}
 .ev-signals li{font-family:var(--mono); font-size:11px; color:var(--ink); opacity:.82;
-  margin:3px 0; padding:2px 8px 2px 10px; border-left:1px solid rgba(255,255,255,.1);
-  line-height:1.55; word-break:break-word}
-.ev-conf{display:flex; align-items:center; gap:8px}
+  margin:3px 0; padding:2px 8px 2px 22px; border-left:1px solid rgba(255,255,255,.1);
+  border-radius:0 4px 4px 0; line-height:1.55; word-break:break-word; position:relative}
+.ev-signals li::before{position:absolute; left:6px; top:2px; font-family:var(--mono);
+  font-size:11px; line-height:1.55; font-weight:600}
+.sig-pos{background:rgba(126,208,199,.07); border-left-color:rgba(126,208,199,.45)}
+.sig-pos::before{content:"+"; color:#7ED0C7}
+.sig-neg{background:rgba(200,84,52,.09); border-left-color:rgba(200,84,52,.5)}
+.sig-neg::before{content:"\2212"; color:var(--rust)}
+.sig-scores{opacity:.6}
+.sig-scores::before{content:"·"; color:var(--faint); font-size:14px; top:-1px}
+.sig-chosen{color:var(--amber); font-weight:600; opacity:1;
+  background:rgba(230,174,67,.08); border-left-color:rgba(230,174,67,.55)}
+.sig-chosen::before{content:"\2192"; color:var(--amber)}
+
+.ev-conf{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
 .conf-track{width:80px; height:5px; border-radius:3px; background:rgba(255,255,255,.12); overflow:hidden}
 .conf-fill{height:100%; background:var(--teal)}
 .conf-num{font-family:var(--mono); font-size:11px; color:var(--ink); opacity:.9}
+.conf-label{font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.02em}
+.conf-scale{font-family:var(--mono); font-size:9.5px; letter-spacing:.05em; color:var(--faint);
+  opacity:.55; margin-top:4px}
 /* Legacy-Klassen, aktuell ungenutzt: */
 .ev-foot{display:flex; align-items:center; gap:8px; margin-top:9px}
 .ev-rat{font-family:var(--mono); font-size:11px; color:var(--faint); margin-left:auto}
@@ -364,11 +379,27 @@ function select(wi, pkey){
 
 const PREVIEW_LEN = 180;
 
+function signalClass(s){
+  if(s.startsWith("scores:")) return "sig-scores";
+  if(s.startsWith("chosen:")) return "sig-chosen";
+  if(s.startsWith("reduces ")) return "sig-neg";
+  return "sig-pos";  // Pillar-Signale + Kalender-Kategorie
+}
+
+function confLabel(c){
+  if(c==null) return "";
+  if(c >= 0.9) return "very high";
+  if(c >= 0.75) return "high";
+  if(c >= 0.5) return "moderate";
+  return "low";
+}
+
 function evidenceCard(e){
   const badge = TYPE_BADGE[e.type]||"b-calendar";
   const chan = e.type + (e.channel? " · "+e.channel : "");
   const conf = Math.round((e.confidence||0)*100);
   const confNum = e.confidence!=null ? e.confidence.toFixed(2) : "–";
+  const cLabel = confLabel(e.confidence);
   const rawFull = (e.text_full!=null && e.text_full!=="") ? e.text_full : (e.snippet||"");
   const collapsed = rawFull.replace(/\s+/g," ").trim();
   const preview = collapsed.length > PREVIEW_LEN
@@ -376,7 +407,9 @@ function evidenceCard(e){
     : collapsed;
   const needsToggle = rawFull.length > PREVIEW_LEN;
 
-  const signals = (e.signals||[]).map(s=>"<li>"+escapeHtml(s)+"</li>").join("");
+  const signals = (e.signals||[])
+    .map(s=>'<li class="'+signalClass(s)+'">'+escapeHtml(s)+"</li>")
+    .join("");
   const contribution = e.contribution || e.rationale || "";
 
   return '<div class="ev">'+
@@ -394,7 +427,11 @@ function evidenceCard(e){
       '<div class="ev-eng-row"><span class="ev-eng-k">Confidence</span>'+
         '<div class="ev-conf"><span class="conf-track">'+
         '<span class="conf-fill" style="width:'+conf+'%"></span></span>'+
-        '<span class="conf-num">'+confNum+'</span></div></div>'+
+        '<span class="conf-num">'+confNum+'</span>'+
+        (cLabel ? '<span class="conf-label">'+cLabel+'</span>' : '')+
+        '</div>'+
+        '<div class="conf-scale">0 low · 1 max</div>'+
+      '</div>'+
     '</div>'+
   '</div>';
 }

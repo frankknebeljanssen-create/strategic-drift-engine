@@ -119,14 +119,19 @@ def _map_text_mock(src: dict, titles: dict[str, str]) -> dict:
     best_key = max(scores, key=scores.get)
     best_score = scores[best_key]
 
-    # Signale: alle Keyword-Treffer, das quality_negative-Signal, dann Scores.
+    quality_title = titles.get("quality_over_speed", "Quality over Speed")
+
+    # Signale: positive Keyword-Treffer, die reduzierende quality_negative-Zeile,
+    # dann die aggregierten Scores. Reihenfolge ist stabil und wird vom Frontend
+    # per Praefix ("reduces ", "scores:", "chosen:") in visuelle Klassen sortiert.
     signals = []
     for key, (_total, matches) in hits.items():
         if matches:
             signals.append(f"{key}: " + ", ".join(f"'{w}'" for w in matches))
     if neg_matched:
         signals.append(
-            "quality_negative: " + ", ".join(f"'{w}'" for w in neg_matched)
+            f"reduces {quality_title}: "
+            + ", ".join(f"'{w}'" for w in neg_matched)
         )
     signals.append(
         "scores: " + ", ".join(f"{k}={scores[k]}" for k in _KEYWORDS)
@@ -168,6 +173,10 @@ def _map_text_mock(src: dict, titles: dict[str, str]) -> dict:
         if kw_phrase
         else f"Contributes to {title} on keyword scoring."
     )
+    if neg_total > 0:
+        # Zwei-Seiten-Fall: die Nachricht zieht Punkte von Quality ab und
+        # traegt gleichzeitig zu einer anderen Saeule bei.
+        contribution = contribution.rstrip(".") + f" and reduces {quality_title}."
     return _result(
         src,
         best_key,
