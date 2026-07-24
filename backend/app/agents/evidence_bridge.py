@@ -42,7 +42,10 @@ def bridge_evidence(
                 "author": src.get("author_id"),
                 "confidence": m["confidence"],
                 "rationale": m["rationale"],
+                "signals": m.get("signals", []),
+                "contribution": m.get("contribution", ""),
                 "snippet": _snippet(src.get("text")),
+                "text_full": src.get("text") or "",
             }
         )
 

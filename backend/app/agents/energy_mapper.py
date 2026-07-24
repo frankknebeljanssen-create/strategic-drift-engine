@@ -63,59 +63,151 @@ def map_energy(sources: list[dict], pillars: list[dict], mode: str) -> list[dict
     """Klassifiziert alle Datenpunkte. mode: 'claude' oder 'mock'."""
     if mode == "claude":
         return _map_claude(sources, pillars)
-    return [_map_one_mock(src) for src in sources]
+    titles = {p["key"]: p.get("title", p["key"]) for p in pillars}
+    return [_map_one_mock(src, titles) for src in sources]
 
 
 # --- Mock ------------------------------------------------------------------
 
-def _map_one_mock(src: dict) -> dict:
+# Menschenlesbare Labels fuer strategie-ferne Kalender-Kategorien.
+_OFF_STRATEGY_LABELS = {
+    "leadership": "internal leadership chatter",
+    "neutral": "neutral admin, 1:1s or all-hands",
+    "speed_delivery": "speed and delivery focus",
+}
+
+
+def _map_one_mock(src: dict, titles: dict[str, str]) -> dict:
     if src.get("source_type") == "calendar":
-        return _map_calendar_mock(src)
-    return _map_text_mock(src)
+        return _map_calendar_mock(src, titles)
+    return _map_text_mock(src, titles)
 
 
-def _map_calendar_mock(src: dict) -> dict:
+def _map_calendar_mock(src: dict, titles: dict[str, str]) -> dict:
     category = (src.get("meta") or {}).get("category")
     pillar = _CALENDAR_MAP.get(category)
     if pillar is None:
-        return _result(src, None, 0.6, f"mock: Kalender-Kategorie '{category}' ist strategie-fern")
-    return _result(src, pillar, 0.9, f"mock: Kalender-Kategorie '{category}' -> {pillar}")
+        label = _OFF_STRATEGY_LABELS.get(category, f"category '{category}'")
+        return _result(
+            src,
+            None,
+            0.6,
+            rationale=f"mock: calendar category '{category}' is off-strategy",
+            signals=[f"calendar category: {category} (no pillar mapping)"],
+            contribution=f"Off-strategy: this event is {label}, not tied to any pillar.",
+        )
+    title = titles.get(pillar, pillar)
+    return _result(
+        src,
+        pillar,
+        0.9,
+        rationale=f"mock: calendar category '{category}' -> {pillar}",
+        signals=[f"calendar category: {category} -> {pillar}"],
+        contribution=f"Contributes to {title}: calendar event categorized as '{category}'.",
+    )
 
 
-def _map_text_mock(src: dict) -> dict:
+def _map_text_mock(src: dict, titles: dict[str, str]) -> dict:
     text = (src.get("text") or "").lower()
 
-    scores = {key: _count_hits(text, words) for key, words in _KEYWORDS.items()}
+    hits = {key: _hits(text, words) for key, words in _KEYWORDS.items()}
+    scores = {key: total for key, (total, _matches) in hits.items()}
     # quality_negative-Signal von der Quality-Saeule abziehen.
-    neg = _count_hits(text, _QUALITY_NEGATIVE)
-    scores["quality_over_speed"] -= neg
+    neg_total, neg_matched = _hits(text, _QUALITY_NEGATIVE)
+    scores["quality_over_speed"] -= neg_total
 
     best_key = max(scores, key=scores.get)
     best_score = scores[best_key]
 
-    if best_score <= 0:
-        reason = "keine Saeulen-Signale" if neg == 0 else f"nur Speed-Signal (neg={neg})"
-        return _result(src, None, 0.5, f"mock: {reason} -> strategie-fern")
+    # Signale: alle Keyword-Treffer, das quality_negative-Signal, dann Scores.
+    signals = []
+    for key, (_total, matches) in hits.items():
+        if matches:
+            signals.append(f"{key}: " + ", ".join(f"'{w}'" for w in matches))
+    if neg_matched:
+        signals.append(
+            "quality_negative: " + ", ".join(f"'{w}'" for w in neg_matched)
+        )
+    signals.append(
+        "scores: " + ", ".join(f"{k}={scores[k]}" for k in _KEYWORDS)
+    )
 
+    if best_score <= 0:
+        any_pillar_hit = any(matches for _, matches in hits.values())
+        if not any_pillar_hit and neg_total == 0:
+            contribution = "Off-strategy: no keyword signals from any pillar."
+            reason = "no pillar signals"
+        elif not any_pillar_hit and neg_total > 0:
+            contribution = (
+                "Off-strategy: only speed and quality-negative keywords, "
+                "no positive pillar signal."
+            )
+            reason = f"only quality_negative signal (neg={neg_total})"
+        else:
+            contribution = (
+                "Off-strategy: pillar signals do not outweigh the "
+                "quality-negative counter-signal."
+            )
+            reason = f"pillar signals cancelled by quality_negative (neg={neg_total})"
+        return _result(
+            src,
+            None,
+            0.5,
+            rationale=f"mock: {reason} -> off-strategy",
+            signals=signals,
+            contribution=contribution,
+        )
+
+    signals.append(f"chosen: {best_key} (score {best_score})")
     confidence = min(0.95, 0.5 + 0.1 * best_score)
+    title = titles.get(best_key, best_key)
+    chosen_words = hits[best_key][1]
+    kw_phrase = ", ".join(f"'{w}'" for w in chosen_words[:3])
+    contribution = (
+        f"Contributes to {title}: keywords {kw_phrase} outweigh other signals."
+        if kw_phrase
+        else f"Contributes to {title} on keyword scoring."
+    )
     return _result(
         src,
         best_key,
         round(confidence, 3),
-        f"mock: Keyword-Score {best_key}={best_score} (neg={neg})",
+        rationale=f"mock: keyword score {best_key}={best_score} (neg={neg_total})",
+        signals=signals,
+        contribution=contribution,
     )
 
 
-def _count_hits(text: str, words: list[str]) -> int:
-    return sum(text.count(w) for w in words)
+def _hits(text: str, words: list[str]) -> tuple[int, list[str]]:
+    """Zaehlt Substring-Vorkommen und gibt die tatsaechlich getroffenen Wortformen zurueck.
+
+    Reihenfolge folgt der Keyword-Liste, damit die Signale deterministisch sind.
+    """
+    matched: list[str] = []
+    total = 0
+    for w in words:
+        n = text.count(w)
+        if n > 0:
+            matched.append(w)
+            total += n
+    return total, matched
 
 
-def _result(src: dict, pillar_key, confidence: float, rationale: str) -> dict:
+def _result(
+    src: dict,
+    pillar_key,
+    confidence: float,
+    rationale: str,
+    signals: list[str] | None = None,
+    contribution: str = "",
+) -> dict:
     return {
         "source_id": src["id"],
         "pillar_key": pillar_key,
         "confidence": confidence,
         "rationale": rationale,
+        "signals": signals or [],
+        "contribution": contribution,
     }
 
 
@@ -154,12 +246,17 @@ def _map_claude_batch(batch: list[dict], pillars: list[dict]) -> list[dict]:
     for i, src in enumerate(batch):
         d = by_index.get(i, {})
         pillar = d.get("pillar")
+        rationale = d.get("rationale", "claude: no rationale")
+        # Fuer den claude-Pfad reichen wir die Rationale als contribution
+        # durch; der Mock-Pfad liefert strukturierte signals/contribution.
         out.append(
             _result(
                 src,
                 pillar if pillar else None,
                 float(d.get("confidence", 0.5)),
-                d.get("rationale", "claude: keine Begruendung"),
+                rationale,
+                signals=[],
+                contribution=rationale,
             )
         )
     return out
