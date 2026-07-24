@@ -45,7 +45,7 @@ body{
   -webkit-font-smoothing:antialiased; line-height:1.5;
   background-image:radial-gradient(1200px 600px at 80% -10%, rgba(46,144,180,0.10), transparent 60%);
 }
-.wrap{max-width:1440px; margin:0 auto; padding:40px 28px 64px}
+.wrap{max-width:1600px; margin:0 auto; padding:40px 28px 64px}
 
 .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.28em;
   text-transform:uppercase; color:var(--teal); margin-bottom:14px}
@@ -59,7 +59,7 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
 .reading b{font-family:var(--disp); font-weight:700}
 .reading .r-num{font-family:var(--mono); color:var(--amber)}
 
-.board{display:grid; grid-template-columns:1fr 420px; gap:24px; margin-top:26px; align-items:start}
+.board{display:grid; grid-template-columns:1fr 460px; gap:24px; margin-top:26px; align-items:start}
 @media(max-width:900px){.board{grid-template-columns:1fr}}
 .panel{background:var(--panel); border:1px solid var(--line); border-radius:14px}
 .heatmap-panel{padding:18px 20px 22px}
@@ -181,10 +181,32 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
 .b-calendar{color:#8298A4; background:rgba(130,152,164,.10); border-color:rgba(130,152,164,.28)}
 .ev-meta{font-family:var(--mono); font-size:11px; color:var(--muted); text-align:right}
 .ev-snip{font-size:13px; color:var(--ink); opacity:.92}
-.ev-foot{display:flex; align-items:center; gap:8px; margin-top:9px}
-.conf-track{width:64px; height:5px; border-radius:3px; background:rgba(255,255,255,.12); overflow:hidden}
+.ev-snip.full{white-space:pre-wrap; max-height:340px; overflow-y:auto; padding-right:4px}
+.ev-toggle{background:transparent; border:none; color:var(--teal); font-family:var(--mono);
+  font-size:11px; cursor:pointer; padding:5px 0 0; margin-top:2px; letter-spacing:.02em;
+  text-decoration:underline; text-underline-offset:2px; opacity:.85}
+.ev-toggle:hover{opacity:1; color:var(--amber)}
+.ev-toggle:focus-visible{outline:1px solid var(--amber); outline-offset:2px; border-radius:2px}
+
+.ev-eng{margin-top:11px; padding:10px 12px 11px; background:rgba(230,174,67,.06);
+  border-left:2px solid rgba(230,174,67,.55); border-radius:0 8px 8px 0}
+.ev-eng-title{font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--amber); margin-bottom:8px; opacity:.95}
+.ev-eng-row{margin-bottom:8px}
+.ev-eng-row:last-child{margin-bottom:0}
+.ev-eng-k{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--faint); margin-bottom:3px}
+.ev-eng-v{display:block; font-size:12.5px; color:var(--ink); opacity:.92; line-height:1.45}
+.ev-signals{margin:0; padding:0; list-style:none}
+.ev-signals li{font-family:var(--mono); font-size:11px; color:var(--ink); opacity:.82;
+  margin:3px 0; padding:2px 8px 2px 10px; border-left:1px solid rgba(255,255,255,.1);
+  line-height:1.55; word-break:break-word}
+.ev-conf{display:flex; align-items:center; gap:8px}
+.conf-track{width:80px; height:5px; border-radius:3px; background:rgba(255,255,255,.12); overflow:hidden}
 .conf-fill{height:100%; background:var(--teal)}
-.conf-num{font-family:var(--mono); font-size:11px; color:var(--faint)}
+.conf-num{font-family:var(--mono); font-size:11px; color:var(--ink); opacity:.9}
+/* Legacy-Klassen, aktuell ungenutzt: */
+.ev-foot{display:flex; align-items:center; gap:8px; margin-top:9px}
 .ev-rat{font-family:var(--mono); font-size:11px; color:var(--faint); margin-left:auto}
 
 footer{margin-top:30px; color:var(--faint); font-size:12px; font-family:var(--mono); letter-spacing:.02em}
@@ -340,6 +362,59 @@ function select(wi, pkey){
   }
 }
 
+const PREVIEW_LEN = 180;
+
+function evidenceCard(e){
+  const badge = TYPE_BADGE[e.type]||"b-calendar";
+  const chan = e.type + (e.channel? " · "+e.channel : "");
+  const conf = Math.round((e.confidence||0)*100);
+  const confNum = e.confidence!=null ? e.confidence.toFixed(2) : "–";
+  const rawFull = (e.text_full!=null && e.text_full!=="") ? e.text_full : (e.snippet||"");
+  const collapsed = rawFull.replace(/\s+/g," ").trim();
+  const preview = collapsed.length > PREVIEW_LEN
+    ? collapsed.slice(0, PREVIEW_LEN).trimEnd() + "…"
+    : collapsed;
+  const needsToggle = rawFull.length > PREVIEW_LEN;
+
+  const signals = (e.signals||[]).map(s=>"<li>"+escapeHtml(s)+"</li>").join("");
+  const contribution = e.contribution || e.rationale || "";
+
+  return '<div class="ev">'+
+    '<div class="ev-top"><span class="badge '+badge+'">'+chan+'</span>'+
+    '<span class="ev-meta">'+(e.author||"—")+' · '+fdate(e.ts.slice(0,10))+'</span></div>'+
+    '<div class="ev-snip" data-preview="'+escapeHtml(preview)+'" data-full="'+escapeHtml(rawFull)+'">'+
+      escapeHtml(preview)+'</div>'+
+    (needsToggle ? '<button class="ev-toggle" type="button">Show full message</button>' : '')+
+    '<div class="ev-eng">'+
+      '<div class="ev-eng-title">How the engine read this</div>'+
+      (contribution ? '<div class="ev-eng-row"><span class="ev-eng-k">Contribution</span>'+
+        '<span class="ev-eng-v">'+escapeHtml(contribution)+'</span></div>' : '')+
+      (signals ? '<div class="ev-eng-row"><span class="ev-eng-k">Signals detected</span>'+
+        '<ul class="ev-signals">'+signals+'</ul></div>' : '')+
+      '<div class="ev-eng-row"><span class="ev-eng-k">Confidence</span>'+
+        '<div class="ev-conf"><span class="conf-track">'+
+        '<span class="conf-fill" style="width:'+conf+'%"></span></span>'+
+        '<span class="conf-num">'+confNum+'</span></div></div>'+
+    '</div>'+
+  '</div>';
+}
+
+// Event-Delegation fuer Show-full/Show-less-Toggle.
+document.addEventListener("click", (ev)=>{
+  const btn = ev.target;
+  if(!(btn instanceof HTMLElement) || !btn.classList.contains("ev-toggle")) return;
+  const snip = btn.previousElementSibling;
+  if(!snip || !snip.classList.contains("ev-snip")) return;
+  const expanded = snip.classList.toggle("full");
+  if(expanded){
+    snip.textContent = snip.dataset.full || "";
+    btn.textContent = "Show less";
+  } else {
+    snip.textContent = snip.dataset.preview || "";
+    btn.textContent = "Show full message";
+  }
+});
+
 function renderDrill(wi, pkey){
   const drill = document.getElementById("drill");
   const p = pillars.find(x=>x.key===pkey);
@@ -347,17 +422,7 @@ function renderDrill(wi, pkey){
   const c = cellMap[wi+":"+pkey];
   const ev = (DATA.evidence[wi+":"+pkey]||[]);
   const driftCol = c.drift<0 ? "var(--rust)" : "var(--teal)";
-  const items = ev.map(e=>{
-    const badge = TYPE_BADGE[e.type]||"b-calendar";
-    const chan = e.type + (e.channel? " · "+e.channel : "");
-    const conf = Math.round((e.confidence||0)*100);
-    return '<div class="ev"><div class="ev-top"><span class="badge '+badge+'">'+chan+'</span>'+
-      '<span class="ev-meta">'+(e.author||"—")+' · '+fdate(e.ts.slice(0,10))+'</span></div>'+
-      '<div class="ev-snip">'+escapeHtml(e.snippet)+'</div>'+
-      '<div class="ev-foot"><span class="conf-track"><span class="conf-fill" style="width:'+conf+'%"></span></span>'+
-      '<span class="conf-num">'+(e.confidence!=null?e.confidence.toFixed(2):"–")+'</span>'+
-      '<span class="ev-rat">'+escapeHtml(e.rationale||"")+'</span></div></div>';
-  }).join("");
+  const items = ev.map(e=>evidenceCard(e)).join("");
   drill.innerHTML =
     '<div class="drill-head"><div class="d-pillar">'+p.title+'</div>'+
       '<div class="d-win">'+fdatefull(w.start)+' – '+fdatefull(w.end)+'</div></div>'+
