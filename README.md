@@ -102,7 +102,7 @@ strategic-drift-engine/
 |   `-- scripts/
 |       |-- ingest.py            # synthetic_data in die DB
 |       `-- analyze.py           # --from-files oder DB-Modus, --dump
-`-- frontend/
+`-- docs/                        # per GitHub-Pages-Konvention (Pages-Root)
     |-- index.html               # self-contained Heat-Map mit Drill-Down
     |-- drift_data.json          # generiert von analyze --dump
     `-- build_frontend.py        # baut index.html aus drift_data.json
@@ -117,7 +117,7 @@ Drei Wege, je nach dem, wie tief du einsteigen willst.
 Nach dem Klonen einfach die Datei im Browser oeffnen:
 
 ```
-open frontend/index.html
+open docs/index.html
 ```
 
 `index.html` ist self-contained, die Analyse-Daten sind eingebettet. Kein
@@ -148,13 +148,13 @@ Braucht Docker Compose und Python 3.
 ```bash
 # Analyse gegen die synthetischen Daten laufen lassen und Dump schreiben
 docker compose run --rm backend python -m scripts.analyze \
-    --from-files --mode mock --dump /app/frontend/drift_data.json
+    --from-files --mode mock --dump /app/docs/drift_data.json
 
 # Heat-Map-HTML daraus bauen
-python3 frontend/build_frontend.py
+python3 docs/build_frontend.py
 
 # Ansehen
-open frontend/index.html
+open docs/index.html
 ```
 
 Der Mock-Klassifikator laeuft in-memory ohne Datenbank und ohne

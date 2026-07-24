@@ -17,5 +17,5 @@ venv/
 .vscode/
 
 # Generated artifacts
-frontend/drift_data.json
+docs/drift_data.json
 *.dump.json

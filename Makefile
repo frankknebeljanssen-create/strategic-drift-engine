@@ -25,7 +25,7 @@ ingest:
 # Fuehrt die vier Agenten aus und schreibt den Frontend-Dump.
 # (scripts/analyze.py folgt zusammen mit den Agenten.)
 analyze:
-	docker compose run --rm backend python -m scripts.analyze --mode $(MODE) --dump frontend/drift_data.json
+	docker compose run --rm backend python -m scripts.analyze --mode $(MODE) --dump docs/drift_data.json
 
 # Interaktive psql-Shell in der DB.
 psql:

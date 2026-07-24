@@ -39,7 +39,7 @@ services:
       - ./backend:/app
       # Synthetische Daten und Frontend genestet darueber, damit sie weiter greifen.
       - ./synthetic_data:/app/synthetic_data:ro
-      - ./frontend:/app/frontend
+      - ./docs:/app/docs
 
 volumes:
   pgdata:

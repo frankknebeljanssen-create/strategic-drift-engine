@@ -53,7 +53,7 @@ strategic-drift-engine/
 │   └── scripts/
 │       ├── ingest.py           # normalisiert synthetic_data in die DB
 │       └── analyze.py          # führt die vier Agenten aus, --mode, --from-files, --dump
-└── frontend/
+└── docs/                       # per GitHub-Pages-Konvention (Pages-Root)
     ├── index.html              # self-contained Heat-Map + Drill-Down
     ├── drift_data.json         # Export von analyze --dump
     └── build_frontend.py       # baut index.html aus drift_data.json
