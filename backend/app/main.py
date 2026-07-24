@@ -85,6 +85,33 @@ def list_pillars(db: Session = Depends(get_session)) -> list[dict]:
     ]
 
 
+@app.get("/strategy")
+def strategy(db: Session = Depends(get_session)) -> dict:
+    """Strategie-Steckbrief plus alle Pillars mit Grundsatz und Kriterien."""
+    prows = db.execute(select(Pillar).order_by(Pillar.id)).scalars().all()
+    return {
+        "steckbrief_markdown": _read_steckbrief(),
+        "pillars": [
+            {
+                "key": p.key,
+                "title": p.title,
+                "grundsatz": p.grundsatz,
+                "kriterien": p.kriterien,
+                "soll_gewicht": _f(p.soll_gewicht),
+            }
+            for p in prows
+        ],
+    }
+
+
+def _read_steckbrief() -> str:
+    """Liest die Steckbrief-Markdown-Datei; leerer String, wenn sie fehlt."""
+    from app.normalize import find_data_dir
+
+    path = find_data_dir(None) / "strategy" / "techco_steckbrief_2026.md"
+    return path.read_text(encoding="utf-8") if path.exists() else ""
+
+
 @app.get("/heatmap")
 def heatmap(
     run_id: str | None = Query(default=None, description="Lauf; default = letzter abgeschlossener"),

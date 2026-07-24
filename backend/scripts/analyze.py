@@ -43,7 +43,13 @@ def build_payload(state: dict) -> dict:
         for agg in state.get("drift", [])
     ]
     pillars = [
-        {"key": p["key"], "title": p["title"], "soll_gewicht": p["soll_gewicht"]}
+        {
+            "key": p["key"],
+            "title": p["title"],
+            "soll_gewicht": p["soll_gewicht"],
+            "grundsatz": p.get("grundsatz", ""),
+            "kriterien": p.get("kriterien", []),
+        }
         for p in state.get("pillars", [])
     ]
     return {
