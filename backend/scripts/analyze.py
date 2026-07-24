@@ -46,6 +46,10 @@ def build_payload(state: dict) -> dict:
         {
             "key": p["key"],
             "title": p["title"],
+            # Beide Namen mitgeben: soll_anteil erwartet das Frontend
+            # (Sparkline, Row-Label), soll_gewicht ist die kanonische Bezeichnung
+            # in DB und /pillars-API.
+            "soll_anteil": p["soll_gewicht"],
             "soll_gewicht": p["soll_gewicht"],
             "grundsatz": p.get("grundsatz", ""),
             "kriterien": p.get("kriterien", []),
