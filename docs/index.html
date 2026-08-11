@@ -27,6 +27,9 @@ body{
 
 .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.28em;
   text-transform:uppercase; color:var(--teal); margin-bottom:14px}
+.byline{font-size:12.5px; color:var(--faint); margin:-8px 0 16px}
+.byline a{color:var(--muted); text-decoration:none; border-bottom:1px solid rgba(130,152,164,.35)}
+.byline a:hover{color:var(--ink); border-bottom-color:var(--amber)}
 h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
   line-height:1.02; letter-spacing:-.01em; margin:0 0 12px; max-width:16ch}
 .sub{color:var(--muted); font-size:15px; max-width:82ch; margin:0}
@@ -88,6 +91,16 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
 .p-card-p{font-size:13px; line-height:1.5; color:var(--ink); opacity:.92}
 .p-card ul{margin:4px 0 0; padding-left:16px}
 .p-card li{font-size:12.5px; color:var(--ink); opacity:.88; margin:2px 0; line-height:1.45}
+
+.welcome-panel{max-width:560px}
+.welcome-panel .eyebrow{margin-bottom:12px}
+.welcome-panel .modal-title{margin-bottom:14px}
+.welcome-text{font-size:14.5px; line-height:1.6; color:var(--ink); opacity:.92; margin:0 0 22px}
+.welcome-actions{display:flex; gap:10px; flex-wrap:wrap}
+.welcome-actions .tour-btn,.welcome-actions .ghost-btn{padding:10px 16px; font-size:13px}
+.welcome-foot{margin-top:20px; font-family:var(--mono); font-size:11.5px}
+.welcome-foot a{color:var(--faint); text-decoration:none; border-bottom:1px solid rgba(130,152,164,.3)}
+.welcome-foot a:hover{color:var(--teal); border-bottom-color:var(--teal)}
 
 .legend{display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px; margin-bottom:18px}
 .scale{display:flex; align-items:center; gap:10px}
@@ -213,6 +226,7 @@ footer .note{color:var(--faint); opacity:.85}
 <div class="wrap">
   <header>
     <div class="eyebrow">Strategic Drift Engine</div>
+    <div class="byline">A demo project by <a href="https://github.com/frankknebeljanssen-create/strategic-drift-engine" target="_blank" rel="noopener">Frank Knebel-Janssen</a></div>
     <h1>Where attention actually went</h1>
     <p class="sub">Each cell compares the measured attention on a strategic pillar with its target over time. The amber mark shows the target. Select a cell to see the messages the number came from.</p>
     <div class="reading" id="reading"></div>
@@ -258,6 +272,19 @@ footer .note{color:var(--faint); opacity:.85}
     <button class="modal-close" id="strategyClose" aria-label="Close">×</button>
     <h2 class="modal-title" id="strategyTitle">Strategy briefing</h2>
     <div id="strategyBody"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="welcomeModal" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+  <div class="modal-panel welcome-panel">
+    <div class="eyebrow">Demo Project</div>
+    <h2 class="modal-title" id="welcomeTitle">Strategic Drift Engine</h2>
+    <p class="welcome-text">A multi-agent system that measures the gap between a company's stated strategy and what its internal communication actually shows. Everything here runs on a synthetic dataset for a fictional company, TechCo, so feel free to click around.</p>
+    <div class="welcome-actions">
+      <button class="tour-btn" id="welcomeTour">Start guided tour</button>
+      <button class="ghost-btn" id="welcomeExplore">Explore on my own</button>
+    </div>
+    <div class="welcome-foot"><a href="https://github.com/frankknebeljanssen-create/strategic-drift-engine" target="_blank" rel="noopener">View the source on GitHub</a></div>
   </div>
 </div>
 
@@ -468,6 +495,8 @@ function buildTour(){
   const steps=[]; const lastW=windows.length-1;
   const w0 = pillars.map(p=>cellMap["0:"+p.key]);
   const near0 = w0.reduce((a,b)=>Math.abs(a.drift)<Math.abs(b.drift)?a:b);
+  steps.push({wi:0, pkey:near0.pillar_key, title:"What you're looking at",
+    text:"TechCo's leadership defined three strategic pillars in a one-page brief. The heat map shows how much real attention each pillar got, week by week, against that target. Click Strategy at the top anytime to see the original brief."});
   steps.push({wi:0, pkey:near0.pillar_key, title:"Baseline",
     text:"In the first window, the pillars stay close to their targets. "+pillarTitle(near0.pillar_key)+" hits its target almost exactly."});
   const peak = DATA.cells.reduce((a,b)=>Math.abs(a.drift)>Math.abs(b.drift)?a:b);
@@ -484,6 +513,8 @@ function buildTour(){
   const spread = Math.round(Math.max(...wl.map(c=>Math.abs(c.drift)))*100);
   steps.push({wi:lastW, pkey:nearL.pillar_key, title:"By the end",
     text:"In the final window, the pillars converge again. The largest remaining deviation is "+spread+" percentage points."});
+  steps.push({wi:peak.window_index, pkey:peak.pillar_key, title:"How to check any number",
+    text:"Click any cell, then click a message and expand it. The panel below shows exactly which words the engine picked up on, and whether they support or work against a pillar. That's the full trail from claim to evidence."});
   return steps;
 }
 
@@ -567,9 +598,21 @@ document.getElementById("strategyModal").addEventListener("click", e=>{
 });
 document.addEventListener("keydown", e=>{
   if(e.key==="Escape"){
-    if(tour.active) endTour();
+    if(!document.getElementById("welcomeModal").hidden) closeWelcome();
+    else if(tour.active) endTour();
     else if(!document.getElementById("strategyModal").hidden) closeStrategy();
   }
+});
+
+// Willkommens-Overlay: erscheint bei jedem Laden (kein localStorage).
+function closeWelcome(){
+  document.getElementById("welcomeModal").hidden = true;
+  document.body.style.overflow = "";
+}
+document.getElementById("welcomeExplore").addEventListener("click", closeWelcome);
+document.getElementById("welcomeTour").addEventListener("click", ()=>{ closeWelcome(); startTour(); });
+document.getElementById("welcomeModal").addEventListener("click", e=>{
+  if(e.target.id==="welcomeModal") closeWelcome();
 });
 
 function renderFoot(){
@@ -584,6 +627,8 @@ renderGrid(); renderReading(); renderFoot();
 (function(){
   const best = DATA.cells.reduce((a,b)=>Math.abs(a.drift)>Math.abs(b.drift)?a:b);
   select(best.window_index, best.pillar_key);
+  // Welcome-Overlay ist beim Laden offen -> Body-Scroll sperren.
+  if(!document.getElementById("welcomeModal").hidden) document.body.style.overflow = "hidden";
 })();
 </script>
 </body>
