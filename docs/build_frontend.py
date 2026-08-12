@@ -134,16 +134,17 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
 
 .grid{display:grid; gap:8px}
 .ghead{display:grid; gap:8px}
-.corner{font-family:var(--mono); font-size:10.5px; color:var(--faint);
+.corner{font-family:var(--mono); font-size:11.5px; color:var(--ink); font-weight:600;
   align-self:end; letter-spacing:.04em; text-transform:uppercase; padding-bottom:6px}
 .whead{font-family:var(--mono); font-size:12px; color:var(--muted); text-align:center;
   padding-bottom:6px; border-bottom:1px solid var(--line)}
 .whead .wspan{color:var(--ink)}
 .row{display:grid; gap:8px; align-items:stretch}
 .rlabel{display:flex; flex-direction:column; justify-content:center; padding-right:8px}
-.rlabel .rtitle{font-family:var(--disp); font-weight:500; font-size:15px; line-height:1.15}
-.rlabel .rsoll{font-family:var(--mono); font-size:10.5px; color:var(--faint); margin-top:3px}
-.rlabel .spark{margin-top:7px}
+.rlabel .rtitle{font-family:var(--disp); font-weight:700; font-size:19px; line-height:1.18;
+  color:var(--ink); letter-spacing:-.005em}
+.rlabel .rsoll{font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:4px}
+.rlabel .spark{margin-top:8px}
 
 .cell{position:relative; border:1px solid rgba(255,255,255,.06); border-radius:10px;
   padding:12px 12px 11px; min-height:116px; cursor:pointer; text-align:left;
