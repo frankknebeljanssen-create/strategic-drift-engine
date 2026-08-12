@@ -141,9 +141,9 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
 .whead .wspan{color:var(--ink)}
 .row{display:grid; gap:8px; align-items:stretch}
 .rlabel{display:flex; flex-direction:column; justify-content:center; padding-right:8px}
-.rlabel .rtitle{font-family:var(--disp); font-weight:700; font-size:19px; line-height:1.18;
-  color:var(--ink); letter-spacing:-.005em}
-.rlabel .rsoll{font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:4px}
+.rlabel .rtitle{font-family:var(--disp); font-weight:500; font-size:15px; line-height:1.15;
+  color:var(--ink)}
+.rlabel .rsoll{font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--ink); margin-top:5px}
 .rlabel .spark{margin-top:8px}
 
 .cell{position:relative; border:1px solid rgba(255,255,255,.06); border-radius:10px;
