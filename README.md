@@ -16,6 +16,18 @@ Der Stand ist ein einsatznaher Prototyp mit vollstaendiger Pipeline, echtem
 Backend (FastAPI, Postgres mit pgvector) und einem self-contained Frontend
 ohne Build-Kette.
 
+## Workflow, nicht autonomer Agent
+
+Die vier Bausteine heissen hier "Agenten", weil jeder einen einzelnen
+Urteils- oder Verarbeitungsschritt kapselt, so wie der Begriff im
+LangGraph-Sprachgebrauch ueblich ist. Sie bilden aber eine feste Kette, keinen
+autonomen Agent-Loop: Pillar Extractor und Energy Mapper rufen Claude fuer
+Urteilsaufgaben auf, Drift Tracker und Evidence Bridge sind reine Berechnung
+ohne Modellaufruf. Es gibt keine dynamische Werkzeugwahl, keine
+Selbstueberpruefung und keine Ruecksprung-Schleifen, weil die vier Schritte
+eine strikte Abhaengigkeitsreihenfolge haben und ein Modell hier nichts selbst
+zu entscheiden haette.
+
 ## Architektur
 
 ```
