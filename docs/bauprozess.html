@@ -310,6 +310,16 @@ details.footnotes a{color:var(--teal); text-decoration:none}
       Und die Nachvollziehbarkeit (Evidence Bridge) begleitet alles. Diese feste Kette nennt man einen gerichteten
       Arbeitsablauf.<sup><a href="#fn1-5">5</a></sup></p>
 
+      <div class="callout callout-merke">
+        <div class="callout-head">📌 Workflow, nicht autonomer Agent</div>
+        <p>Die vier Bausteine heißen hier "Agenten", weil jeder einen einzelnen Urteils- oder
+        Verarbeitungsschritt kapselt. Sie bilden aber eine feste Kette, keinen autonomen Agent-Loop: Pillar
+        Extractor und Energy Mapper rufen Claude für Urteilsaufgaben auf, Drift Tracker und Evidence Bridge sind
+        reine Berechnung ohne Modellaufruf. Es gibt keine dynamische Werkzeugwahl, keine Selbstüberprüfung und
+        keine Rücksprung-Schleifen, weil die vier Schritte eine strikte Abhängigkeitsreihenfolge haben und ein
+        Modell hier nichts selbst zu entscheiden hätte.</p>
+      </div>
+
       <div class="callout callout-key">
         <div class="callout-head">🔑 Die wichtigsten Punkte aus Kapitel 1</div>
         <ul>
@@ -938,7 +948,7 @@ details.footnotes a{color:var(--teal); text-decoration:none}
         <div><dt>Mock-Modus</dt><dd>Ein Testmodus, der einen teuren Bestandteil durch eine einfache, kostenlose
         Nachbildung ersetzt, die sich nach außen gleich verhält.</dd></div>
         <div><dt>Multi-Agenten-System</dt><dd>Ein System aus mehreren zusammenarbeitenden Agenten mit je eigener
-        Aufgabe.</dd></div>
+        Aufgabe. Hier eine feste Kette (ein Workflow), kein autonomer Agent-Loop, siehe Kapitel 1.</dd></div>
         <div><dt>pgvector</dt><dd>Eine Erweiterung der Datenbank Postgres, die Embeddings speichert und ihre
         inhaltliche Nähe messbar macht.</dd></div>
         <div><dt>Pillar (Säule)</dt><dd>Eine tragende strategische Aussage. Trägt Definition, Prüfkriterien und
