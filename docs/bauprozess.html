@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wie die Strategic Drift Engine gebaut wird</title>
+<meta name="description" content="Begleitdokument zum Bau der Strategic Drift Engine: was gemacht wurde, mit welchem Tool und warum.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#0F1E27; --panel:#152833; --panel2:#0C1920; --line:#263B45;
+  --ink:#EAF1F4; --muted:#8298A4; --faint:#5A7480;
+  --amber:#E6AE43; --rust:#C85434; --teal:#2E90B4; --green:#7ED0C7; --neutral:#21343E;
+  --disp:"Bricolage Grotesque",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+  --body:"Inter",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0}
+body{
+  background:var(--ground); color:var(--ink); font-family:var(--body);
+  -webkit-font-smoothing:antialiased; line-height:1.6;
+  background-image:radial-gradient(1200px 600px at 85% -10%, rgba(46,144,180,0.08), transparent 60%);
+}
+a{color:inherit}
+section{scroll-margin-top:24px}
+
+/* --- Top bar --- */
+.topbar{position:sticky; top:0; z-index:20; background:rgba(15,30,39,.88); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1160px; margin:0 auto; padding:14px 28px; display:flex; align-items:center;
+  justify-content:space-between; gap:16px; flex-wrap:wrap}
+.back-link{font-family:var(--mono); font-size:12.5px; color:var(--muted); text-decoration:none;
+  display:flex; align-items:center; gap:7px}
+.back-link:hover{color:var(--teal)}
+.topbar-actions{display:flex; gap:18px; font-family:var(--mono); font-size:12px}
+.topbar-actions a{color:var(--faint); text-decoration:none; border-bottom:1px solid rgba(130,152,164,.3)}
+.topbar-actions a:hover{color:var(--ink); border-bottom-color:var(--amber)}
+
+/* --- Header --- */
+.doc-header{max-width:1160px; margin:0 auto; padding:52px 28px 8px}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--teal); margin-bottom:16px}
+.doc-header h1{font-family:var(--disp); font-weight:700; font-size:clamp(30px,4.2vw,44px);
+  line-height:1.08; letter-spacing:-.01em; margin:0 0 16px; max-width:20ch}
+.doc-sub{color:var(--muted); font-size:16px; max-width:70ch; margin:0 0 24px}
+.meta-row{display:flex; flex-wrap:wrap; gap:10px 28px; padding:18px 0 32px; border-top:1px solid var(--line)}
+.meta-item{font-size:13px}
+.meta-item .k{display:block; font-family:var(--mono); font-size:10px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--faint); margin-bottom:4px}
+.meta-item .v{color:var(--ink)}
+
+.update-note{max-width:1160px; margin:0 auto 44px; padding:0 28px}
+.update-note-in{padding:16px 20px; border-left:3px solid var(--teal);
+  background:linear-gradient(90deg, rgba(46,144,180,.09), transparent 80%);
+  border-radius:0 10px 10px 0; font-size:14px; max-width:82ch; color:var(--ink); opacity:.95}
+.update-note-in b{font-family:var(--disp); font-weight:700; color:var(--teal)}
+.update-note-in a{color:var(--teal)}
+
+/* --- Layout: TOC + content --- */
+.docwrap{max-width:1160px; margin:0 auto; padding:0 28px 100px; display:grid;
+  grid-template-columns:220px minmax(0,1fr); gap:56px; align-items:start}
+@media(max-width:900px){.docwrap{grid-template-columns:1fr}}
+
+.toc{position:sticky; top:76px; font-size:13px}
+@media(max-width:900px){
+  .toc{position:static; order:-1; margin-bottom:8px; overflow-x:auto; -webkit-overflow-scrolling:touch}
+  .toc ol{display:flex; gap:6px; flex-wrap:nowrap; padding-bottom:6px}
+  .toc li{white-space:nowrap}
+}
+.toc-label{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--faint); margin-bottom:12px}
+@media(max-width:900px){.toc-label{display:none}}
+.toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px}
+.toc a{display:block; padding:6px 10px; border-radius:7px; text-decoration:none; color:var(--muted);
+  border-left:2px solid transparent; transition:color .12s, border-color .12s, background .12s}
+@media(max-width:900px){.toc a{border-left:none; border:1px solid var(--line); background:var(--panel)}}
+.toc a:hover{color:var(--ink)}
+.toc a.active{color:var(--amber); border-left-color:var(--amber); background:rgba(230,174,67,.06)}
+.toc .toc-sub a{padding-left:22px; font-size:12.5px}
+
+.content{max-width:740px; min-width:0}
+.chapter{margin-bottom:64px; padding-top:8px}
+.chapter-eyebrow{font-family:var(--mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--teal); margin-bottom:10px}
+.chapter h2{font-family:var(--disp); font-weight:700; font-size:26px; line-height:1.2; margin:0 0 20px;
+  letter-spacing:-.005em}
+.chapter h3{font-family:var(--disp); font-weight:600; font-size:17px; margin:32px 0 14px}
+.content p{font-size:15.5px; line-height:1.7; color:var(--ink); opacity:.94; margin:0 0 16px}
+.content p.lead{font-size:16.5px; opacity:1}
+.content strong{color:var(--ink); font-weight:600; opacity:1}
+sup a{color:var(--teal); text-decoration:none; font-size:11px; padding:0 1px}
+sup a:hover{color:var(--amber)}
+
+/* --- Callouts --- */
+.callout{margin:26px 0; padding:16px 20px; border-radius:0 10px 10px 0; font-size:14.5px}
+.callout-key{border-left:3px solid var(--amber);
+  background:linear-gradient(90deg, rgba(230,174,67,.08), transparent 85%)}
+.callout-merke{border-left:3px solid var(--green);
+  background:linear-gradient(90deg, rgba(126,208,199,.07), transparent 85%)}
+.callout-head{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+  margin-bottom:10px; display:flex; align-items:center; gap:7px}
+.callout-key .callout-head{color:var(--amber)}
+.callout-merke .callout-head{color:var(--green)}
+.callout ul{margin:0; padding-left:18px}
+.callout li{margin:5px 0; line-height:1.55}
+.callout p{margin:0}
+
+/* --- Stat tiles --- */
+.stats-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:22px 0 28px}
+@media(max-width:560px){.stats-row{grid-template-columns:1fr 1fr}}
+.stat-tile{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px}
+.stat-tile .num{font-family:var(--mono); font-size:26px; font-weight:600; color:var(--ink); line-height:1}
+.stat-tile .lbl{font-size:11.5px; color:var(--muted); margin-top:6px; line-height:1.3}
+
+/* --- Tables --- */
+.tbl-wrap{overflow-x:auto; margin:20px 0 28px}
+table.doc-table{width:100%; border-collapse:collapse; font-size:13.5px; min-width:460px}
+table.doc-table th{font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--faint); text-align:left; padding:8px 12px; border-bottom:1px solid var(--line)}
+table.doc-table td{padding:10px 12px; border-bottom:1px solid rgba(38,59,69,.6); color:var(--ink)}
+table.doc-table tr:last-child td{border-bottom:none}
+table.doc-table td.num{font-family:var(--mono)}
+
+/* --- Phase timeline (Kapitel 2) --- */
+.phase-row{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:22px 0 28px}
+@media(max-width:640px){.phase-row{grid-template-columns:1fr 1fr}}
+.phase-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px}
+.phase-card .pd{font-family:var(--mono); font-size:10.5px; color:var(--faint); margin-bottom:8px}
+.phase-card .pt{font-family:var(--disp); font-weight:600; font-size:14.5px; margin-bottom:5px}
+.phase-card .pdesc{font-size:12px; color:var(--muted); line-height:1.4}
+.phase-card.p0{border-top:3px solid var(--green)}
+.phase-card.p1{border-top:3px solid var(--amber)}
+.phase-card.p2{border-top:3px solid var(--rust)}
+.phase-card.p3{border-top:3px solid var(--teal)}
+
+/* --- Pipeline diagram (Kapitel 1) --- */
+.pipeline{margin:24px 0 32px; border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.pl-stage{padding:18px 20px; border-bottom:1px solid var(--line); background:var(--panel)}
+.pl-stage:last-child{border-bottom:none}
+.pl-stage:nth-child(odd){background:var(--panel2)}
+.pl-label{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--teal); margin-bottom:12px}
+.pl-boxes{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px}
+.pl-box{background:var(--ground); border:1px solid var(--line); border-radius:9px; padding:11px 13px}
+.pl-box-head{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:5px}
+.pl-box-title{font-family:var(--disp); font-weight:600; font-size:13.5px}
+.pl-tool{font-family:var(--mono); font-size:9.5px; letter-spacing:.03em; padding:2px 7px; border-radius:5px;
+  background:rgba(46,144,180,.12); color:var(--teal); border:1px solid rgba(46,144,180,.3); white-space:nowrap}
+.pl-box-desc{font-size:12px; color:var(--muted); line-height:1.4}
+.pl-connector{text-align:center; font-family:var(--mono); font-size:11px; color:var(--faint); padding:8px 0;
+  background:var(--ground)}
+
+/* --- DB tables grid + flow diagram (Kapitel 3) --- */
+.db-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:20px 0 28px}
+@media(max-width:640px){.db-grid{grid-template-columns:1fr 1fr}}
+.db-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:13px}
+.db-card .dn{font-family:var(--mono); font-size:12.5px; color:var(--amber); margin-bottom:6px}
+.db-card .dd{font-size:12px; color:var(--muted); line-height:1.4}
+
+.flow-simple{display:flex; align-items:center; gap:14px; margin:22px 0 28px; flex-wrap:wrap}
+.flow-col{display:flex; flex-direction:column; gap:7px}
+.flow-chip{font-family:var(--mono); font-size:11.5px; padding:7px 12px; border-radius:7px;
+  background:var(--panel2); border:1px solid var(--line); color:var(--muted)}
+.flow-arrow{font-family:var(--mono); font-size:20px; color:var(--faint); display:flex; flex-direction:column;
+  align-items:center; gap:2px}
+.flow-arrow .fa-tool{font-size:9.5px; letter-spacing:.03em; padding:2px 7px; border-radius:5px;
+  background:rgba(46,144,180,.12); color:var(--teal); border:1px solid rgba(46,144,180,.3)}
+.flow-result{font-family:var(--mono); font-size:12.5px; padding:9px 14px; border-radius:7px;
+  background:rgba(230,174,67,.08); border:1px solid rgba(230,174,67,.35); color:var(--ink)}
+
+/* --- Drift chart (Kapitel 4) --- */
+.chart-card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px;
+  margin:22px 0 10px}
+.chart-legend{display:flex; flex-wrap:wrap; gap:16px; margin-bottom:14px; font-size:12px; color:var(--muted)}
+.leg-item{display:flex; align-items:center; gap:7px}
+.leg-swatch{width:12px; height:3px; border-radius:2px}
+.chart-caption{font-size:13px; color:var(--muted); margin-top:14px; line-height:1.55}
+.chart-caption b{color:var(--ink)}
+
+/* --- Glossary --- */
+dl.glossary{display:grid; grid-template-columns:1fr 1fr; gap:0 28px; margin:20px 0}
+@media(max-width:640px){dl.glossary{grid-template-columns:1fr}}
+dl.glossary > div{padding:12px 0; border-bottom:1px solid rgba(38,59,69,.55)}
+dl.glossary dt{font-family:var(--disp); font-weight:600; font-size:14px; color:var(--ink); margin-bottom:4px}
+dl.glossary dd{margin:0; font-size:12.5px; color:var(--muted); line-height:1.5}
+
+/* --- Tool overview cards --- */
+.tools-grid{display:grid; grid-template-columns:1fr; gap:12px; margin:22px 0}
+.tool-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 18px}
+.tool-card-head{display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:8px}
+.tool-card-name{font-family:var(--disp); font-weight:700; font-size:16px}
+.tool-card-cat{font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--teal)}
+.tool-card p{font-size:13.5px; color:var(--muted); margin:0}
+.tool-card .aside-note{display:block; margin-top:8px; font-size:12px; color:var(--faint); font-style:italic}
+
+/* --- Footnotes --- */
+details.footnotes{margin:28px 0 8px; border:1px solid var(--line); border-radius:10px; background:var(--panel2)}
+details.footnotes summary{cursor:pointer; padding:12px 16px; font-family:var(--mono); font-size:11.5px;
+  letter-spacing:.05em; text-transform:uppercase; color:var(--muted); list-style:none}
+details.footnotes summary::-webkit-details-marker{display:none}
+details.footnotes summary:before{content:"▸ "; color:var(--faint)}
+details.footnotes[open] summary:before{content:"▾ "}
+details.footnotes ol{margin:0; padding:0 16px 16px 34px; font-size:12.5px; color:var(--muted); line-height:1.6}
+details.footnotes li{margin-bottom:8px}
+details.footnotes a{color:var(--teal); text-decoration:none}
+
+.doc-footer{max-width:740px; margin:60px auto 0; padding-top:24px; border-top:1px solid var(--line);
+  font-family:var(--mono); font-size:12px; color:var(--faint); display:flex; gap:16px; flex-wrap:wrap;
+  align-items:center; justify-content:space-between}
+.doc-footer a{color:var(--muted); text-decoration:none; border-bottom:1px solid rgba(130,152,164,.3)}
+.doc-footer a:hover{color:var(--ink); border-bottom-color:var(--amber)}
+.back-to-top{font-family:var(--mono); font-size:11.5px; color:var(--faint); text-decoration:none}
+.back-to-top:hover{color:var(--amber)}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back-link" href="index.html">&larr; Zur Live-Demo</a>
+    <div class="topbar-actions">
+      <a href="https://github.com/frankknebeljanssen-create/strategic-drift-engine" target="_blank" rel="noopener">Quellcode auf GitHub</a>
+    </div>
+  </div>
+</div>
+
+<header class="doc-header" id="top">
+  <div class="eyebrow">Anhang</div>
+  <h1>Wie die Strategic Drift Engine gebaut wird</h1>
+  <p class="doc-sub">Eine Erklärung des gesamten Bauprozesses. Was gemacht wurde, mit welchem Tool und warum.</p>
+  <div class="meta-row">
+    <div class="meta-item"><span class="k">Status</span><span class="v">Begleitdokument zum Bau</span></div>
+    <div class="meta-item"><span class="k">Umfang</span><span class="v">Schritt 1 bis 3 gebaut, Schritt 4 bis 7 geplant</span></div>
+    <div class="meta-item"><span class="k">Autor</span><span class="v">Frank Knebel-Janssen</span></div>
+    <div class="meta-item"><span class="k">Ort</span><span class="v">Berlin, 2026</span></div>
+  </div>
+</header>
+
+<div class="update-note">
+  <div class="update-note-in">
+    <b>Update-Hinweis.</b> Dieses Dokument wurde geschrieben, als Schritt 1 bis 3 fertig waren und Schritt 4 bis 7
+    noch geplant. Inzwischen ist die gesamte Kette gebaut, einschließlich der <a href="index.html">Live-Demo</a>
+    oben verlinkt. Eine Abweichung vom Plan: Die Benutzeroberfläche in Kapitel 1 und 5 nennt React als vorgesehenes
+    Werkzeug. Gebaut wurde stattdessen eine eigenständige Seite aus HTML, CSS und JavaScript ohne Build-Schritt,
+    das läuft ohne Server direkt im Browser. Der Rest des Dokuments, Datensatz, Fundament und die ersten beiden
+    Agenten, entspricht genau dem, was auch tatsächlich läuft.
+  </div>
+</div>
+
+<div class="docwrap">
+  <nav class="toc" aria-label="Inhaltsverzeichnis">
+    <div class="toc-label">Inhalt</div>
+    <ol id="tocList">
+      <li><a href="#kapitel-1">1. Das große Bild</a></li>
+      <li><a href="#kapitel-2">2. Der synthetische Datensatz</a></li>
+      <li><a href="#kapitel-3">3. Das Fundament</a></li>
+      <li><a href="#kapitel-4">4. Die ersten zwei Agenten</a></li>
+      <li><a href="#kapitel-5">5. Was als Nächstes kommt</a></li>
+      <li><a href="#kapitel-6">6. Warum dieser Weg</a></li>
+      <li><a href="#anhang-a">Anhang A: Glossar</a></li>
+      <li><a href="#anhang-b">Anhang B: Tool-Übersicht</a></li>
+    </ol>
+  </nav>
+
+  <main class="content">
+
+    <!-- ================= KAPITEL 1 ================= -->
+    <section class="chapter" id="kapitel-1">
+      <div class="chapter-eyebrow">Kapitel 1</div>
+      <h2>Das große Bild, wie die Maschine denkt</h2>
+
+      <p class="lead">Die Engine besteht aus vier Spezialisten, die nacheinander arbeiten. Jeder hat genau eine
+      Aufgabe und reicht sein Ergebnis an den nächsten weiter. In der Fachsprache heißen solche Spezialisten
+      Agenten.<sup id="fnref1-1"><a href="#fn1-1">1</a></sup></p>
+
+      <h3>Die vier Agenten im Einzelnen</h3>
+      <div class="pl-boxes" style="margin-bottom:26px">
+        <div class="pl-box">
+          <div class="pl-box-head"><span class="pl-box-title">Pillar Extractor</span></div>
+          <div class="pl-box-desc">Liest das Strategiepapier und zerlegt es in einzelne, prüfbare
+          Säulen.<sup><a href="#fn1-2">2</a></sup> Für jede Säule legt er fest, woran man erkennt, ob die
+          Organisation danach handelt.</div>
+        </div>
+        <div class="pl-box">
+          <div class="pl-box-head"><span class="pl-box-title">Energy Mapper</span></div>
+          <div class="pl-box-desc">Nimmt jede einzelne Nachricht (Chat, Mail, Besprechungsnotiz, Kalendereintrag)
+          und ordnet sie einer Säule zu, oder markiert sie als strategie-fern.<sup><a href="#fn1-3">3</a></sup></div>
+        </div>
+        <div class="pl-box">
+          <div class="pl-box-head"><span class="pl-box-title">Drift Tracker</span></div>
+          <div class="pl-box-desc">Zählt über die Zeit aus, welche Säule wie viel Aufmerksamkeit bekommt, und
+          vergleicht das mit dem Sollwert aus der Strategie. Die Abweichung ist die Drift.</div>
+        </div>
+        <div class="pl-box">
+          <div class="pl-box-head"><span class="pl-box-title">Evidence Bridge</span></div>
+          <div class="pl-box-desc">Hält für jede Zahl den Weg zurück zur Originalquelle offen.<sup><a href="#fn1-4">4</a></sup>
+          Keine Aussage ohne Beleg.</div>
+        </div>
+      </div>
+
+      <p>Wichtig ist die Reihenfolge: Erst muss klar sein, was die Strategie will (Pillar Extractor), bevor man
+      Nachrichten zuordnen kann (Energy Mapper). Erst wenn alles zugeordnet ist, kann man auszählen (Drift Tracker).
+      Und die Nachvollziehbarkeit (Evidence Bridge) begleitet alles. Diese feste Kette nennt man einen gerichteten
+      Arbeitsablauf.<sup><a href="#fn1-5">5</a></sup></p>
+
+      <div class="callout callout-key">
+        <div class="callout-head">🔑 Die wichtigsten Punkte aus Kapitel 1</div>
+        <ul>
+          <li>Die Engine besteht aus vier Agenten, die nacheinander arbeiten.</li>
+          <li>Agent 1 versteht die Strategie, Agent 2 ordnet die Realität zu, Agent 3 misst die Abweichung, Agent 4
+          sichert die Nachvollziehbarkeit.</li>
+          <li>Die Reihenfolge ist fest und fließt nur in eine Richtung.</li>
+        </ul>
+      </div>
+
+      <h3>Der Ablauf auf einen Blick</h3>
+      <p>Von oben nach unten: Was hineingeht, welches Tool es bearbeitet und was am Ende sichtbar wird. Jede
+      blaue Marke nennt das eingesetzte Tool.</p>
+
+      <div class="pipeline">
+        <div class="pl-stage">
+          <div class="pl-label">Eingabe</div>
+          <div class="pl-boxes">
+            <div class="pl-box"><div class="pl-box-head"><span class="pl-box-title">Strategiepapier</span></div>
+              <div class="pl-box-desc">Die drei strategischen Ziele der Firma</div></div>
+            <div class="pl-box"><div class="pl-box-head"><span class="pl-box-title">Kommunikation</span>
+              <span class="pl-tool">JSON</span></div>
+              <div class="pl-box-desc">301 Datenpunkte: Chat, Mail, Notizen, Kalender</div></div>
+          </div>
+        </div>
+        <div class="pl-connector">↓</div>
+        <div class="pl-stage">
+          <div class="pl-label">Fundament</div>
+          <div class="pl-boxes">
+            <div class="pl-box"><div class="pl-box-head"><span class="pl-box-title">Ingestion</span>
+              <span class="pl-tool">Python</span></div>
+              <div class="pl-box-desc">Bringt alle Kanäle in eine einheitliche Form</div></div>
+            <div class="pl-box"><div class="pl-box-head"><span class="pl-box-title">Datenbank</span>
+              <span class="pl-tool">Postgres + pgvector</span></div>
+              <div class="pl-box-desc">Speichert Daten und ihre Bedeutung, durchsuchbar</div></div>
+          </div>
+        </div>
+        <div class="pl-connector">↓ LangGraph steuert den Ablauf der vier Agenten ↓</div>
+        <div class="pl-stage">
+          <div class="pl-label">Analyse</div>
+          <div class="pl-boxes">
+            <div class="pl-box"><div class="pl-box-head"><span class="pl-box-title">1. Pillar Extractor</span>
+              <span class="pl-tool">Claude</span></div>
+              <div class="pl-box-desc">Zerlegt die Strategie in prüfbare Säulen</div></div>
+            <div class="pl-box"><div class="pl-box-head"><span class="pl-box-title">2. Energy Mapper</span>
+              <span class="pl-tool">Claude</span></div>
+              <div class="pl-box-desc">Ordnet jeden Datenpunkt einer Säule zu</div></div>
+            <div class="pl-box"><div class="pl-box-head"><span class="pl-box-title">3. Drift Tracker</span></div>
+              <div class="pl-box-desc">Misst die Abweichung je Säule über die Zeit</div></div>
+            <div class="pl-box"><div class="pl-box-head"><span class="pl-box-title">4. Evidence Bridge</span></div>
+              <div class="pl-box-desc">Hält jede Zahl bis zur Quelle nachvollziehbar</div></div>
+          </div>
+        </div>
+        <div class="pl-connector">↓</div>
+        <div class="pl-stage">
+          <div class="pl-label">Ausgabe</div>
+          <div class="pl-boxes">
+            <div class="pl-box"><div class="pl-box-head"><span class="pl-box-title">API</span>
+              <span class="pl-tool">FastAPI</span></div>
+              <div class="pl-box-desc">Liefert die Ergebnisse nach außen</div></div>
+            <div class="pl-box"><div class="pl-box-head"><span class="pl-box-title">Heat-Map</span>
+              <span class="pl-tool">React (geplant)</span></div>
+              <div class="pl-box-desc">Zeigt die Drift farbig, mit Klick bis zur Einzelquelle. Siehe Update-Hinweis oben.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <details class="footnotes">
+        <summary>Anmerkungen zu Kapitel 1 (5)</summary>
+        <ol>
+          <li id="fn1-1">Ein Agent ist ein Software-Baustein, der eine klar umrissene Teilaufgabe eigenständig
+          löst und sein Ergebnis weitergibt. Mehrere Agenten zusammen bilden ein Multi-Agenten-System.
+          <a href="#fnref1-1">↩</a></li>
+          <li id="fn1-2">Pillar ist englisch für Säule. Gemeint ist eine tragende strategische Aussage, zum
+          Beispiel "wir treffen Produktentscheidungen aus Kundensignalen". Extractor bedeutet, dass der Agent
+          diese Säulen aus dem Text herauslöst. <a href="#fnref1-1">↩</a></li>
+          <li id="fn1-3">Energy Mapper bedeutet sinngemäß "Energie-Kartograf". Er bildet ab, wohin die Energie,
+          also die Aufmerksamkeit und Arbeit der Organisation, tatsächlich fließt. <a href="#fnref1-1">↩</a></li>
+          <li id="fn1-4">Evidence Bridge bedeutet "Beweis-Brücke". Sie schlägt die Brücke von einer verdichteten
+          Zahl zurück zu den einzelnen Nachrichten, aus denen die Zahl entstanden ist. So bleibt jede Aussage
+          nachprüfbar. <a href="#fnref1-1">↩</a></li>
+          <li id="fn1-5">Gerichtet heißt, die Arbeit fließt nur in eine Richtung, von Schritt zu Schritt, ohne
+          Rücksprung. Das macht das System nachvollziehbar und weniger fehleranfällig. <a href="#fnref1-1">↩</a></li>
+        </ol>
+      </details>
+    </section>
+
+    <!-- ================= KAPITEL 2 ================= -->
+    <section class="chapter" id="kapitel-2">
+      <div class="chapter-eyebrow">Kapitel 2</div>
+      <h2>Schritt 1, der synthetische Datensatz</h2>
+
+      <p class="lead">Der erste Bauschritt war, Daten zu erzeugen, an denen die Engine arbeiten kann. Für
+      Entwicklung und Vorführung dient ein synthetischer Datensatz<sup><a href="#fn2-1">6</a></sup>: echte
+      Firmen-Kommunikation ist vertraulich, ein erfundener Fall lässt sich gezielt um das Muster herum bauen, das
+      gezeigt werden soll, und man kann jederzeit prüfen, ob die Engine genau dieses Muster findet.</p>
+
+      <p>Gebaut wurde eine komplette fiktive Firma namens TechCo: ein Software-Unternehmen mit 180 Mitarbeitern,
+      drei strategischen Säulen und 18 handelnden Personen mit Namen, Rollen und typischen Redeweisen. Über einen
+      Zeitraum von 60 Tagen wurden vier Arten von Kommunikation erzeugt:</p>
+
+      <div class="stats-row">
+        <div class="stat-tile"><div class="num">180</div><div class="lbl">Mitarbeiter in der fiktiven Firma</div></div>
+        <div class="stat-tile"><div class="num">4</div><div class="lbl">Kanäle der Kommunikation</div></div>
+        <div class="stat-tile"><div class="num">301</div><div class="lbl">einzelne Datenpunkte</div></div>
+        <div class="stat-tile"><div class="num">60</div><div class="lbl">Tage Zeitraum</div></div>
+      </div>
+
+      <div class="tbl-wrap">
+        <table class="doc-table">
+          <thead><tr><th>Kanal</th><th>Was es enthält</th><th>Menge</th></tr></thead>
+          <tbody>
+            <tr><td>Chat-Nachrichten</td><td>Interne Kurznachrichten aus drei Gruppen (Führung, Technik, Vertrieb)</td><td class="num">167</td></tr>
+            <tr><td>E-Mails</td><td>Längere Nachrichten der Geschäftsleitung und Bereichsleiter</td><td class="num">37</td></tr>
+            <tr><td>Besprechungsnotizen</td><td>Protokolle von zwölf Führungsrunden</td><td class="num">12</td></tr>
+            <tr><td>Kalendereinträge</td><td>Titel, Teilnehmer und Dauer aller Termine</td><td class="num">85</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Zusammen sind das 301 einzelne Datenpunkte. In jeden einzelnen wurde eine kleine Geschichte eingewoben,
+      die zusammen ein großes Muster ergibt: In den ersten zwei Wochen handelt die Firma noch nach ihrer Strategie.
+      Dann kippt ein Führungsimpuls die Prioritäten Richtung Geschwindigkeit, und die ursprünglichen Ziele geraten
+      ins Hintertreffen. Erst gegen Ende erkennt die Firma das selbst und steuert gegen. Genau diese eingebaute
+      Drift soll die Engine später finden.</p>
+
+      <h3>Die eingebaute Geschichte über 60 Tage</h3>
+      <div class="phase-row">
+        <div class="phase-card p0"><div class="pd">1.&ndash;15. Mai</div><div class="pt">Baseline</div>
+          <div class="pdesc">Firma handelt nach Strategie</div></div>
+        <div class="phase-card p1"><div class="pd">16.&ndash;31. Mai</div><div class="pt">Kipppunkt</div>
+          <div class="pdesc">Führungsimpuls Richtung Speed</div></div>
+        <div class="phase-card p2"><div class="pd">1.&ndash;15. Juni</div><div class="pt">Tiefpunkt</div>
+          <div class="pdesc">Ziele geraten ins Hintertreffen</div></div>
+        <div class="phase-card p3"><div class="pd">16.&ndash;30. Juni</div><div class="pt">Erholung</div>
+          <div class="pdesc">Firma erkennt es und steuert gegen</div></div>
+      </div>
+      <p style="font-size:13px; color:var(--muted)">Diese vier Phasen sind absichtlich in die Daten eingewoben.
+      Ob die Engine sie findet, ist der eigentliche Test.</p>
+
+      <h3>Das Tool: JSON</h3>
+      <p>Die Daten wurden in einem Format namens JSON gespeichert.<sup><a href="#fn2-2">7</a></sup> JSON ist
+      gewählt worden, weil es sowohl für Menschen lesbar als auch für Programme leicht verarbeitbar ist. Man kann
+      eine JSON-Datei öffnen und den Inhalt verstehen, ohne Spezialsoftware.</p>
+
+      <div class="callout callout-merke">
+        <div class="callout-head">📌 Wie eine Chat-Nachricht als Daten aussieht</div>
+        <p>Eine einzelne Nachricht wird nicht nur als Satz gespeichert, sondern mit allen Begleitinformationen:
+        wer hat wann was geschrieben, in welcher Gruppe, mit welchen Reaktionen. Diese strukturierte Form ist der
+        Grund, warum ein Programm später damit rechnen kann. Aus "Marko schrieb am 20. Mai: ship it, fix later"
+        wird ein sauber beschrifteter Datensatz mit Feldern für Person, Datum, Gruppe und Text.</p>
+      </div>
+
+      <h3>Die Qualitätsprüfung</h3>
+      <p>Nach dem Erzeugen wurde jeder Datensatz automatisch geprüft: Sind alle 301 Einträge technisch fehlerfrei?
+      Verweisen alle Nachrichten auf real existierende Personen? Liegen alle Datumsangaben im richtigen Zeitraum?
+      Diese Prüfung lief über ein kleines Programm in der Sprache Python.<sup><a href="#fn2-3">8</a></sup> Das
+      Ergebnis: kein einziger Fehler, alle Personen gültig, alle Daten im Zeitfenster.</p>
+
+      <div class="callout callout-merke">
+        <div class="callout-head">📌 Merke</div>
+        <p>Ein guter synthetischer Datensatz ist kein Zufallsprodukt. Er ist so gebaut, dass ein bekanntes Muster
+        darin steckt. Nur so kann man später beweisen, dass die Engine dieses Muster wirklich findet und nicht nur
+        zufällig etwas ausgibt.</p>
+      </div>
+
+      <div class="callout callout-key">
+        <div class="callout-head">🔑 Die wichtigsten Punkte aus Kapitel 2</div>
+        <ul>
+          <li>Schritt 1 erzeugt einen erfundenen, aber realistischen Datensatz einer Firma namens TechCo.</li>
+          <li>301 Datenpunkte aus vier Kanälen über 60 Tage, mit einer absichtlich eingebauten strategischen Drift.</li>
+          <li>Gespeichert im lesbaren Format JSON, automatisch auf Fehler geprüft mit Python.</li>
+          <li>Der Datensatz ist zugleich Übungsmaterial und Prüfstein für die Engine.</li>
+        </ul>
+      </div>
+
+      <details class="footnotes">
+        <summary>Anmerkungen zu Kapitel 2 (3)</summary>
+        <ol>
+          <li id="fn2-1">Synthetisch heißt künstlich erzeugt. Ein synthetischer Datensatz enthält erfundene, aber
+          realistisch wirkende Daten. Man nutzt ihn, wenn echte Daten sensibel, teuer oder noch nicht verfügbar sind.</li>
+          <li id="fn2-2">JSON, gesprochen "Dschejson", steht für JavaScript Object Notation. Es ist ein einfaches
+          Textformat, in dem Informationen als Paare aus Bezeichnung und Wert stehen, zum Beispiel "name: Sarah
+          Mendes". Menschen können es lesen, und Programme können es mühelos verarbeiten. Es ist eines der
+          verbreitetsten Datenformate der Welt.</li>
+          <li id="fn2-3">Python ist eine weit verbreitete Programmiersprache, die als besonders gut lesbar gilt.
+          Sie wird oft für Datenverarbeitung, Automatisierung und künstliche Intelligenz eingesetzt.</li>
+        </ol>
+      </details>
+    </section>
+
+    <!-- ================= KAPITEL 3 ================= -->
+    <section class="chapter" id="kapitel-3">
+      <div class="chapter-eyebrow">Kapitel 3</div>
+      <h2>Schritt 2, das Fundament</h2>
+
+      <p class="lead">Im zweiten Schritt entstand das Fundament, auf dem die eigentliche Analyse später läuft.
+      Das umfasst drei Dinge: einen ordentlichen Ablageort für den gesamten Programmcode, eine Datenbank für die
+      Daten, und ein Einleseprogramm, das die JSON-Dateien aus Schritt 1 in die Datenbank bringt.</p>
+
+      <h3>Der Ablageort: das Repository</h3>
+      <p>Aller Programmcode eines Projekts liegt geordnet an einem Ort, dem Repository, kurz Repo.<sup><a href="#fn3-1">9</a></sup>
+      Ein Repo sorgt für Ordnung und dafür, dass man jede Änderung nachvollziehen und notfalls rückgängig machen kann.</p>
+
+      <h3>Die Verpackung: Docker</h3>
+      <p>Ein wiederkehrendes Problem in der Software: Ein Programm läuft auf dem einen Computer, aber auf dem
+      nächsten nicht, weil dort etwas anders eingestellt ist. Die Lösung heißt Docker.<sup><a href="#fn3-2">10</a></sup>
+      Ein einziger Startbefehl bringt so die gesamte Umgebung zum Laufen: die Datenbank und das Programm, beide
+      sauber verpackt und aufeinander abgestimmt.</p>
+
+      <h3>Der Speicher: die Datenbank</h3>
+      <p>Die 301 Datenpunkte müssen irgendwo liegen, wo man sie schnell durchsuchen und auszählen kann. Dafür
+      dient eine Datenbank.<sup><a href="#fn3-3">11</a></sup> Verwendet wird Postgres, eine der bekanntesten und
+      zuverlässigsten Datenbanken, die es kostenlos gibt.<sup><a href="#fn3-4">12</a></sup></p>
+      <p>Postgres wurde um eine Zusatzfähigkeit namens pgvector erweitert. Sie erlaubt, Texte nicht nur als
+      Buchstaben zu speichern, sondern auch als ihre Bedeutung. Das führt zum vielleicht wichtigsten Konzept
+      dieses Kapitels.</p>
+
+      <div class="callout callout-merke">
+        <div class="callout-head">📌 Was ist ein Embedding?</div>
+        <p>Ein Computer versteht keine Wörter, nur Zahlen. Damit er trotzdem mit Bedeutung rechnen kann, wandelt
+        man jeden Text in eine lange Zahlenreihe um, ein sogenanntes Embedding.<sup><a href="#fn3-5">13</a></sup>
+        Das Besondere: Zwei Texte mit ähnlicher Bedeutung bekommen ähnliche Zahlenreihen. "Der Kunde ist
+        unzufrieden" und "Unser Auftraggeber beschwert sich" landen dicht beieinander, obwohl kaum ein Wort gleich
+        ist. pgvector ist die Erweiterung, die solche Zahlenreihen speichert und ihre Nähe misst.</p>
+      </div>
+
+      <h3>Das Datenmodell: sechs geordnete Schubladen</h3>
+      <p>Damit die Datenbank weiß, was wohin gehört, braucht sie einen Bauplan, das Datenmodell. Es besteht aus
+      sechs Tabellen, die man sich als beschriftete Schubladen vorstellen kann: eine für die Personen, eine für
+      die strategischen Säulen, eine für alle Nachrichten, eine für die Zuordnungen der Nachrichten zu den Säulen,
+      eine für die ausgezählten Abweichungen und eine für die Protokolle jedes Analyse-Laufs. Jede Schublade hat
+      feste Fächer, damit nichts durcheinander gerät.</p>
+
+      <div class="db-grid">
+        <div class="db-card"><div class="dn">people</div><div class="dd">Die Personen der Firma mit Rolle und Team</div></div>
+        <div class="db-card"><div class="dn">pillars</div><div class="dd">Die strategischen Säulen mit ihren Sollwerten</div></div>
+        <div class="db-card"><div class="dn">sources</div><div class="dd">Alle Nachrichten in einheitlicher Form</div></div>
+        <div class="db-card"><div class="dn">mappings</div><div class="dd">Welche Nachricht zu welcher Säule gehört</div></div>
+        <div class="db-card"><div class="dn">drift_aggregates</div><div class="dd">Die ausgezählte Abweichung je Säule und Zeitraum</div></div>
+        <div class="db-card"><div class="dn">runs</div><div class="dd">Protokoll jedes einzelnen Analyse-Laufs</div></div>
+      </div>
+
+      <h3>Das Einlesen: die Ingestion</h3>
+      <p>Zuletzt entstand ein Programm, das die vier verschiedenen Datei-Arten aus Schritt 1 einliest und in eine
+      einheitliche Form bringt. Dieser Vorgang heißt Ingestion.<sup><a href="#fn3-6">14</a></sup> Eine
+      Chat-Nachricht, eine Mail, eine Besprechungsnotiz und ein Kalendereintrag sehen zunächst völlig
+      unterschiedlich aus. Nach der Ingestion sind sie alle gleich geformt, mit denselben Feldern für Zeitpunkt,
+      Person, Kanal und Inhalt. Erst diese Vereinheitlichung macht sie vergleichbar.</p>
+
+      <div class="flow-simple">
+        <div class="flow-col">
+          <span class="flow-chip">Chat</span><span class="flow-chip">Mail</span>
+          <span class="flow-chip">Notiz</span><span class="flow-chip">Kalender</span>
+        </div>
+        <div class="flow-arrow">→<span class="fa-tool">Python</span></div>
+        <div class="flow-result">Zeit &middot; Person &middot; Kanal &middot; Text</div>
+      </div>
+      <p style="font-size:13px; color:var(--muted)">Erst wenn alle vier Kanäle dieselben Felder tragen, kann ein
+      Programm sie vergleichen und auszählen.</p>
+
+      <p>Ein kleiner, aber wichtiger technischer Baustein steht bereits: das Programmgerüst, über das man die
+      Ergebnisse später abrufen kann, die sogenannte Programmierschnittstelle.<sup><a href="#fn3-7">15</a></sup>
+      Gebaut wurde sie mit einem Tool namens FastAPI, das genau dafür gemacht ist.</p>
+
+      <div class="callout callout-merke">
+        <div class="callout-head">📌 Merke</div>
+        <p>Das Fundament speichert nicht nur Daten, es bringt sie in eine einheitliche, vergleichbare Form und in
+        eine durchsuchbare Ordnung. Ohne diese Vorarbeit könnte kein Agent später sinnvoll rechnen. Die
+        unscheinbarste Arbeit, das Vereinheitlichen, ist die Voraussetzung für alles Weitere.</p>
+      </div>
+
+      <div class="callout callout-key">
+        <div class="callout-head">🔑 Die wichtigsten Punkte aus Kapitel 3</div>
+        <ul>
+          <li>Der gesamte Code liegt geordnet in einem Repository mit nachvollziehbarer Änderungsgeschichte.</li>
+          <li>Docker verpackt alles so, dass es auf jedem Rechner gleich läuft.</li>
+          <li>Die Datenbank Postgres speichert die Daten, die Erweiterung pgvector speichert zusätzlich ihre
+          Bedeutung als Zahlenreihen (Embeddings).</li>
+          <li>Das Datenmodell ordnet alles in sechs Tabellen, die Ingestion bringt die vier Kanäle in eine
+          einheitliche Form.</li>
+        </ul>
+      </div>
+
+      <details class="footnotes">
+        <summary>Anmerkungen zu Kapitel 3 (7)</summary>
+        <ol>
+          <li id="fn3-1">Ein Repository ist ein strukturierter Projektordner, der nicht nur alle Dateien enthält,
+          sondern auch deren Änderungsgeschichte. Man kann jederzeit sehen, wer wann was geändert hat, und zu
+          einem früheren Stand zurückkehren.</li>
+          <li id="fn3-2">Docker verpackt ein Programm zusammen mit allem, was es zum Laufen braucht, in einen
+          abgeschlossenen Behälter, einen sogenannten Container. Dieser Container läuft auf jedem Computer gleich,
+          egal wie er sonst eingerichtet ist.</li>
+          <li id="fn3-3">Eine Datenbank ist ein spezialisierter Datenspeicher, der große Mengen strukturierter
+          Informationen ordnet und blitzschnell durchsuchbar macht. Anders als eine einfache Datei erlaubt sie
+          komplexe Abfragen, etwa "zeige alle Nachrichten von Person X im Mai".</li>
+          <li id="fn3-4">Postgres, voller Name PostgreSQL, ist eine seit Jahrzehnten bewährte, quelloffene
+          Datenbank. Quelloffen bedeutet, dass ihr Programmcode frei einsehbar und kostenlos nutzbar ist.</li>
+          <li id="fn3-5">Ein Embedding ist die Übersetzung eines Textes in eine Reihe von Zahlen (einen Vektor),
+          die seine Bedeutung abbildet. Texte mit ähnlicher Bedeutung ergeben ähnliche Zahlenreihen. So kann ein
+          Programm inhaltliche Nähe berechnen, obwohl es keine Sprache versteht.</li>
+          <li id="fn3-6">Ingestion, englisch für Aufnahme, bezeichnet das Einlesen und Vereinheitlichen von Daten
+          aus verschiedenen Quellen in ein System. Danach liegen alle Daten im selben Format vor.</li>
+          <li id="fn3-7">Eine Programmierschnittstelle, englisch API, ist eine definierte Anschlussstelle, über
+          die ein Programm einem anderen Programm Daten oder Funktionen anbietet. Wie eine Steckdose, an der sich
+          verschiedene Geräte andocken können, ohne dass sie das Innenleben des Kraftwerks kennen müssen.</li>
+        </ol>
+      </details>
+    </section>
+
+    <!-- ================= KAPITEL 4 ================= -->
+    <section class="chapter" id="kapitel-4">
+      <div class="chapter-eyebrow">Kapitel 4</div>
+      <h2>Schritt 3, die ersten zwei Agenten</h2>
+
+      <p class="lead">Jetzt beginnt die eigentliche Intelligenz. In Schritt 3 wurden die ersten zwei der vier
+      Agenten gebaut: der Pillar Extractor und der Energy Mapper. Beide nutzen ein Sprachmodell, um Texte zu
+      verstehen und einzuordnen. In diesem Projekt ist das Claude, entwickelt von der Firma Anthropic. Der Zugang
+      dazu läuft über eine Schnittstelle, die Anthropic-API.</p>
+
+      <p>Die Anweisung, die man einem Sprachmodell gibt, nennt man einen Prompt.<sup><a href="#fn4-1">16</a></sup>
+      Ein großer Teil der Arbeit an den Agenten bestand darin, diese Anweisungen so genau zu formulieren, dass das
+      Modell zuverlässig das Richtige tut.</p>
+
+      <h3>Agent 1: der Pillar Extractor</h3>
+      <p>Dieser Agent bekommt das Strategiepapier von TechCo und die Anweisung, es in einzelne prüfbare Säulen zu
+      zerlegen. Für TechCo sind das drei: Kundenorientiertes Wachstum, Qualität vor Geschwindigkeit, und Bereit für
+      Großkunden bis zum vierten Quartal. Für jede Säule formuliert der Agent zusätzlich konkrete Merkmale, an
+      denen sich ablesen lässt, ob die Firma danach handelt. Und er weist jeder Säule einen Sollwert zu, also wie
+      viel Aufmerksamkeit sie idealerweise bekommen sollte.</p>
+
+      <h3>Agent 2: der Energy Mapper</h3>
+      <p>Der zweite Agent ist der fleißigste. Er nimmt alle 301 Datenpunkte einzeln und ordnet jeden einer der drei
+      Säulen zu, oder markiert ihn als strategie-fern, wenn er zu keiner Säule beiträgt. Bei jeder Zuordnung gibt
+      er an, wie sicher er sich ist, und begründet sie kurz.</p>
+      <p>Hier stellte sich eine praktische Frage: Wenn man jeden der 301 Datenpunkte einzeln an das Sprachmodell
+      schickt, sind das 301 Anfragen. Das ist langsam und kostet unnötig viel. Die Lösung heißt
+      Batching.<sup><a href="#fn4-2">17</a></sup> Es werden immer 15 Datenpunkte auf einmal geschickt. Aus 301
+      Einzelanfragen werden so nur etwa 20 Pakete.</p>
+
+      <h3>Der Dirigent: LangGraph</h3>
+      <p>Damit die beiden Agenten in der richtigen Reihenfolge und sauber verzahnt arbeiten, braucht es eine
+      Steuerung. Diese Aufgabe übernimmt ein Tool namens LangGraph.<sup><a href="#fn4-3">18</a></sup> Es sorgt
+      dafür, dass zuerst der Pillar Extractor läuft, sein Ergebnis an den Energy Mapper weitergibt, und dass am
+      Ende alles geordnet vorliegt.</p>
+
+      <h3>Der Kniff: der Mock-Modus</h3>
+      <p>Jeder Aufruf des Sprachmodells kostet ein wenig Geld. Beim Entwickeln und Testen läuft ein Programm aber
+      sehr oft. Um nicht bei jedem Test zu zahlen, wurde ein zweiter Weg eingebaut: der
+      Mock-Modus.<sup><a href="#fn4-4">19</a></sup> Statt das Sprachmodell zu fragen, ordnet in diesem Modus eine
+      einfache, feste Regel die Datenpunkte zu. Das kostet nichts, läuft sofort, und erlaubt, die gesamte
+      Maschinerie zu prüfen, ohne einen einzigen bezahlten Aufruf.</p>
+
+      <div class="callout callout-merke">
+        <div class="callout-head">📌 Warum der Mock-Modus so nützlich ist</div>
+        <p>Er hat zwei große Vorteile. Erstens: Die komplette Vorführung lässt sich ohne laufende Kosten zeigen.
+        Zweitens: Man kann beweisen, dass das Grundgerüst korrekt arbeitet, unabhängig vom Sprachmodell. Wenn
+        später der echte Modus eingeschaltet wird, ändert sich nur die Qualität der Zuordnung, nicht der Ablauf
+        drumherum. Der Mock-Modus ist damit Testwerkzeug und kostenlose Demo zugleich.</p>
+      </div>
+
+      <h3>Das Ergebnis: die Drift wird sichtbar</h3>
+      <p>Der entscheidende Moment: Lässt man den Energy Mapper über alle 301 Datenpunkte laufen und zählt aus,
+      welche Säule in welchem Zeitabschnitt wie viel Aufmerksamkeit bekommt, zeigt sich genau die Geschichte, die
+      in Schritt 1 eingebaut wurde.</p>
+
+      <div class="chart-card">
+        <div class="chart-legend">
+          <div class="leg-item"><span class="leg-swatch" style="background:var(--green)"></span>Kundenwachstum</div>
+          <div class="leg-item"><span class="leg-swatch" style="background:var(--muted)"></span>Qualität</div>
+          <div class="leg-item"><span class="leg-swatch" style="background:var(--rust)"></span>Großkunden</div>
+          <div class="leg-item"><span class="leg-swatch" style="background:var(--amber); height:0; border-top:2px dashed var(--amber)"></span>Sollwert 33%</div>
+        </div>
+        <svg viewBox="0 0 620 260" width="100%" role="img" aria-label="Liniendiagramm: Aufmerksamkeit je Säule über vier Zeitfenster">
+          <line x1="60" y1="20" x2="60" y2="230" stroke="#263B45" stroke-width="1"/>
+          <line x1="60" y1="230" x2="580" y2="230" stroke="#263B45" stroke-width="1"/>
+          <text x="52" y="54" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="#5A7480">60%</text>
+          <text x="52" y="140" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="#5A7480">30%</text>
+          <text x="52" y="234" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="#5A7480">0%</text>
+          <line x1="60" y1="131" x2="580" y2="131" stroke="#E6AE43" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.8"/>
+          <polyline points="70,134 230,167 390,182 550,152" fill="none" stroke="#7ED0C7" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+          <polyline points="70,137 230,128 390,146 550,125" fill="none" stroke="#8298A4" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+          <polyline points="70,119 230,95 390,59 550,113" fill="none" stroke="#C85434" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+          <g font-family="IBM Plex Mono" font-size="9.5" fill="#EAF1F4">
+            <circle cx="70" cy="134" r="3" fill="#7ED0C7"/><circle cx="230" cy="167" r="3" fill="#7ED0C7"/><circle cx="390" cy="182" r="3" fill="#7ED0C7"/><circle cx="550" cy="152" r="3" fill="#7ED0C7"/>
+            <circle cx="70" cy="137" r="3" fill="#8298A4"/><circle cx="230" cy="128" r="3" fill="#8298A4"/><circle cx="390" cy="146" r="3" fill="#8298A4"/><circle cx="550" cy="125" r="3" fill="#8298A4"/>
+            <circle cx="70" cy="119" r="3" fill="#C85434"/><circle cx="230" cy="95" r="3" fill="#C85434"/><circle cx="390" cy="59" r="3" fill="#C85434"/><circle cx="550" cy="113" r="3" fill="#C85434"/>
+          </g>
+          <g font-family="IBM Plex Mono" font-size="10.5" fill="#8298A4" text-anchor="middle">
+            <text x="70" y="248">1.&ndash;15. Mai</text>
+            <text x="230" y="248">16.&ndash;31. Mai</text>
+            <text x="390" y="248">1.&ndash;15. Juni</text>
+            <text x="550" y="248">16.&ndash;30. Juni</text>
+          </g>
+          <g font-family="IBM Plex Mono" font-size="9.5" fill="#5A7480" text-anchor="middle">
+            <text x="70" y="262">Baseline</text>
+            <text x="230" y="262">Kippen</text>
+            <text x="390" y="262">Tiefpunkt</text>
+            <text x="550" y="262">Erholung</text>
+          </g>
+        </svg>
+        <div class="chart-caption"><b>Kundenwachstum</b> bricht bis zum Tiefpunkt auf 16 Prozent ein,
+        <b>Großkunden</b> steigt auf 57 Prozent. Der gelbe Strich markiert den Sollwert von 33 Prozent je Säule.
+        Erst im letzten Fenster nähern sich die Säulen wieder an.</div>
+      </div>
+
+      <div class="tbl-wrap">
+        <table class="doc-table">
+          <thead><tr><th>Zeitraum</th><th>Kundenwachstum</th><th>Qualität</th><th>Großkunden</th></tr></thead>
+          <tbody>
+            <tr><td>1. bis 15. Mai (Start)</td><td class="num">32%</td><td class="num">31%</td><td class="num">37%</td></tr>
+            <tr><td>16. bis 31. Mai (Kippen)</td><td class="num">21%</td><td class="num">34%</td><td class="num">45%</td></tr>
+            <tr><td>1. bis 15. Juni (Tiefpunkt)</td><td class="num">16%</td><td class="num">28%</td><td class="num">57%</td></tr>
+            <tr><td>16. bis 30. Juni (Erholung)</td><td class="num">26%</td><td class="num">35%</td><td class="num">39%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Der Sollwert liegt bei rund 33 Prozent je Säule. Man liest die Geschichte direkt aus den Zahlen: Das
+      Kundenwachstum bricht von 32 auf 16 Prozent ein und erholt sich erst am Ende. Das Großkunden-Thema frisst
+      sich von 37 auf 57 Prozent nach oben und dominiert zum Tiefpunkt alles andere. Genau diese Verschiebung ist
+      die strategische Drift, und die Engine hat sie allein aus der Kommunikation herausgelesen, ohne jede
+      Kennzahl aus einem Berichtswesen.</p>
+
+      <div class="callout callout-merke">
+        <div class="callout-head">📌 Merke</div>
+        <p>Die Engine misst nicht, was eine Firma über sich berichtet, sondern was in ihrer alltäglichen
+        Kommunikation tatsächlich passiert. Berichte zeigen die gewünschte Außenwirkung. Die Kommunikation zeigt
+        das echte Verhalten. Genau in dieser Lücke liegt der Nutzen.</p>
+      </div>
+
+      <div class="callout callout-key">
+        <div class="callout-head">🔑 Die wichtigsten Punkte aus Kapitel 4</div>
+        <ul>
+          <li>Zwei Agenten sind gebaut: Der Pillar Extractor versteht die Strategie, der Energy Mapper ordnet
+          jeden Datenpunkt zu.</li>
+          <li>Beide nutzen das Sprachmodell Claude über präzise formulierte Anweisungen (Prompts).</li>
+          <li>Batching bündelt Anfragen und spart Zeit und Kosten, LangGraph steuert die Reihenfolge.</li>
+          <li>Der Mock-Modus erlaubt kostenlose Tests und Vorführungen.</li>
+          <li>Das Ergebnis zeigt die eingebaute Drift klar: Kundenwachstum bricht ein, Großkunden dominieren,
+          Erholung am Ende.</li>
+        </ul>
+      </div>
+
+      <details class="footnotes">
+        <summary>Anmerkungen zu Kapitel 4 (4)</summary>
+        <ol>
+          <li id="fn4-1">Ein Prompt ist die Eingabe oder Anweisung an ein Sprachmodell. Wie präzise und
+          durchdacht der Prompt formuliert ist, entscheidet maßgeblich über die Qualität der Antwort.</li>
+          <li id="fn4-2">Batching bedeutet Bündelung. Statt vieler einzelner Anfragen werden mehrere Aufgaben zu
+          einem Paket zusammengefasst und gemeinsam bearbeitet. Das spart Zeit und Kosten.</li>
+          <li id="fn4-3">LangGraph ist ein Tool, das mehrere KI-Agenten zu einem geordneten Arbeitsablauf
+          verbindet. Es legt fest, welcher Agent wann arbeitet und wie die Ergebnisse weitergereicht werden,
+          ähnlich einem Dirigenten, der die Einsätze im Orchester steuert.</li>
+          <li id="fn4-4">Mock bedeutet Attrappe oder Nachbildung. Ein Mock-Modus ersetzt einen teuren oder
+          langsamen Bestandteil durch eine einfache, kostenlose Nachbildung, die sich nach außen gleich verhält.
+          So kann man den Rest des Systems testen, ohne den echten Bestandteil zu benutzen.</li>
+        </ol>
+      </details>
+    </section>
+
+    <!-- ================= KAPITEL 5 ================= -->
+    <section class="chapter" id="kapitel-5">
+      <div class="chapter-eyebrow">Kapitel 5</div>
+      <h2>Was als Nächstes kommt</h2>
+
+      <p class="lead">Die Schritte 1 bis 3 stehen. Vier weitere Schritte folgen. Dieses Kapitel gibt einen
+      Ausblick in einfachen Worten, damit klar ist, wohin die Reise geht.</p>
+
+      <h3>Schritt 4: die letzten zwei Agenten</h3>
+      <p>Als Nächstes werden der Drift Tracker und die Evidence Bridge gebaut. Der Drift Tracker verwandelt die
+      vielen Einzel-Zuordnungen aus Schritt 3 in klare Kennzahlen: Wie groß ist die Abweichung je Säule und
+      Zeitabschnitt? Die Beispieltabelle aus Kapitel 4 ist genau das, was dieser Agent künftig automatisch
+      erzeugt. Die Evidence Bridge sorgt parallel dafür, dass man von jeder Zahl per Klick zurück zu den
+      einzelnen Nachrichten gelangt, aus denen sie entstanden ist.</p>
+
+      <div class="callout callout-merke">
+        <div class="callout-head">📌 Warum die Nachvollziehbarkeit so wichtig ist</div>
+        <p>Eine Zahl allein überzeugt niemanden, der eine wichtige Entscheidung darauf stützen soll. Die Frage
+        lautet immer: Woher kommt das? Die Evidence Bridge beantwortet genau diese Frage. Sie macht aus einer
+        behaupteten Zahl eine belegte Zahl. Ohne sie wäre die Engine eine Blackbox, mit ihr ist sie ein
+        nachprüfbares Tool. Der Fachbegriff dafür ist Nachvollziehbarkeit oder Audit Trail.<sup><a href="#fn5-1">20</a></sup></p>
+      </div>
+
+      <h3>Schritt 5 bis 7: das sichtbare Ergebnis</h3>
+      <p>Die letzten Schritte machen die Analyse sichtbar und bedienbar. Schritt 5 baut die Grundlage der
+      Benutzeroberfläche, also das, was ein Mensch am Bildschirm sieht. Der Fachbegriff dafür ist
+      Frontend.<sup><a href="#fn5-2">21</a></sup> Gebaut wird es mit einem verbreiteten Tool namens React.</p>
+
+      <p>Schritt 6 bringt das Herzstück der Darstellung: eine Heat-Map.<sup><a href="#fn5-3">22</a></sup> Sie
+      zeigt die Drift als farbige Fläche über die Zeit: Wo eine Säule zu wenig Aufmerksamkeit bekommt, färbt sich
+      das Feld auffällig. Und per Klick kann man von jedem Feld hinunter bis zur einzelnen Nachricht gehen. Dieses
+      Hineinzoomen nennt man Drill-Down.<sup><a href="#fn5-4">23</a></sup></p>
+
+      <p>Schritt 7 schließlich ist der Feinschliff: Farben, Abstände, ein erklärender Einstiegsbildschirm und
+      mehrere saubere Probeläufe, bis die Vorführung sitzt.</p>
+
+      <div class="callout callout-key">
+        <div class="callout-head">🔑 Die wichtigsten Punkte aus Kapitel 5</div>
+        <ul>
+          <li>Schritt 4 baut die letzten zwei Agenten: Drift Tracker (rechnet die Abweichung aus) und Evidence
+          Bridge (sichert die Nachvollziehbarkeit).</li>
+          <li>Schritt 5 bis 7 machen alles sichtbar: eine Benutzeroberfläche (Frontend) mit einer farbigen
+          Heat-Map und der Möglichkeit, bis zur Einzelquelle hineinzuzoomen.</li>
+        </ul>
+      </div>
+
+      <p style="font-size:13px; color:var(--muted)">Alle vier Schritte sind inzwischen fertig. Die
+      <a href="index.html">Live-Demo</a> zeigt genau das hier beschriebene Ergebnis, mit einer Heat-Map, einer
+      geführten Tour und einem Drill-Down bis zur einzelnen Nachricht.</p>
+
+      <details class="footnotes">
+        <summary>Anmerkungen zu Kapitel 5 (4)</summary>
+        <ol>
+          <li id="fn5-1">Audit Trail bedeutet Prüfpfad. Gemeint ist eine lückenlose Spur, die jede Aussage bis zu
+          ihrer Originalquelle zurückverfolgbar macht. In regulierten Branchen ist so ein Prüfpfad oft sogar
+          Pflicht.</li>
+          <li id="fn5-2">Frontend bezeichnet den sichtbaren, bedienbaren Teil einer Software, mit dem der Nutzer
+          direkt interagiert. Das Gegenstück ist das Backend, der unsichtbare Teil im Hintergrund, der die
+          eigentliche Arbeit erledigt.</li>
+          <li id="fn5-3">Eine Heat-Map, deutsch Hitzekarte, ist eine Darstellung, die Werte durch Farben zeigt.
+          Kräftige Farben stehen für hohe, blasse für niedrige Werte. So erkennt das Auge auf einen Blick, wo
+          etwas auffällig ist.</li>
+          <li id="fn5-4">Drill-Down bedeutet Hinabbohren. Gemeint ist, dass man von einer Übersicht schrittweise
+          in immer feinere Details wechselt, bis hin zur einzelnen Originalquelle.</li>
+        </ol>
+      </details>
+    </section>
+
+    <!-- ================= KAPITEL 6 ================= -->
+    <section class="chapter" id="kapitel-6">
+      <div class="chapter-eyebrow">Kapitel 6</div>
+      <h2>Warum dieser Weg, nicht ein anderer</h2>
+
+      <p class="lead">Zum Abschluss die Begründung hinter den wichtigsten Entscheidungen. Denn für fast jeden
+      Schritt gäbe es Alternativen, und die bewusste Wahl gehört zur Erklärung dazu.</p>
+
+      <p><strong>Warum erst der Datensatz, dann der Code?</strong> Weil ein Tool ohne Material nicht prüfbar ist.
+      Mit einem Datensatz, dessen Lösung man kennt, kann man an jedem Punkt kontrollieren, ob die Maschine das
+      Richtige tut. Die Reihenfolge spart später viel Suchen nach Fehlern.</p>
+
+      <p><strong>Warum eine Datenbank und nicht einfach Dateien?</strong> Weil man aus Dateien zwar lesen, aber
+      nicht schnell rechnen und vergleichen kann. Sobald man Fragen stellt wie "welche Säule bekam im Juni wie
+      viel Aufmerksamkeit", braucht man die Ordnung und Geschwindigkeit einer Datenbank.</p>
+
+      <p><strong>Warum vier getrennte Agenten und nicht ein großes Programm?</strong> Weil jeder Agent eine klare,
+      prüfbare Aufgabe hat. Wenn etwas nicht stimmt, sieht man sofort, welcher Agent es war. Ein einziges großes
+      Programm, das alles auf einmal tut, wäre schwerer zu prüfen und schwerer zu erklären. Die Trennung schafft
+      Klarheit, für den Entwickler und für den, dem man es später vorführt.</p>
+
+      <p><strong>Warum überhaupt ein Sprachmodell?</strong> Weil die Aufgabe, den Sinn einer Nachricht zu erfassen
+      und einer Säule zuzuordnen, echtes Sprachverständnis erfordert. Eine einfache Stichwortsuche würde "wir
+      müssen schneller liefern" nicht als Abkehr von der Qualitäts-Säule erkennen. Ein Sprachmodell schon.</p>
+
+      <div class="callout callout-merke">
+        <div class="callout-head">📌 Merke</div>
+        <p>Jede Entscheidung im Bau folgt demselben Grundsatz: Nachvollziehbarkeit vor Bequemlichkeit. Getrennte
+        Agenten, eine geordnete Datenbank, ein bekannter Testfall, eine belegbare Quelle für jede Zahl. Das macht
+        die Engine nicht nur funktionsfähig, sondern auch vertrauenswürdig, und Vertrauen ist bei einem Tool, das
+        Aussagen über eine Organisation trifft, die eigentliche Währung.</p>
+      </div>
+
+      <div class="callout callout-key">
+        <div class="callout-head">🔑 Die wichtigsten Punkte aus Kapitel 6</div>
+        <ul>
+          <li>Der Datensatz kommt zuerst, weil man nur mit bekanntem Ergebnis prüfen kann.</li>
+          <li>Die Datenbank ermöglicht schnelles Rechnen und Vergleichen, was Dateien nicht können.</li>
+          <li>Getrennte Agenten schaffen Klarheit und leichte Fehlersuche.</li>
+          <li>Das Sprachmodell liefert echtes Sinnverständnis, das eine Stichwortsuche nicht hat.</li>
+          <li>Leitgrundsatz durchgehend: Nachvollziehbarkeit vor Bequemlichkeit.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= ANHANG A ================= -->
+    <section class="chapter" id="anhang-a">
+      <div class="chapter-eyebrow">Anhang A</div>
+      <h2>Glossar</h2>
+      <p class="lead">Alle Fachbegriffe dieses Dokuments in einfachen Worten, alphabetisch geordnet.</p>
+
+      <dl class="glossary">
+        <div><dt>Agent</dt><dd>Ein Software-Baustein, der eine klar umrissene Teilaufgabe eigenständig löst und
+        sein Ergebnis weitergibt.</dd></div>
+        <div><dt>API (Programmierschnittstelle)</dt><dd>Eine definierte Anschlussstelle, über die ein Programm
+        einem anderen Daten oder Funktionen anbietet, ohne dass dieses das Innenleben kennen muss.</dd></div>
+        <div><dt>Audit Trail (Prüfpfad)</dt><dd>Eine lückenlose Spur, die jede Aussage bis zu ihrer Originalquelle
+        zurückverfolgbar macht.</dd></div>
+        <div><dt>Backend</dt><dd>Der unsichtbare Teil einer Software, der im Hintergrund die eigentliche Arbeit
+        erledigt. Gegenstück zum Frontend.</dd></div>
+        <div><dt>Batching (Bündelung)</dt><dd>Mehrere Aufgaben werden zu einem Paket zusammengefasst und gemeinsam
+        bearbeitet, statt einzeln. Spart Zeit und Kosten.</dd></div>
+        <div><dt>Claude</dt><dd>Das in diesem Projekt verwendete Sprachmodell, entwickelt von der Firma
+        Anthropic.</dd></div>
+        <div><dt>Container</dt><dd>Ein abgeschlossener Behälter, der ein Programm samt allem, was es braucht,
+        verpackt, sodass es überall gleich läuft. Siehe Docker.</dd></div>
+        <div><dt>Datenbank</dt><dd>Ein spezialisierter Datenspeicher, der große Mengen strukturierter
+        Informationen ordnet und blitzschnell durchsuchbar macht.</dd></div>
+        <div><dt>Datenmodell</dt><dd>Der Bauplan einer Datenbank. Legt fest, welche Information in welche Tabelle
+        und welches Feld gehört.</dd></div>
+        <div><dt>Docker</dt><dd>Ein Tool, das Programme in Container verpackt, damit sie auf jedem Rechner
+        identisch laufen.</dd></div>
+        <div><dt>Drift (strategische Drift)</dt><dd>Das langsame, unbemerkte Abweichen einer Organisation von
+        ihrer erklärten Strategie.</dd></div>
+        <div><dt>Drift Tracker</dt><dd>Der dritte Agent. Zählt die Zuordnungen über die Zeit aus und berechnet die
+        Abweichung je Säule.</dd></div>
+        <div><dt>Drill-Down</dt><dd>Das schrittweise Hineinzoomen von einer Übersicht bis zur einzelnen
+        Originalquelle.</dd></div>
+        <div><dt>Embedding</dt><dd>Die Übersetzung eines Textes in eine Zahlenreihe, die seine Bedeutung abbildet.
+        Texte mit ähnlichem Sinn ergeben ähnliche Zahlenreihen.</dd></div>
+        <div><dt>Energy Mapper</dt><dd>Der zweite Agent. Ordnet jeden Datenpunkt einer strategischen Säule zu oder
+        markiert ihn als strategie-fern.</dd></div>
+        <div><dt>Evidence Bridge</dt><dd>Der vierte Agent. Hält für jede Zahl den Weg zurück zur Originalquelle
+        offen.</dd></div>
+        <div><dt>FastAPI</dt><dd>Ein Tool zum Bau von Programmierschnittstellen (API), mit dem der Zugang zu den
+        Ergebnissen gebaut wird.</dd></div>
+        <div><dt>Frontend</dt><dd>Der sichtbare, bedienbare Teil einer Software, mit dem der Nutzer direkt
+        arbeitet.</dd></div>
+        <div><dt>Heat-Map (Hitzekarte)</dt><dd>Eine Darstellung, die Werte durch Farben zeigt. Kräftige Farben für
+        hohe, blasse für niedrige Werte.</dd></div>
+        <div><dt>Ingestion (Aufnahme)</dt><dd>Das Einlesen und Vereinheitlichen von Daten aus verschiedenen
+        Quellen in ein System.</dd></div>
+        <div><dt>JSON</dt><dd>Ein einfaches, für Menschen und Programme lesbares Textformat zum Speichern
+        strukturierter Daten.</dd></div>
+        <div><dt>LangGraph</dt><dd>Ein Tool, das mehrere KI-Agenten zu einem geordneten Arbeitsablauf verbindet
+        und ihre Reihenfolge steuert.</dd></div>
+        <div><dt>Mock-Modus</dt><dd>Ein Testmodus, der einen teuren Bestandteil durch eine einfache, kostenlose
+        Nachbildung ersetzt, die sich nach außen gleich verhält.</dd></div>
+        <div><dt>Multi-Agenten-System</dt><dd>Ein System aus mehreren zusammenarbeitenden Agenten mit je eigener
+        Aufgabe.</dd></div>
+        <div><dt>pgvector</dt><dd>Eine Erweiterung der Datenbank Postgres, die Embeddings speichert und ihre
+        inhaltliche Nähe messbar macht.</dd></div>
+        <div><dt>Pillar (Säule)</dt><dd>Eine tragende strategische Aussage. Trägt Definition, Prüfkriterien und
+        einen Sollwert.</dd></div>
+        <div><dt>Pillar Extractor</dt><dd>Der erste Agent. Zerlegt das Strategiepapier in einzelne prüfbare
+        Säulen.</dd></div>
+        <div><dt>Postgres</dt><dd>Eine bewährte, quelloffene und kostenlose Datenbank, die in diesem Projekt die
+        Daten speichert.</dd></div>
+        <div><dt>Prompt</dt><dd>Die Anweisung an ein Sprachmodell. Ihre Präzision entscheidet über die Qualität
+        der Antwort.</dd></div>
+        <div><dt>Python</dt><dd>Eine weit verbreitete, gut lesbare Programmiersprache, oft für Datenverarbeitung
+        und KI genutzt.</dd></div>
+        <div><dt>React</dt><dd>Ein verbreitetes Tool zum Bau von Benutzeroberflächen (Frontend).</dd></div>
+        <div><dt>Repository (Repo)</dt><dd>Ein strukturierter Projektordner mit allen Dateien und ihrer
+        vollständigen Änderungsgeschichte.</dd></div>
+        <div><dt>Synthetischer Datensatz</dt><dd>Ein erfundener, aber realistisch wirkender Datensatz, genutzt zum
+        Entwickeln und Vorführen, wenn echte Daten sensibel oder nicht verfügbar sind.</dd></div>
+      </dl>
+    </section>
+
+    <!-- ================= ANHANG B ================= -->
+    <section class="chapter" id="anhang-b">
+      <div class="chapter-eyebrow">Anhang B</div>
+      <h2>Tool-Übersicht</h2>
+      <p class="lead">Alle verwendeten Tools auf einen Blick: was es ist, wozu es dient, warum es gewählt wurde.</p>
+
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-card-head"><span class="tool-card-name">Python</span><span class="tool-card-cat">Programmiersprache</span></div>
+          <p>Die Sprache, in der der größte Teil des Programms geschrieben ist. Sie gilt als besonders gut
+          lesbar, fast wie strukturiertes Englisch, und ist im Bereich Datenverarbeitung und künstliche
+          Intelligenz der weltweite Standard. Gewählt, weil fast alle Tools für KI und Datenarbeit in Python
+          verfügbar sind und die Sprache dadurch die reibungsloseste Zusammenarbeit mit allen anderen Bausteinen
+          erlaubt.</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head"><span class="tool-card-name">JSON</span><span class="tool-card-cat">Datenformat</span></div>
+          <p>Das Format, in dem der synthetische Datensatz gespeichert ist. Es hält Informationen als
+          beschriftete Paare aus Bezeichnung und Wert, etwa "Absender: Sarah". Gewählt, weil es sowohl von
+          Menschen gelesen als auch von Programmen mühelos verarbeitet werden kann. Man kann eine Datei öffnen
+          und den Inhalt sofort verstehen, ohne Spezialsoftware, und trotzdem rechnet das Programm zuverlässig
+          damit.</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head"><span class="tool-card-name">Docker</span><span class="tool-card-cat">Verpackung</span></div>
+          <p>Verpackt Datenbank und Programm in abgeschlossene Behälter, die auf jedem Rechner gleich laufen.
+          Gewählt, damit das Projekt ohne Einrichtungs-Ärger startet: Ein einziger Befehl bringt die gesamte
+          Umgebung zum Laufen, egal wie der jeweilige Computer sonst eingestellt ist. Das erspart die häufigste
+          Fehlerquelle in der Software, nämlich "bei mir läuft es, bei dir nicht".</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head"><span class="tool-card-name">Postgres mit pgvector</span><span class="tool-card-cat">Datenbank</span></div>
+          <p>Speichert alle Daten geordnet und blitzschnell durchsuchbar. Postgres ist eine seit Jahrzehnten
+          bewährte, kostenlose Datenbank. Die Erweiterung pgvector kommt hinzu, weil sie Texte nicht nur als
+          Buchstaben, sondern auch als ihre Bedeutung speichern kann. Gewählt, weil diese Kombination erlaubt,
+          später nach inhaltlicher Ähnlichkeit zu suchen, nicht nur nach exakten Wörtern, was für die Zuordnung
+          der Nachrichten entscheidend ist.</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head"><span class="tool-card-name">FastAPI</span><span class="tool-card-cat">Schnittstelle</span></div>
+          <p>Baut den Zugang, über den man die Ergebnisse abruft, die Programmierschnittstelle. Gewählt, weil es
+          modern, schnell und genau für diesen Zweck gemacht ist. Ein angenehmer Nebeneffekt: FastAPI erzeugt
+          automatisch eine bedienbare Test-Oberfläche, über die man die Schnittstelle ausprobieren kann, ohne
+          selbst etwas programmieren zu müssen. Das beschleunigt Entwicklung und Fehlersuche.</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head"><span class="tool-card-name">Claude (Anthropic API)</span><span class="tool-card-cat">Sprachmodell</span></div>
+          <p>Das KI-System, das Texte versteht und den strategischen Säulen zuordnet. Gewählt, weil es sprachlich
+          stark ist, mit deutschen Texten zuverlässig umgeht und über eine saubere Schnittstelle ansprechbar ist.
+          Es trägt die eigentliche Urteilsarbeit der beiden ersten Agenten: Es erkennt, worauf eine Nachricht
+          inhaltlich zielt, auch wenn kein einziges Stichwort wörtlich passt.</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head"><span class="tool-card-name">LangGraph</span><span class="tool-card-cat">Ablaufsteuerung</span></div>
+          <p>Verbindet die Agenten zu einem geordneten Arbeitsablauf und legt fest, welcher Agent wann arbeitet
+          und wie die Ergebnisse weitergereicht werden. Gewählt, weil es genau für die Steuerung mehrstufiger
+          KI-Abläufe gebaut ist. Es sorgt dafür, dass die feste Reihenfolge eingehalten wird und der Ablauf auch
+          dann nachvollziehbar bleibt, wenn später weitere Agenten hinzukommen.</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-card-head"><span class="tool-card-name">React</span><span class="tool-card-cat">Benutzeroberfläche (geplant)</span></div>
+          <p>Baut in den kommenden Schritten den sichtbaren Teil am Bildschirm, inklusive der farbigen Heat-Map.
+          Gewählt, weil es der verbreitetste Standard für moderne, interaktive Oberflächen ist. Das bedeutet:
+          viele fertige Bausteine, gute Tools und die Sicherheit, dass die Oberfläche auf allen gängigen Geräten
+          und Browsern zuverlässig funktioniert.
+          <span class="aside-note">Stand Bauzeit. Die fertige Oberfläche in der Live-Demo nutzt stattdessen
+          eigenständiges HTML, CSS und JavaScript ohne Build-Schritt, siehe Update-Hinweis oben.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-footer">
+      <span>Strategic Drift Engine &middot; Anhang: Bauprozess</span>
+      <a href="#top" class="back-to-top">Nach oben ↑</a>
+      <a href="index.html">Zur Live-Demo</a>
+    </div>
+  </main>
+</div>
+
+<script>
+// Aktiven TOC-Eintrag beim Scrollen markieren.
+(function(){
+  const links = Array.from(document.querySelectorAll('.toc a'));
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const sections = Array.from(document.querySelectorAll('section.chapter[id]'));
+  if(!('IntersectionObserver' in window) || !sections.length) return;
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      const link = map.get(e.target.id);
+      if(!link) return;
+      if(e.isIntersecting) links.forEach(l=>l.classList.remove('active'));
+      if(e.isIntersecting) link.classList.add('active');
+    });
+  }, {rootMargin:'-15% 0px -70% 0px', threshold:0});
+  sections.forEach(s=>io.observe(s));
+})();
+</script>
+</body>
+</html>
