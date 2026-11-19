@@ -21,7 +21,7 @@ strategy = {
 strategy_js = json.dumps(strategy, ensure_ascii=False)
 
 HTML = r"""<!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -64,7 +64,7 @@ body{
 .byline a{color:var(--muted); text-decoration:none; border-bottom:1px solid rgba(130,152,164,.35)}
 .byline a:hover{color:var(--ink); border-bottom-color:var(--amber)}
 h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
-  line-height:1.02; letter-spacing:-.01em; margin:0 0 12px; max-width:16ch}
+  line-height:1.02; letter-spacing:-.01em; margin:0 0 12px; max-width:24ch}
 .sub{color:var(--muted); font-size:15px; max-width:82ch; margin:0}
 
 .reading{margin-top:22px; padding:15px 18px; border-left:3px solid var(--amber);
@@ -260,50 +260,50 @@ footer .note{color:var(--faint); opacity:.85}
 <body>
 <div class="gov" role="note" aria-label="Governance">
   <div class="gov-in">
-    <span class="gov-title">Governance by design</span>
+    <span class="gov-title">Governance von Anfang an</span>
     <a class="gov-link" href="https://github.com/frankknebeljanssen-create/strategic-drift-engine#governance-und-datenschutz" target="_blank" rel="noopener">Details</a>
     <ul class="gov-list">
-      <li>Channel-level opt-in only</li>
-      <li>Public channels only, never direct messages</li>
-      <li>Aggregated at strategy-pillar level, never individual scoring</li>
-      <li>Works council and data protection officer involved from day one, not after the fact</li>
+      <li>Nur Opt-in auf Kanalebene</li>
+      <li>Nur oeffentliche Kanaele, nie Direktnachrichten</li>
+      <li>Aggregiert auf Saeulenebene, nie Einzelbewertung</li>
+      <li>Betriebsrat und Datenschutzbeauftragte von Anfang an eingebunden, nicht erst nachtraeglich</li>
     </ul>
   </div>
 </div>
 <div class="wrap">
   <header>
     <div class="eyebrow">Strategic Drift Engine</div>
-    <div class="byline">A demo project by <a href="https://github.com/frankknebeljanssen-create/strategic-drift-engine" target="_blank" rel="noopener">Frank Knebel-Janssen</a></div>
-    <h1>Where attention actually went</h1>
-    <p class="sub">Each cell compares the measured attention on a strategic pillar with its target over time. The amber mark shows the target. Select a cell to see the messages the number came from.</p>
+    <div class="byline">Ein Demoprojekt von <a href="https://github.com/frankknebeljanssen-create/strategic-drift-engine" target="_blank" rel="noopener">Frank Knebel-Janssen</a></div>
+    <h1>Wohin die Aufmerksamkeit wirklich floss</h1>
+    <p class="sub">Jede Zelle vergleicht die gemessene Aufmerksamkeit auf eine strategische Saeule mit ihrem Soll ueber die Zeit. Der amberfarbene Strich markiert das Soll. Eine Zelle waehlen, um die Nachrichten zu sehen, aus denen der Wert entstanden ist.</p>
     <div class="reading" id="reading"></div>
   </header>
 
   <div class="board">
     <section class="panel heatmap-panel">
       <div class="hm-head">
-        <div class="hm-title">Attention over time</div>
+        <div class="hm-title">Aufmerksamkeit im Zeitverlauf</div>
         <div class="hm-actions">
-          <button class="ghost-btn" id="strategyBtn">Strategy</button>
-          <button class="tour-btn" id="tourBtn">Guided Tour</button>
+          <button class="ghost-btn" id="strategyBtn">Strategie</button>
+          <button class="tour-btn" id="tourBtn">Gefuehrte Tour</button>
         </div>
       </div>
       <div class="legend">
         <div class="scale">
-          <span class="scale-label">below target</span>
+          <span class="scale-label">unter Soll</span>
           <span class="scale-bar"></span>
-          <span class="scale-label">above target</span>
+          <span class="scale-label">ueber Soll</span>
         </div>
-        <div class="legend-soll"><span class="soll-mark"></span> Target per pillar</div>
+        <div class="legend-soll"><span class="soll-mark"></span> Soll je Saeule</div>
       </div>
       <div id="grid" class="grid"></div>
       <div class="tourbar" id="tourbar" hidden>
         <span class="tb-step" id="tbStep"></span>
         <div class="tb-body"><div class="tb-title" id="tbTitle"></div><div class="tb-text" id="tbText"></div></div>
         <div class="tb-ctrl">
-          <button id="tbPrev">Back</button>
-          <button id="tbNext" class="prim">Next</button>
-          <button id="tbEnd">Done</button>
+          <button id="tbPrev">Zurueck</button>
+          <button id="tbNext" class="prim">Weiter</button>
+          <button id="tbEnd">Fertig</button>
         </div>
       </div>
     </section>
@@ -316,25 +316,25 @@ footer .note{color:var(--faint); opacity:.85}
 
 <div class="modal-overlay" id="strategyModal" hidden role="dialog" aria-modal="true" aria-labelledby="strategyTitle">
   <div class="modal-panel">
-    <button class="modal-close" id="strategyClose" aria-label="Close">×</button>
-    <h2 class="modal-title" id="strategyTitle">Strategy briefing</h2>
+    <button class="modal-close" id="strategyClose" aria-label="Schliessen">×</button>
+    <h2 class="modal-title" id="strategyTitle">Strategie-Steckbrief</h2>
     <div id="strategyBody"></div>
   </div>
 </div>
 
 <div class="modal-overlay" id="welcomeModal" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
   <div class="modal-panel welcome-panel">
-    <div class="eyebrow">Demo Project</div>
+    <div class="eyebrow">Demoprojekt</div>
     <h2 class="modal-title" id="welcomeTitle">Strategic Drift Engine</h2>
-    <p class="welcome-text">A multi-agent system that measures the gap between a company's stated strategy and what its internal communication actually shows. Everything here runs on a synthetic dataset for a fictional company, TechCo, so feel free to click around.</p>
+    <p class="welcome-text">Ein Workflow aus vier Agenten, der die Luecke zwischen der formulierten Strategie eines Unternehmens und dem misst, was seine interne Kommunikation tatsaechlich zeigt. Alles hier laeuft auf einem synthetischen Datensatz eines fiktiven Unternehmens, TechCo. Einfach durchklicken.</p>
     <div class="welcome-actions">
-      <button class="tour-btn" id="welcomeTour">Start guided tour</button>
-      <button class="ghost-btn" id="welcomeExplore">Explore on my own</button>
+      <button class="tour-btn" id="welcomeTour">Gefuehrte Tour starten</button>
+      <button class="ghost-btn" id="welcomeExplore">Selbst erkunden</button>
     </div>
     <div class="welcome-foot">
-      <a href="bauprozess.html" target="_blank" rel="noopener">Read how this was built</a>
+      <a href="bauprozess.html" target="_blank" rel="noopener">So wurde das gebaut</a>
       <span class="dot">&middot;</span>
-      <a href="https://github.com/frankknebeljanssen-create/strategic-drift-engine" target="_blank" rel="noopener">View the source on GitHub</a>
+      <a href="https://github.com/frankknebeljanssen-create/strategic-drift-engine" target="_blank" rel="noopener">Quellcode auf GitHub</a>
     </div>
   </div>
 </div>
@@ -343,10 +343,10 @@ footer .note{color:var(--faint); opacity:.85}
 const DATA = __DATA__;
 const STRATEGY = __STRATEGY__;
 
-const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-function fdate(iso){const [y,m,d]=iso.split("-").map(Number); return MON[m-1]+" "+d;}
+const MON = ["Jan","Feb","Mrz","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+function fdate(iso){const [y,m,d]=iso.split("-").map(Number); return d+". "+MON[m-1];}
 function frange(w){return fdate(w.start)+" – "+fdate(w.end);}
-function fdatefull(iso){const [y,m,d]=iso.split("-").map(Number); return MON[m-1]+" "+d+", "+y;}
+function fdatefull(iso){const [y,m,d]=iso.split("-").map(Number); return d+". "+MON[m-1]+" "+y;}
 
 const pillars = DATA.pillars;
 const windows = DATA.windows;
@@ -391,7 +391,7 @@ function renderGrid(){
   grid.innerHTML = "";
   const head = document.createElement("div");
   head.className="ghead"; head.style.gridTemplateColumns=cols;
-  head.innerHTML = '<div class="corner">Pillar &nbsp;\\&nbsp; Period</div>' +
+  head.innerHTML = '<div class="corner">Saeule &nbsp;\\&nbsp; Zeitraum</div>' +
     windows.map(w=>'<div class="whead"><span class="wspan">'+frange(w)+'</span></div>').join("");
   grid.appendChild(head);
 
@@ -400,20 +400,20 @@ function renderGrid(){
     row.className="row"; row.style.gridTemplateColumns=cols;
     const label = document.createElement("div");
     label.className="rlabel";
-    label.innerHTML = '<div class="rtitle">'+p.title+'</div><div class="rsoll">Target '+pct(p.soll_anteil)+'</div>'+sparkline(p.key);
+    label.innerHTML = '<div class="rtitle">'+p.title+'</div><div class="rsoll">Soll '+pct(p.soll_anteil)+'</div>'+sparkline(p.key);
     row.appendChild(label);
     windows.forEach(w=>{
       const c = cellMap[w.index+":"+p.key];
       const btn = document.createElement("button");
       btn.className="cell"; btn.style.background=driftColor(c.drift);
-      btn.setAttribute("aria-label", p.title+", "+frange(w)+": actual "+pct(c.ist_anteil)+", deviation "+signed(c.drift)+" percentage points");
+      btn.setAttribute("aria-label", p.title+", "+frange(w)+": Ist "+pct(c.ist_anteil)+", Abweichung "+signed(c.drift)+" Prozentpunkte");
       const fill = Math.max(0,Math.min(100, c.ist_anteil*100));
       const tick = Math.max(0,Math.min(100, c.soll_anteil*100));
       btn.innerHTML =
         '<div class="cell-ist">'+pct(c.ist_anteil)+'</div>'+
         '<div class="cell-bar"><div class="cell-fill" style="width:'+fill+'%"></div>'+
           '<div class="cell-tick" style="left:'+tick+'%"></div></div>'+
-        '<div class="cell-drift">'+signed(c.drift)+' pp</div>';
+        '<div class="cell-drift">'+signed(c.drift)+' PP</div>';
       btn.dataset.key = w.index+":"+p.key;
       btn.addEventListener("click",()=>{ if(tour.active) endTour(); select(w.index,p.key); });
       row.appendChild(btn);
@@ -422,6 +422,25 @@ function renderGrid(){
   });
 }
 
+const TYPE_LABEL = {slack:"Slack", mail:"Mail", meeting_note:"Besprechung", meeting:"Besprechung", calendar:"Kalender"};
+function trSignal(s){
+  let m;
+  if((m=s.match(/^scores: (.*)$/))) return "Werte: "+m[1];
+  if((m=s.match(/^chosen: (.*) \(score (-?\d+)\)$/))) return "gewaehlt: "+m[1]+" (Wert "+m[2]+")";
+  if((m=s.match(/^reduces (.*?): (.*)$/))) return "senkt "+m[1]+": "+m[2];
+  if((m=s.match(/^calendar category: (.*?) \(no pillar mapping\)$/))) return "Kalender-Kategorie: "+m[1]+" (keiner Saeule zugeordnet)";
+  if((m=s.match(/^calendar category: (.*?) -> (.*)$/))) return "Kalender-Kategorie: "+m[1]+" -> "+m[2];
+  return s;
+}
+function trContribution(s){
+  let m, base = s, tail = "";
+  const rm = s.match(/^(.*) and reduces (.+)\.$/);
+  if(rm){ base = rm[1]+"."; tail = " Zugleich senkt die Nachricht "+rm[2]+"."; }
+  if((m=base.match(/^Contributes to (.+?): keywords (.+) outweigh other signals\.$/))) return "Traegt zu "+m[1]+" bei: Die Schluesselwoerter "+m[2]+" ueberwiegen die anderen Signale."+tail;
+  if((m=base.match(/^Contributes to (.+?): calendar event categorized as '(.+)'\.$/))) return "Traegt zu "+m[1]+" bei: Kalendertermin der Kategorie '"+m[2]+"'."+tail;
+  if((m=base.match(/^Contributes to (.+?) on keyword scoring\.$/))) return "Traegt zu "+m[1]+" bei (Schluesselwort-Bewertung)."+tail;
+  return s;
+}
 const TYPE_BADGE = {slack:"b-slack", mail:"b-mail", meeting:"b-meeting", meeting_note:"b-meeting", calendar:"b-calendar"};
 
 function select(wi, pkey){
@@ -444,15 +463,15 @@ function signalClass(s){
 
 function confLabel(c){
   if(c==null) return "";
-  if(c >= 0.9) return "very high";
-  if(c >= 0.75) return "high";
-  if(c >= 0.5) return "moderate";
-  return "low";
+  if(c >= 0.9) return "sehr hoch";
+  if(c >= 0.75) return "hoch";
+  if(c >= 0.5) return "mittel";
+  return "niedrig";
 }
 
 function evidenceCard(e){
   const badge = TYPE_BADGE[e.type]||"b-calendar";
-  const chan = e.type + (e.channel? " · "+e.channel : "");
+  const chan = (TYPE_LABEL[e.type]||e.type) + (e.channel? " · "+e.channel : "");
   const conf = Math.round((e.confidence||0)*100);
   const confNum = e.confidence!=null ? e.confidence.toFixed(2) : "–";
   const cLabel = confLabel(e.confidence);
@@ -464,29 +483,29 @@ function evidenceCard(e){
   const needsToggle = rawFull.length > PREVIEW_LEN;
 
   const signals = (e.signals||[])
-    .map(s=>'<li class="'+signalClass(s)+'">'+escapeHtml(s)+"</li>")
+    .map(s=>'<li class="'+signalClass(s)+'">'+escapeHtml(trSignal(s))+"</li>")
     .join("");
-  const contribution = e.contribution || e.rationale || "";
+  const contribution = trContribution(e.contribution || e.rationale || "");
 
   return '<div class="ev">'+
     '<div class="ev-top"><span class="badge '+badge+'">'+chan+'</span>'+
-    '<span class="ev-meta">'+(e.author||"—")+' · '+fdate(e.ts.slice(0,10))+'</span></div>'+
+    '<span class="ev-meta">'+(e.author||"-")+' · '+fdate(e.ts.slice(0,10))+'</span></div>'+
     '<div class="ev-snip" data-preview="'+escapeHtml(preview)+'" data-full="'+escapeHtml(rawFull)+'">'+
       escapeHtml(preview)+'</div>'+
-    (needsToggle ? '<button class="ev-toggle" type="button">Show full message</button>' : '')+
+    (needsToggle ? '<button class="ev-toggle" type="button">Ganze Nachricht anzeigen</button>' : '')+
     '<div class="ev-eng">'+
-      '<div class="ev-eng-title">How the engine read this</div>'+
-      (contribution ? '<div class="ev-eng-row"><span class="ev-eng-k">Contribution</span>'+
+      '<div class="ev-eng-title">So hat die Engine das gelesen</div>'+
+      (contribution ? '<div class="ev-eng-row"><span class="ev-eng-k">Beitrag</span>'+
         '<span class="ev-eng-v">'+escapeHtml(contribution)+'</span></div>' : '')+
-      (signals ? '<div class="ev-eng-row"><span class="ev-eng-k">Signals detected</span>'+
+      (signals ? '<div class="ev-eng-row"><span class="ev-eng-k">Erkannte Signale</span>'+
         '<ul class="ev-signals">'+signals+'</ul></div>' : '')+
-      '<div class="ev-eng-row"><span class="ev-eng-k">Confidence</span>'+
+      '<div class="ev-eng-row"><span class="ev-eng-k">Konfidenz</span>'+
         '<div class="ev-conf"><span class="conf-track">'+
         '<span class="conf-fill" style="width:'+conf+'%"></span></span>'+
         '<span class="conf-num">'+confNum+'</span>'+
         (cLabel ? '<span class="conf-label">'+cLabel+'</span>' : '')+
         '</div>'+
-        '<div class="conf-scale">0 low · 1 max</div>'+
+        '<div class="conf-scale">0 niedrig · 1 maximal</div>'+
       '</div>'+
     '</div>'+
   '</div>';
@@ -501,10 +520,10 @@ document.addEventListener("click", (ev)=>{
   const expanded = snip.classList.toggle("full");
   if(expanded){
     snip.textContent = snip.dataset.full || "";
-    btn.textContent = "Show less";
+    btn.textContent = "Weniger anzeigen";
   } else {
     snip.textContent = snip.dataset.preview || "";
-    btn.textContent = "Show full message";
+    btn.textContent = "Ganze Nachricht anzeigen";
   }
 });
 
@@ -520,12 +539,12 @@ function renderDrill(wi, pkey){
     '<div class="drill-head"><div class="d-pillar">'+p.title+'</div>'+
       '<div class="d-win">'+fdatefull(w.start)+' – '+fdatefull(w.end)+'</div></div>'+
     '<div class="d-stats">'+
-      '<div class="d-stat"><div class="k">Actual</div><div class="v">'+pct(c.ist_anteil)+'</div></div>'+
-      '<div class="d-stat"><div class="k">Target</div><div class="v" style="color:var(--amber)">'+pct(c.soll_anteil)+'</div></div>'+
-      '<div class="d-stat"><div class="k">Drift</div><div class="v" style="color:'+driftCol+'">'+signed(c.drift)+' pp</div></div>'+
-      '<div class="d-stat"><div class="k">Sources</div><div class="v">'+c.n_sources+'</div></div>'+
-    '</div><div class="d-evhead">Messages behind this number</div>'+
-    '<div class="ev-list">'+(items||'<div style="color:var(--faint);padding:20px 0">No sources in this cell.</div>')+'</div>';
+      '<div class="d-stat"><div class="k">Ist</div><div class="v">'+pct(c.ist_anteil)+'</div></div>'+
+      '<div class="d-stat"><div class="k">Soll</div><div class="v" style="color:var(--amber)">'+pct(c.soll_anteil)+'</div></div>'+
+      '<div class="d-stat"><div class="k">Drift</div><div class="v" style="color:'+driftCol+'">'+signed(c.drift)+' PP</div></div>'+
+      '<div class="d-stat"><div class="k">Belege</div><div class="v">'+c.n_sources+'</div></div>'+
+    '</div><div class="d-evhead">Nachrichten hinter dieser Zahl</div>'+
+    '<div class="ev-list">'+(items||'<div style="color:var(--faint);padding:20px 0">Keine Belege in dieser Zelle.</div>')+'</div>';
 }
 
 function renderReading(){
@@ -533,11 +552,11 @@ function renderReading(){
   const w = windows[peak.window_index];
   const wcells = pillars.map(p=>cellMap[peak.window_index+":"+p.key]);
   const low = wcells.reduce((a,b)=>a.drift<b.drift?a:b);
-  const verb = peak.drift>0 ? "draws the most attention" : "is most neglected";
-  let txt = '<b>'+pillarTitle(peak.pillar_key)+'</b> '+verb+' in the period <span class="r-num">'+frange(w)+
-    '</span>, at <span class="r-num">'+pct(peak.ist_anteil)+'</span> against a target of <span class="r-num">'+pct(peak.soll_anteil)+'</span>.';
+  const verb = peak.drift>0 ? "zieht die meiste Aufmerksamkeit auf sich" : "wird am staerksten vernachlaessigt";
+  let txt = '<b>'+pillarTitle(peak.pillar_key)+'</b> '+verb+' im Zeitraum <span class="r-num">'+frange(w)+
+    '</span> mit <span class="r-num">'+pct(peak.ist_anteil)+'</span> gegen ein Soll von <span class="r-num">'+pct(peak.soll_anteil)+'</span>.';
   if(low.pillar_key!==peak.pillar_key && low.drift<0){
-    txt += ' In the same window, <b>'+pillarTitle(low.pillar_key)+'</b> drops to <span class="r-num">'+pct(low.ist_anteil)+'</span>.';
+    txt += ' Im selben Fenster faellt <b>'+pillarTitle(low.pillar_key)+'</b> auf <span class="r-num">'+pct(low.ist_anteil)+'</span>.';
   }
   document.getElementById("reading").innerHTML = txt;
 }
@@ -546,26 +565,26 @@ function buildTour(){
   const steps=[]; const lastW=windows.length-1;
   const w0 = pillars.map(p=>cellMap["0:"+p.key]);
   const near0 = w0.reduce((a,b)=>Math.abs(a.drift)<Math.abs(b.drift)?a:b);
-  steps.push({wi:0, pkey:near0.pillar_key, title:"What you're looking at",
-    text:"TechCo's leadership defined three strategic pillars in a one-page brief. The heat map shows how much real attention each pillar got, week by week, against that target. Click Strategy at the top anytime to see the original brief."});
-  steps.push({wi:0, pkey:near0.pillar_key, title:"Baseline",
-    text:"In the first window, the pillars stay close to their targets. "+pillarTitle(near0.pillar_key)+" hits its target almost exactly."});
+  steps.push({wi:0, pkey:near0.pillar_key, title:"Was hier zu sehen ist",
+    text:"Die Fuehrung von TechCo hat in einem einseitigen Steckbrief drei strategische Saeulen festgelegt. Die Heat-Map zeigt, wie viel Aufmerksamkeit jede Saeule tatsaechlich bekam, Zeitfenster fuer Zeitfenster, gemessen an diesem Soll. Ueber den Button Strategie oben rechts laesst sich jederzeit der urspruengliche Steckbrief ansehen."});
+  steps.push({wi:0, pkey:near0.pillar_key, title:"Ausgangslage",
+    text:"Im ersten Zeitfenster liegen die Saeulen nahe am Soll. "+pillarTitle(near0.pillar_key)+" trifft den Zielwert fast genau."});
   const peak = DATA.cells.reduce((a,b)=>Math.abs(a.drift)>Math.abs(b.drift)?a:b);
-  steps.push({wi:peak.window_index, pkey:peak.pillar_key, title:"Largest deviation",
-    text:pillarTitle(peak.pillar_key)+" reaches "+pct(peak.ist_anteil)+" against a target of "+pct(peak.soll_anteil)+" ("+signed(peak.drift)+" pp). On the right you can see the messages the value came from."});
+  steps.push({wi:peak.window_index, pkey:peak.pillar_key, title:"Groesste Abweichung",
+    text:pillarTitle(peak.pillar_key)+" erreicht "+pct(peak.ist_anteil)+" gegen ein Soll von "+pct(peak.soll_anteil)+" ("+signed(peak.drift)+" PP). Rechts stehen die Nachrichten, aus denen dieser Wert entstand."});
   const wc = pillars.map(p=>cellMap[peak.window_index+":"+p.key]);
   const opp = wc.reduce((a,b)=>a.drift<b.drift?a:b);
   if(opp.pillar_key!==peak.pillar_key){
-    steps.push({wi:peak.window_index, pkey:opp.pillar_key, title:"The flip side",
-      text:"In the same window, "+pillarTitle(opp.pillar_key)+" falls to "+pct(opp.ist_anteil)+" ("+signed(opp.drift)+" pp). What one pillar gains, another loses."});
+    steps.push({wi:peak.window_index, pkey:opp.pillar_key, title:"Die Kehrseite",
+      text:"Im selben Fenster faellt "+pillarTitle(opp.pillar_key)+" auf "+pct(opp.ist_anteil)+" ("+signed(opp.drift)+" PP). Was eine Saeule gewinnt, verliert eine andere."});
   }
   const wl = pillars.map(p=>cellMap[lastW+":"+p.key]);
   const nearL = wl.reduce((a,b)=>Math.abs(a.drift)<Math.abs(b.drift)?a:b);
   const spread = Math.round(Math.max(...wl.map(c=>Math.abs(c.drift)))*100);
-  steps.push({wi:lastW, pkey:nearL.pillar_key, title:"By the end",
-    text:"In the final window, the pillars converge again. The largest remaining deviation is "+spread+" percentage points."});
-  steps.push({wi:peak.window_index, pkey:peak.pillar_key, title:"How to check any number",
-    text:"Click any cell, then click a message and expand it. The panel below shows exactly which words the engine picked up on, and whether they support or work against a pillar. That's the full trail from claim to evidence."});
+  steps.push({wi:lastW, pkey:nearL.pillar_key, title:"Zum Ende",
+    text:"Im letzten Fenster naehern sich die Saeulen wieder an. Die groesste verbleibende Abweichung betraegt "+spread+" Prozentpunkte."});
+  steps.push({wi:peak.window_index, pkey:peak.pillar_key, title:"So laesst sich jede Zahl pruefen",
+    text:"Eine Zelle anklicken, dann eine Nachricht aufklappen. Der Block darunter zeigt genau, welche Woerter die Engine erkannt hat und ob sie eine Saeule stuetzen oder ihr entgegenwirken. Das ist die lueckenlose Spur von der Behauptung zum Beleg."});
   return steps;
 }
 
@@ -574,23 +593,23 @@ function startTour(){
   tour.active=true; tour.i=0; tour.steps=buildTour();
   document.getElementById("grid").classList.add("touring");
   document.getElementById("tourbar").hidden=false;
-  document.getElementById("tourBtn").textContent="Tour running";
+  document.getElementById("tourBtn").textContent="Tour laeuft";
   showTourStep();
 }
 function showTourStep(){
   const s=tour.steps[tour.i];
   select(s.wi, s.pkey);
-  document.getElementById("tbStep").textContent="Step "+(tour.i+1)+" / "+tour.steps.length;
+  document.getElementById("tbStep").textContent="Schritt "+(tour.i+1)+" / "+tour.steps.length;
   document.getElementById("tbTitle").textContent=s.title;
   document.getElementById("tbText").textContent=s.text;
   document.getElementById("tbPrev").disabled = tour.i===0;
-  document.getElementById("tbNext").textContent = tour.i===tour.steps.length-1 ? "Restart" : "Next";
+  document.getElementById("tbNext").textContent = tour.i===tour.steps.length-1 ? "Von vorn" : "Weiter";
 }
 function endTour(){
   tour.active=false;
   document.getElementById("grid").classList.remove("touring");
   document.getElementById("tourbar").hidden=true;
-  document.getElementById("tourBtn").textContent="Guided Tour";
+  document.getElementById("tourBtn").textContent="Gefuehrte Tour";
 }
 document.getElementById("tourBtn").addEventListener("click",()=>{ tour.active?endTour():startTour(); });
 document.getElementById("tbPrev").addEventListener("click",()=>{ if(tour.i>0){tour.i--; showTourStep();} });
@@ -616,13 +635,13 @@ function renderMarkdown(md){
 }
 
 function pillarCard(p){
-  const w = p.soll_gewicht!=null ? Math.round(p.soll_gewicht*100)+"%" : "—";
+  const w = p.soll_gewicht!=null ? Math.round(p.soll_gewicht*100)+"%" : "-";
   const kris = (p.kriterien||[]).map(k=>"<li>"+escapeHtml(k)+"</li>").join("");
   return '<div class="p-card">'+
     '<div class="p-card-head"><div class="p-card-title">'+escapeHtml(p.title||p.key)+'</div>'+
-      '<span class="p-card-w" title="Target weight">'+w+'</span></div>'+
-    (p.grundsatz ? '<div class="p-card-k">Principle</div><div class="p-card-p">'+escapeHtml(p.grundsatz)+'</div>' : '')+
-    (kris ? '<div class="p-card-k">Criteria</div><ul>'+kris+'</ul>' : '')+
+      '<span class="p-card-w" title="Sollgewicht">'+w+'</span></div>'+
+    (p.grundsatz ? '<div class="p-card-k">Grundsatz</div><div class="p-card-p">'+escapeHtml(p.grundsatz)+'</div>' : '')+
+    (kris ? '<div class="p-card-k">Kriterien</div><ul>'+kris+'</ul>' : '')+
   '</div>';
 }
 
@@ -632,7 +651,7 @@ function openStrategy(){
   document.getElementById("strategyBody").innerHTML =
     '<div class="md-body">'+md+'</div>'+
     '<div class="modal-sep"></div>'+
-    '<div class="derived-title">Derived pillars</div>'+
+    '<div class="derived-title">Abgeleitete Saeulen</div>'+
     '<div class="p-cards">'+cards+'</div>';
   document.getElementById("strategyModal").hidden = false;
   document.body.style.overflow = "hidden";
@@ -669,10 +688,10 @@ document.getElementById("welcomeModal").addEventListener("click", e=>{
 function renderFoot(){
   const tot = Object.values(DATA.evidence).reduce((a,v)=>a+v.length,0);
   document.getElementById("foot").innerHTML =
-    '<span class="note">Synthetic demo dataset, fictional company TechCo.</span>' + '<span class="dot">•</span>' +
-    windows.length+" windows" + '<span class="dot">•</span>' + pillars.length+" pillars" +
-    '<span class="dot">•</span>' + tot+" linked sources" + '<span class="dot">•</span>' + "run "+DATA.run_id +
-    '<span class="dot">•</span>' + '<a href="bauprozess.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px">How this was built</a>';
+    '<span class="note">Synthetischer Demo-Datensatz, fiktives Unternehmen TechCo.</span>' + '<span class="dot">•</span>' +
+    windows.length+" Zeitfenster" + '<span class="dot">•</span>' + pillars.length+" Saeulen" +
+    '<span class="dot">•</span>' + tot+" verknuepfte Belege" + '<span class="dot">•</span>' + "Lauf "+DATA.run_id +
+    '<span class="dot">•</span>' + '<a href="bauprozess.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px">So wurde das gebaut</a>';
 }
 
 renderGrid(); renderReading(); renderFoot();
