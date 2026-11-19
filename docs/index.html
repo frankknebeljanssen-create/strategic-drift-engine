@@ -51,10 +51,19 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(26px,3.2vw,38px);
   border-radius:0 10px 10px 0; font-size:15px; display:flex; align-items:center;
   justify-content:space-between; gap:var(--s2) var(--s4); flex-wrap:wrap}
 .reading-text{flex:1 1 420px; max-width:92ch; line-height:1.55}
-.reading-viz{display:flex; align-items:center; gap:var(--s3); flex:0 0 auto}
+.reading-viz{flex:0 0 auto; width:540px; max-width:100%; background:var(--panel2); border:1px solid var(--line);
+  border-radius:12px; padding:var(--s2); display:grid; grid-template-columns:auto minmax(0,1fr);
+  gap:10px var(--s3); align-items:center}
+@media(max-width:900px){.reading-viz{width:100%; grid-template-columns:1fr}}
+.rv-title,.rv-legend{grid-column:1 / -1}
+.rv-title{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.rv-main{display:flex; align-items:center; gap:14px; max-width:260px}
+.rv-expl{font-size:12px; color:var(--muted); line-height:1.4}
+.rv-legend{font-size:11.5px; color:var(--muted); line-height:1.5; border-top:1px solid var(--line); padding-top:10px; margin-top:2px}
+.rv-legend b{color:var(--ink); font-weight:600}
 .rv-delta{font-family:var(--mono); font-weight:600; font-size:34px; line-height:1; letter-spacing:-.02em}
 .rv-delta small{font-size:12px; margin-left:4px; opacity:.8; letter-spacing:0}
-.rv-one{width:240px}
+.rv-one{width:100%}
 .rv-cap{display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px;
   color:var(--muted); margin-bottom:10px}
 .rv-cap b{color:var(--ink); font-weight:600}
@@ -588,14 +597,22 @@ function renderReading(){
   }
   const col = peak.drift<0 ? "var(--rust)" : "var(--teal)";
   const istW = Math.max(0,Math.min(100,peak.ist_anteil*100)), sollW = Math.max(0,Math.min(100,peak.soll_anteil*100));
+  const more = peak.drift>0 ? "mehr" : "weniger";
   const viz =
-    '<div class="reading-viz" role="img" aria-label="Ist '+Math.round(peak.ist_anteil*100)+' Prozent gegen Soll '+
+    '<div class="reading-viz" role="group" aria-label="Ist '+Math.round(peak.ist_anteil*100)+' Prozent gegen Soll '+
       Math.round(peak.soll_anteil*100)+' Prozent, Abweichung '+signed(peak.drift)+' Prozentpunkte">'+
-      '<div class="rv-delta" style="color:'+col+'">'+signed(peak.drift)+'<small>PP</small></div>'+
+      '<div class="rv-title">Abweichung vom Soll</div>'+
+      '<div class="rv-main">'+
+        '<div class="rv-delta" style="color:'+col+'">'+signed(peak.drift)+'<small>PP</small></div>'+
+        '<div class="rv-expl">Prozentpunkte '+more+' Aufmerksamkeit als geplant</div>'+
+      '</div>'+
       '<div class="rv-one">'+
         '<div class="rv-cap"><span>Ist <b>'+pct(peak.ist_anteil)+'</b></span><span>Soll <b>'+pct(peak.soll_anteil)+'</b></span></div>'+
         '<div class="rv-bar"><span class="rv-fill" style="width:'+istW+'%;background:'+col+'"></span>'+tgtAt(sollW)+'</div>'+
-      '</div></div>';
+      '</div>'+
+      '<div class="rv-legend"><b>Ist</b>: gemessener Anteil dieser Säule an allen zugeordneten Nachrichten im Zeitfenster. '+
+        '<b>Soll</b> (Zielmarke): geplanter Anteil laut Strategie. <b>PP</b> = Prozentpunkte, Ist minus Soll.</div>'+
+    '</div>';
   document.getElementById("reading").innerHTML = '<div class="reading-text">'+txt+'</div>'+viz;
 }
 
