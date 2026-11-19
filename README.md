@@ -194,7 +194,7 @@ Danach steht die API auf `http://localhost:8000` bereit:
 |-------------|-------------------------------------------------------------------|
 | `/health`   | Liveness-Check                                                    |
 | `/stats`    | Zaehler ueber Personen, Saeulen, Quellen, Mappings, letzter Lauf  |
-| `/people`   | Personen mit Org-Feldern                                          |
+| `/people`   | Teamgroessen je Label, ohne Namen, Kuerzel und Rollen             |
 | `/pillars`  | Saeulen mit Grundsatz, Kriterien, Soll-Gewicht                    |
 | `/strategy` | Steckbrief-Markdown plus alle Pillars aus der DB                  |
 | `/heatmap`  | Drift-Aggregate als Zellen (Fenster mal Saeule), Soll und Ist     |

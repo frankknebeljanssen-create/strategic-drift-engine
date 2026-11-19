@@ -5,6 +5,7 @@ Diese API liest nur, was Ingest und Analyse in die DB geschrieben haben.
 Endpunkte: /health /stats /people /pillars /heatmap /evidence.
 """
 
+from collections import Counter
 from datetime import date
 
 from fastapi import Depends, FastAPI, HTTPException, Query
@@ -12,7 +13,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.db import get_session
-from app.privacy import Pseudonymizer
+from app.privacy import Pseudonymizer, build_labels
 from app.models import (
     DriftAggregate,
     Mapping,
@@ -55,17 +56,12 @@ def stats(db: Session = Depends(get_session)) -> dict:
 
 @app.get("/people")
 def list_people(db: Session = Depends(get_session)) -> list[dict]:
-    """Alle Personen mit Org-Feldern."""
-    rows = db.execute(select(Person).order_by(Person.team, Person.name)).scalars().all()
+    """Teamgroessen je Label, bewusst ohne Namen, Kuerzel und Rollen."""
+    rows = db.execute(select(Person)).scalars().all()
+    labels = build_labels([{"id": p.id, "team": p.team} for p in rows])
     return [
-        {
-            "id": p.id,
-            "name": p.name,
-            "role": p.role,
-            "team": p.team,
-            "reports_to": p.reports_to,
-        }
-        for p in rows
+        {"label": label, "members": n}
+        for label, n in sorted(Counter(labels.values()).items())
     ]
 
 
