@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
+  --s1:8px; --s2:16px; --s3:24px; --s4:32px; --gutter:28px;
   --ground:#0F1E27; --panel:#152833; --panel2:#0C1920; --line:#263B45;
   --ink:#EAF1F4; --muted:#8298A4; --faint:#5A7480;
   --amber:#E6AE43; --rust:#C85434; --teal:#2E90B4; --neutral:#21343E;
@@ -34,29 +35,47 @@ body{
 .gov-link{font-family:var(--mono); font-size:11px; color:var(--faint); text-decoration:none;
   border-bottom:1px solid rgba(130,152,164,.3); margin-left:-10px}
 .gov-link:hover{color:var(--ink); border-bottom-color:var(--amber)}
-.wrap{max-width:1600px; margin:0 auto; padding:40px 28px 64px}
+.wrap{max-width:1600px; margin:0 auto; padding:var(--s4) var(--gutter) 64px}
 
 .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.28em;
-  text-transform:uppercase; color:var(--teal); margin-bottom:14px}
+  text-transform:uppercase; color:var(--teal); margin-bottom:var(--s1)}
 .byline{font-size:12.5px; color:var(--faint); margin:-8px 0 16px}
 .byline a{color:var(--muted); text-decoration:none; border-bottom:1px solid rgba(130,152,164,.35)}
 .byline a:hover{color:var(--ink); border-bottom-color:var(--amber)}
-h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
-  line-height:1.02; letter-spacing:-.01em; margin:0 0 12px; max-width:24ch}
-.sub{color:var(--muted); font-size:15px; max-width:82ch; margin:0}
+h1{font-family:var(--disp); font-weight:700; font-size:clamp(26px,3.2vw,38px);
+  line-height:1.05; letter-spacing:-.01em; margin:0 0 var(--s1)}
+.sub{color:var(--muted); font-size:15px; max-width:110ch; margin:0}
 
-.reading{margin-top:22px; padding:15px 18px; border-left:3px solid var(--amber);
+.reading{margin-top:var(--s3); padding:var(--s2) var(--s3); border-left:3px solid var(--amber);
   background:linear-gradient(90deg, rgba(230,174,67,.08), transparent 80%);
-  border-radius:0 10px 10px 0; font-size:15px; max-width:92ch}
+  border-radius:0 10px 10px 0; font-size:15px; display:flex; align-items:center;
+  justify-content:space-between; gap:var(--s2) var(--s4); flex-wrap:wrap}
+.reading-text{flex:1 1 420px; max-width:92ch; line-height:1.55}
+.reading-viz{display:flex; align-items:center; gap:var(--s3); flex:0 0 auto}
+.rv-delta{font-family:var(--mono); font-weight:600; font-size:34px; line-height:1; letter-spacing:-.02em}
+.rv-delta small{font-size:12px; margin-left:4px; opacity:.8; letter-spacing:0}
+.rv-bars{display:flex; flex-direction:column; gap:6px; width:230px}
+.rv-row{display:grid; grid-template-columns:30px 1fr 38px; align-items:center; gap:var(--s1);
+  font-family:var(--mono); font-size:11px; color:var(--muted)}
+.rv-track{height:8px; border-radius:4px; background:rgba(255,255,255,.1); overflow:hidden}
+.rv-fill{display:block; height:100%; border-radius:4px}
+.rv-v{color:var(--ink); text-align:right}
 .reading b{font-family:var(--disp); font-weight:700}
 .reading .r-num{font-family:var(--mono); color:var(--amber)}
 
-.board{display:grid; grid-template-columns:1fr 460px; gap:24px; margin-top:26px; align-items:start}
-@media(max-width:900px){.board{grid-template-columns:1fr}}
+.board{display:grid; grid-template-columns:minmax(0,1fr) 580px; gap:var(--s3); margin-top:var(--s3);
+  align-items:stretch; min-height:clamp(560px, calc(100vh - 360px), 900px)}
+@media(max-width:1280px){.board{grid-template-columns:minmax(0,1fr) 440px}}
+@media(max-width:900px){
+  .board{grid-template-columns:1fr; min-height:0}
+  .drill{min-height:0}
+  .drill-in{position:static}
+  .ev-list{flex:none; max-height:60vh}
+}
 .panel{background:var(--panel); border:1px solid var(--line); border-radius:14px}
-.heatmap-panel{padding:18px 20px 22px}
+.heatmap-panel{padding:var(--s3); display:flex; flex-direction:column}
 
-.hm-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:12px}
+.hm-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s2); gap:12px}
 .hm-title{font-family:var(--disp); font-weight:500; font-size:16px}
 .hm-actions{display:flex; gap:8px}
 .tour-btn{font-family:var(--mono); font-size:12px; color:var(--ground); background:var(--amber);
@@ -114,7 +133,7 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
 .welcome-foot a:hover{color:var(--teal); border-bottom-color:var(--teal)}
 .welcome-foot .dot{color:var(--line)}
 
-.legend{display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px; margin-bottom:18px}
+.legend{display:flex; flex-wrap:wrap; align-items:center; gap:14px var(--s3); margin-bottom:var(--s2)}
 .scale{display:flex; align-items:center; gap:10px}
 .scale-bar{width:140px; height:10px; border-radius:6px;
   background:linear-gradient(90deg,var(--rust),var(--neutral),var(--teal))}
@@ -122,7 +141,8 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
 .legend-soll{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted)}
 .soll-mark{width:2px; height:16px; background:var(--amber); border-radius:2px; box-shadow:0 0 6px rgba(230,174,67,.5)}
 
-.grid{display:grid; gap:8px}
+.grid{display:grid; gap:var(--s1)}
+#grid{flex:1}
 .ghead{display:grid; gap:8px}
 .corner{font-family:var(--mono); font-size:11.5px; color:var(--ink); font-weight:600;
   align-self:end; letter-spacing:.04em; text-transform:uppercase; padding-bottom:6px}
@@ -165,14 +185,15 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
 .tb-ctrl button:disabled{opacity:.4; cursor:default}
 .tb-ctrl .prim{background:var(--amber); color:var(--ground); border-color:var(--amber); font-weight:600}
 
-.drill{padding:20px; position:sticky; top:22px}
+.drill{position:relative; min-height:520px}
+.drill-in{position:absolute; inset:0; padding:var(--s3); display:flex; flex-direction:column; min-height:0}
 .drill-head .d-pillar{font-family:var(--disp); font-weight:700; font-size:19px; line-height:1.1}
 .drill-head .d-win{font-family:var(--mono); font-size:12px; color:var(--muted); margin-top:4px}
-.d-stats{display:flex; gap:18px; margin:16px 0 18px; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+.d-stats{display:flex; gap:18px; margin:var(--s2) 0; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
 .d-stat .k{font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint)}
 .d-stat .v{font-family:var(--mono); font-size:19px; font-weight:600; margin-top:3px}
 .d-evhead{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:12px}
-.ev-list{display:flex; flex-direction:column; gap:12px; max-height:min(58vh,560px); overflow-y:auto; padding-right:4px}
+.ev-list{display:flex; flex-direction:column; gap:12px; flex:1; min-height:0; overflow-y:auto; padding-right:4px}
 .ev-list::-webkit-scrollbar{width:8px}
 .ev-list::-webkit-scrollbar-thumb{background:var(--line); border-radius:4px}
 .ev{background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:11px 12px}
@@ -228,7 +249,7 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(28px,4.4vw,46px);
 .ev-foot{display:flex; align-items:center; gap:8px; margin-top:9px}
 .ev-rat{font-family:var(--mono); font-size:11px; color:var(--faint); margin-left:auto}
 
-footer{margin-top:30px; color:var(--faint); font-size:12px; font-family:var(--mono); letter-spacing:.02em}
+footer{margin-top:var(--s4); color:var(--faint); font-size:12px; font-family:var(--mono); letter-spacing:.02em}
 footer .dot{color:var(--line); margin:0 8px}
 footer .note{color:var(--faint); opacity:.85}
 
@@ -366,6 +387,7 @@ function renderGrid(){
   const grid = document.getElementById("grid");
   const cols = "210px repeat("+windows.length+", 1fr)";
   grid.innerHTML = "";
+  grid.style.gridTemplateRows = "auto repeat("+pillars.length+", minmax(116px,1fr))";
   const head = document.createElement("div");
   head.className="ghead"; head.style.gridTemplateColumns=cols;
   head.innerHTML = '<div class="corner">Säule &nbsp;\\&nbsp; Zeitraum</div>' +
@@ -512,7 +534,7 @@ function renderDrill(wi, pkey){
   const ev = (DATA.evidence[wi+":"+pkey]||[]);
   const driftCol = c.drift<0 ? "var(--rust)" : "var(--teal)";
   const items = ev.map(e=>evidenceCard(e)).join("");
-  drill.innerHTML =
+  drill.innerHTML = '<div class="drill-in">'+
     '<div class="drill-head"><div class="d-pillar">'+p.title+'</div>'+
       '<div class="d-win">'+fdatefull(w.start)+' – '+fdatefull(w.end)+'</div></div>'+
     '<div class="d-stats">'+
@@ -521,7 +543,7 @@ function renderDrill(wi, pkey){
       '<div class="d-stat"><div class="k">Drift</div><div class="v" style="color:'+driftCol+'">'+signed(c.drift)+' PP</div></div>'+
       '<div class="d-stat"><div class="k">Belege</div><div class="v">'+c.n_sources+'</div></div>'+
     '</div><div class="d-evhead">Nachrichten hinter dieser Zahl</div>'+
-    '<div class="ev-list">'+(items||'<div style="color:var(--faint);padding:20px 0">Keine Belege in dieser Zelle.</div>')+'</div>';
+    '<div class="ev-list">'+(items||'<div style="color:var(--faint);padding:20px 0">Keine Belege in dieser Zelle.</div>')+'</div></div>';
 }
 
 function renderReading(){
@@ -535,7 +557,17 @@ function renderReading(){
   if(low.pillar_key!==peak.pillar_key && low.drift<0){
     txt += ' Im selben Fenster fällt <b>'+pillarTitle(low.pillar_key)+'</b> auf <span class="r-num">'+pct(low.ist_anteil)+'</span>.';
   }
-  document.getElementById("reading").innerHTML = txt;
+  const scale = Math.max(peak.ist_anteil, peak.soll_anteil)*1.1 || 1;
+  const col = peak.drift<0 ? "var(--rust)" : "var(--teal)";
+  const viz =
+    '<div class="reading-viz" role="img" aria-label="Ist '+Math.round(peak.ist_anteil*100)+' Prozent gegen Soll '+
+      Math.round(peak.soll_anteil*100)+' Prozent, Abweichung '+signed(peak.drift)+' Prozentpunkte">'+
+      '<div class="rv-delta" style="color:'+col+'">'+signed(peak.drift)+'<small>PP</small></div>'+
+      '<div class="rv-bars">'+
+        '<div class="rv-row"><span>Ist</span><span class="rv-track"><span class="rv-fill" style="width:'+(peak.ist_anteil/scale*100)+'%;background:'+col+'"></span></span><span class="rv-v">'+pct(peak.ist_anteil)+'</span></div>'+
+        '<div class="rv-row"><span>Soll</span><span class="rv-track"><span class="rv-fill" style="width:'+(peak.soll_anteil/scale*100)+'%;background:var(--amber)"></span></span><span class="rv-v">'+pct(peak.soll_anteil)+'</span></div>'+
+      '</div></div>';
+  document.getElementById("reading").innerHTML = '<div class="reading-text">'+txt+'</div>'+viz;
 }
 
 function buildTour(){
