@@ -21,6 +21,7 @@ from datetime import date, datetime
 
 from app.agents.graph import run_analysis
 from app.normalize import find_data_dir, load_people, load_sources, read_strategy
+from app.privacy import Pseudonymizer
 
 
 # --- Ausgabe ---------------------------------------------------------------
@@ -32,8 +33,28 @@ def _iso(value):
     return value
 
 
-def build_payload(state: dict) -> dict:
-    """Erzeugt ein JSON-serialisierbares Heat-Map- und Evidence-Paket."""
+def _sanitize_evidence(evidence: dict, people: list[dict] | None) -> dict:
+    """Autoren-Kuerzel und Namen durch Rolle plus Team ersetzen (Ausgabe, nicht Analyse)."""
+    if not people:
+        return evidence
+    ps = Pseudonymizer(people)
+    out = {}
+    for key, records in evidence.items():
+        out[key] = [
+            {**r, "author": ps.author(r.get("author")),
+             "channel": ps.text(r.get("channel")),
+             "snippet": ps.text(r.get("snippet")),
+             "text_full": ps.text(r.get("text_full"))}
+            for r in records
+        ]
+    return out
+
+
+def build_payload(state: dict, people: list[dict] | None = None) -> dict:
+    """Erzeugt ein JSON-serialisierbares Heat-Map- und Evidence-Paket.
+
+    Mit people werden Personenbezuege aus den Belegen entfernt (Rolle plus Team).
+    """
     windows = [
         {"index": i, "start": _iso(s), "end": _iso(e)}
         for i, (s, e) in enumerate(state.get("windows", []))
@@ -61,7 +82,7 @@ def build_payload(state: dict) -> dict:
         "pillars": pillars,
         "windows": windows,
         "cells": cells,
-        "evidence": state.get("evidence", {}),
+        "evidence": _sanitize_evidence(state.get("evidence", {}), people),
     }
 
 
@@ -97,8 +118,8 @@ def _summary(state: dict) -> None:
     print_drift_table(state)
 
 
-def _dump(state: dict, path: str) -> None:
-    payload = build_payload(state)
+def _dump(state: dict, path: str, people: list[dict] | None = None) -> None:
+    payload = build_payload(state, people)
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False, indent=2)
     print(
@@ -116,7 +137,8 @@ def run_from_files(mode: str, path: str | None, bucket_days: int, dump: str | No
     print(f"Analyse (--from-files, mode={mode}, bucket_days={bucket_days}) aus: {data_dir}")
 
     strategy_text = read_strategy(data_dir)
-    known = {p["id"] for p in load_people(data_dir)}
+    people = load_people(data_dir)
+    known = {p["id"] for p in people}
     sources = [
         {
             "id": s["external_id"],
@@ -133,7 +155,7 @@ def run_from_files(mode: str, path: str | None, bucket_days: int, dump: str | No
     state = run_analysis(strategy_text, sources, run_id=f"files-{mode}", mode=mode, bucket_days=bucket_days)
     _summary(state)
     if dump:
-        _dump(state, dump)
+        _dump(state, dump, people)
 
 
 # --- DB-Modus --------------------------------------------------------------
@@ -146,7 +168,7 @@ def run_db(mode: str, path: str | None, bucket_days: int, dump: str | None) -> N
     from sqlalchemy import select
 
     from app.db import session_scope
-    from app.models import Run, Source
+    from app.models import Person, Run, Source
 
     data_dir = find_data_dir(path)
     strategy_text = read_strategy(data_dir)
@@ -154,6 +176,10 @@ def run_db(mode: str, path: str | None, bucket_days: int, dump: str | None) -> N
     print(f"Analyse (DB-Modus, mode={mode}, run_id={run_id}, bucket_days={bucket_days})")
 
     with session_scope() as session:
+        people = [
+            {"id": pp.id, "name": pp.name, "role": pp.role, "team": pp.team}
+            for pp in session.execute(select(Person)).scalars().all()
+        ]
         rows = session.execute(select(Source)).scalars().all()
         sources = [
             {
@@ -181,7 +207,7 @@ def run_db(mode: str, path: str | None, bucket_days: int, dump: str | None) -> N
 
     _summary(state)
     if dump:
-        _dump(state, dump)
+        _dump(state, dump, people)
 
 
 def _persist_pillars(session, pillars: list[dict]) -> dict[str, int]:

@@ -12,6 +12,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.db import get_session
+from app.privacy import Pseudonymizer
 from app.models import (
     DriftAggregate,
     Mapping,
@@ -222,14 +223,21 @@ def evidence(
         )
         .all()
     )
+    # Personenbezug serverseitig entfernen: Rolle plus Team statt Kuerzel und Namen.
+    ps = Pseudonymizer(
+        [
+            {"id": pp.id, "name": pp.name, "role": pp.role, "team": pp.team}
+            for pp in db.execute(select(Person)).scalars().all()
+        ]
+    )
     items = [
         {
             "source_id": src.id,
             "source_type": src.source_type,
-            "channel": src.channel,
-            "author_id": src.author_id,
+            "channel": ps.text(src.channel),
+            "author": ps.author(src.author_id),
             "ts": src.ts.isoformat() if src.ts else None,
-            "text": src.text,
+            "text": ps.text(src.text),
             "confidence": _f(mp.confidence),
             "rationale": mp.rationale,
         }
