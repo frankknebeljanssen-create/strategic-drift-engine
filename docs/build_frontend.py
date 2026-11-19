@@ -192,6 +192,9 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(26px,3.2vw,38px);
 .rlabel .rtitle{font-family:var(--disp); font-weight:500; font-size:15px; line-height:1.15;
   color:var(--ink)}
 .rlabel .rsoll{font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--ink); margin-top:5px}
+.rlabel .rex{margin-top:8px; max-width:236px}
+.rex-k{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); margin-bottom:3px}
+.rex p{margin:0 0 4px; font-size:11px; line-height:1.4; font-style:italic; color:var(--muted)}
 .rlabel .spark{margin-top:8px}
 
 .cell{position:relative; border:1px solid rgba(255,255,255,.06); border-radius:10px;
@@ -484,11 +487,29 @@ function sparkline(pkey){
     dots+'</svg>';
 }
 
+// Typische Beispielaussagen je Saeule (illustrativ, keine echten Belege).
+const PILLAR_EXAMPLES = {
+  customer_led_growth: [
+    "Wir priorisieren das Feature, das die drei größten Kunden explizit gefordert haben.",
+    "Lasst uns erst mit zehn Bestandskunden sprechen, bevor wir das Roadmap-Item einplanen."],
+  quality_over_speed: [
+    "Lieber eine Woche später liefern, aber ohne dass der Support danach brennt.",
+    "Ich will keinen Hotfix-Freitag mehr, wir testen das vorher richtig durch."],
+  enterprise_ready: [
+    "Der Deal hängt am SSO-Feature, das muss vor dem Kickoff mit dem Kunden stehen.",
+    "Wir brauchen SOC 2 und Audit-Logs, sonst unterschreibt das keine Rechtsabteilung eines Großkunden."]
+};
+function examplesFor(key){
+  const ex = PILLAR_EXAMPLES[key]; if(!ex) return "";
+  return '<div class="rex"><span class="rex-k">Typische Aussage</span>'+
+    ex.map(t=>'<p>„'+escapeHtml(t)+'“</p>').join("")+'</div>';
+}
+
 function renderGrid(){
   const grid = document.getElementById("grid");
-  const cols = "210px repeat("+windows.length+", 1fr)";
+  const cols = "250px repeat("+windows.length+", 1fr)";
   grid.innerHTML = "";
-  grid.style.gridTemplateRows = "auto repeat("+pillars.length+", minmax(116px,1fr))";
+  grid.style.gridTemplateRows = "auto repeat("+pillars.length+", minmax(min-content,1fr))";
   const head = document.createElement("div");
   head.className="ghead"; head.style.gridTemplateColumns=cols;
   head.innerHTML = '<div class="corner">Säule &nbsp;\\&nbsp; Zeitraum</div>' +
@@ -500,7 +521,7 @@ function renderGrid(){
     row.className="row"; row.style.gridTemplateColumns=cols;
     const label = document.createElement("div");
     label.className="rlabel";
-    label.innerHTML = '<div class="rtitle">'+p.title+'</div><div class="rsoll">Soll '+pct(p.soll_anteil)+'</div>'+sparkline(p.key);
+    label.innerHTML = '<div class="rtitle">'+p.title+'</div><div class="rsoll">Soll '+pct(p.soll_anteil)+'</div>'+examplesFor(p.key)+sparkline(p.key);
     row.appendChild(label);
     windows.forEach(w=>{
       const c = cellMap[w.index+":"+p.key];
