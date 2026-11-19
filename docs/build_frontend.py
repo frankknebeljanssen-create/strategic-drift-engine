@@ -264,9 +264,9 @@ footer .note{color:var(--faint); opacity:.85}
     <a class="gov-link" href="https://github.com/frankknebeljanssen-create/strategic-drift-engine#governance-und-datenschutz" target="_blank" rel="noopener">Details</a>
     <ul class="gov-list">
       <li>Nur Opt-in auf Kanalebene</li>
-      <li>Nur oeffentliche Kanaele, nie Direktnachrichten</li>
-      <li>Aggregiert auf Saeulenebene, nie Einzelbewertung</li>
-      <li>Betriebsrat und Datenschutzbeauftragte von Anfang an eingebunden, nicht erst nachtraeglich</li>
+      <li>Nur öffentliche Kanäle, nie Direktnachrichten</li>
+      <li>Aggregiert auf Säulenebene, nie Einzelbewertung</li>
+      <li>Betriebsrat und Datenschutzbeauftragte von Anfang an eingebunden, nicht erst nachträglich</li>
     </ul>
   </div>
 </div>
@@ -274,7 +274,7 @@ footer .note{color:var(--faint); opacity:.85}
   <header>
     <div class="eyebrow">Strategic Drift Engine</div>
     <h1>Wohin die Aufmerksamkeit wirklich floss</h1>
-    <p class="sub">Jede Zelle vergleicht die gemessene Aufmerksamkeit auf eine strategische Saeule mit ihrem Soll ueber die Zeit. Der amberfarbene Strich markiert das Soll. Eine Zelle waehlen, um die Nachrichten zu sehen, aus denen der Wert entstanden ist.</p>
+    <p class="sub">Jede Zelle vergleicht die gemessene Aufmerksamkeit auf eine strategische Säule mit ihrem Soll über die Zeit. Der amberfarbene senkrechte Strich markiert das Soll. Eine Zelle wählen, um die Nachrichten zu sehen, aus denen der Wert entstanden ist.</p>
     <div class="reading" id="reading"></div>
   </header>
 
@@ -284,23 +284,23 @@ footer .note{color:var(--faint); opacity:.85}
         <div class="hm-title">Aufmerksamkeit im Zeitverlauf</div>
         <div class="hm-actions">
           <button class="ghost-btn" id="strategyBtn">Strategie</button>
-          <button class="tour-btn" id="tourBtn">Gefuehrte Tour</button>
+          <button class="tour-btn" id="tourBtn">Geführte Tour</button>
         </div>
       </div>
       <div class="legend">
         <div class="scale">
           <span class="scale-label">unter Soll</span>
           <span class="scale-bar"></span>
-          <span class="scale-label">ueber Soll</span>
+          <span class="scale-label">über Soll</span>
         </div>
-        <div class="legend-soll"><span class="soll-mark"></span> Soll je Saeule</div>
+        <div class="legend-soll"><span class="soll-mark"></span> Soll je Säule</div>
       </div>
       <div id="grid" class="grid"></div>
       <div class="tourbar" id="tourbar" hidden>
         <span class="tb-step" id="tbStep"></span>
         <div class="tb-body"><div class="tb-title" id="tbTitle"></div><div class="tb-text" id="tbText"></div></div>
         <div class="tb-ctrl">
-          <button id="tbPrev">Zurueck</button>
+          <button id="tbPrev">Zurück</button>
           <button id="tbNext" class="prim">Weiter</button>
           <button id="tbEnd">Fertig</button>
         </div>
@@ -315,7 +315,7 @@ footer .note{color:var(--faint); opacity:.85}
 
 <div class="modal-overlay" id="strategyModal" hidden role="dialog" aria-modal="true" aria-labelledby="strategyTitle">
   <div class="modal-panel">
-    <button class="modal-close" id="strategyClose" aria-label="Schliessen">×</button>
+    <button class="modal-close" id="strategyClose" aria-label="Schließen">×</button>
     <h2 class="modal-title" id="strategyTitle">Strategie-Steckbrief</h2>
     <div id="strategyBody"></div>
   </div>
@@ -325,9 +325,9 @@ footer .note{color:var(--faint); opacity:.85}
   <div class="modal-panel welcome-panel">
     <div class="eyebrow">Demoprojekt</div>
     <h2 class="modal-title" id="welcomeTitle">Strategic Drift Engine</h2>
-    <p class="welcome-text">Ein Workflow aus vier Agenten, der die Luecke zwischen der formulierten Strategie eines Unternehmens und dem misst, was seine interne Kommunikation tatsaechlich zeigt. Alles hier laeuft auf einem synthetischen Datensatz eines fiktiven Unternehmens, TechCo. Einfach durchklicken.</p>
+    <p class="welcome-text">Ein Workflow aus vier Agenten, der die Lücke zwischen der formulierten Strategie eines Unternehmens und dem misst, was seine interne Kommunikation tatsächlich zeigt. Alles hier läuft auf einem synthetischen Datensatz eines fiktiven Unternehmens, TechCo. Einfach durchklicken.</p>
     <div class="welcome-actions">
-      <button class="tour-btn" id="welcomeTour">Gefuehrte Tour starten</button>
+      <button class="tour-btn" id="welcomeTour">Geführte Tour starten</button>
       <button class="ghost-btn" id="welcomeExplore">Selbst erkunden</button>
     </div>
     <div class="welcome-foot">
@@ -390,7 +390,7 @@ function renderGrid(){
   grid.innerHTML = "";
   const head = document.createElement("div");
   head.className="ghead"; head.style.gridTemplateColumns=cols;
-  head.innerHTML = '<div class="corner">Saeule &nbsp;\\&nbsp; Zeitraum</div>' +
+  head.innerHTML = '<div class="corner">Säule &nbsp;\\&nbsp; Zeitraum</div>' +
     windows.map(w=>'<div class="whead"><span class="wspan">'+frange(w)+'</span></div>').join("");
   grid.appendChild(head);
 
@@ -425,9 +425,9 @@ const TYPE_LABEL = {slack:"Slack", mail:"Mail", meeting_note:"Besprechung", meet
 function trSignal(s){
   let m;
   if((m=s.match(/^scores: (.*)$/))) return "Werte: "+m[1];
-  if((m=s.match(/^chosen: (.*) \(score (-?\d+)\)$/))) return "gewaehlt: "+m[1]+" (Wert "+m[2]+")";
+  if((m=s.match(/^chosen: (.*) \(score (-?\d+)\)$/))) return "gewählt: "+m[1]+" (Wert "+m[2]+")";
   if((m=s.match(/^reduces (.*?): (.*)$/))) return "senkt "+m[1]+": "+m[2];
-  if((m=s.match(/^calendar category: (.*?) \(no pillar mapping\)$/))) return "Kalender-Kategorie: "+m[1]+" (keiner Saeule zugeordnet)";
+  if((m=s.match(/^calendar category: (.*?) \(no pillar mapping\)$/))) return "Kalender-Kategorie: "+m[1]+" (keiner Säule zugeordnet)";
   if((m=s.match(/^calendar category: (.*?) -> (.*)$/))) return "Kalender-Kategorie: "+m[1]+" -> "+m[2];
   return s;
 }
@@ -435,9 +435,9 @@ function trContribution(s){
   let m, base = s, tail = "";
   const rm = s.match(/^(.*) and reduces (.+)\.$/);
   if(rm){ base = rm[1]+"."; tail = " Zugleich senkt die Nachricht "+rm[2]+"."; }
-  if((m=base.match(/^Contributes to (.+?): keywords (.+) outweigh other signals\.$/))) return "Traegt zu "+m[1]+" bei: Die Schluesselwoerter "+m[2]+" ueberwiegen die anderen Signale."+tail;
-  if((m=base.match(/^Contributes to (.+?): calendar event categorized as '(.+)'\.$/))) return "Traegt zu "+m[1]+" bei: Kalendertermin der Kategorie '"+m[2]+"'."+tail;
-  if((m=base.match(/^Contributes to (.+?) on keyword scoring\.$/))) return "Traegt zu "+m[1]+" bei (Schluesselwort-Bewertung)."+tail;
+  if((m=base.match(/^Contributes to (.+?): keywords (.+) outweigh other signals\.$/))) return "Trägt zu "+m[1]+" bei: Die Schlüsselwörter "+m[2]+" überwiegen die anderen Signale."+tail;
+  if((m=base.match(/^Contributes to (.+?): calendar event categorized as '(.+)'\.$/))) return "Trägt zu "+m[1]+" bei: Kalendertermin der Kategorie '"+m[2]+"'."+tail;
+  if((m=base.match(/^Contributes to (.+?) on keyword scoring\.$/))) return "Trägt zu "+m[1]+" bei (Schlüsselwort-Bewertung)."+tail;
   return s;
 }
 const TYPE_BADGE = {slack:"b-slack", mail:"b-mail", meeting:"b-meeting", meeting_note:"b-meeting", calendar:"b-calendar"};
@@ -510,7 +510,7 @@ function evidenceCard(e){
   '</div>';
 }
 
-// Event-Delegation fuer Show-full/Show-less-Toggle.
+// Event-Delegation für Show-full/Show-less-Toggle.
 document.addEventListener("click", (ev)=>{
   const btn = ev.target;
   if(!(btn instanceof HTMLElement) || !btn.classList.contains("ev-toggle")) return;
@@ -551,11 +551,11 @@ function renderReading(){
   const w = windows[peak.window_index];
   const wcells = pillars.map(p=>cellMap[peak.window_index+":"+p.key]);
   const low = wcells.reduce((a,b)=>a.drift<b.drift?a:b);
-  const verb = peak.drift>0 ? "zieht die meiste Aufmerksamkeit auf sich" : "wird am staerksten vernachlaessigt";
+  const verb = peak.drift>0 ? "zieht die meiste Aufmerksamkeit auf sich" : "wird am stärksten vernachlässigt";
   let txt = '<b>'+pillarTitle(peak.pillar_key)+'</b> '+verb+' im Zeitraum <span class="r-num">'+frange(w)+
     '</span> mit <span class="r-num">'+pct(peak.ist_anteil)+'</span> gegen ein Soll von <span class="r-num">'+pct(peak.soll_anteil)+'</span>.';
   if(low.pillar_key!==peak.pillar_key && low.drift<0){
-    txt += ' Im selben Fenster faellt <b>'+pillarTitle(low.pillar_key)+'</b> auf <span class="r-num">'+pct(low.ist_anteil)+'</span>.';
+    txt += ' Im selben Fenster fällt <b>'+pillarTitle(low.pillar_key)+'</b> auf <span class="r-num">'+pct(low.ist_anteil)+'</span>.';
   }
   document.getElementById("reading").innerHTML = txt;
 }
@@ -565,25 +565,25 @@ function buildTour(){
   const w0 = pillars.map(p=>cellMap["0:"+p.key]);
   const near0 = w0.reduce((a,b)=>Math.abs(a.drift)<Math.abs(b.drift)?a:b);
   steps.push({wi:0, pkey:near0.pillar_key, title:"Was hier zu sehen ist",
-    text:"Die Fuehrung von TechCo hat in einem einseitigen Steckbrief drei strategische Saeulen festgelegt. Die Heat-Map zeigt, wie viel Aufmerksamkeit jede Saeule tatsaechlich bekam, Zeitfenster fuer Zeitfenster, gemessen an diesem Soll. Ueber den Button Strategie oben rechts laesst sich jederzeit der urspruengliche Steckbrief ansehen."});
+    text:"Die Führung von TechCo hat in einem einseitigen Steckbrief drei strategische Säulen festgelegt. Die Heat-Map zeigt, wie viel Aufmerksamkeit jede Säule tatsächlich bekam, Zeitfenster für Zeitfenster, gemessen an diesem Soll. Über den Button Strategie oben rechts lässt sich jederzeit der ursprüngliche Steckbrief ansehen."});
   steps.push({wi:0, pkey:near0.pillar_key, title:"Ausgangslage",
-    text:"Im ersten Zeitfenster liegen die Saeulen nahe am Soll. "+pillarTitle(near0.pillar_key)+" trifft den Zielwert fast genau."});
+    text:"Im ersten Zeitfenster liegen die Säulen nahe am Soll. "+pillarTitle(near0.pillar_key)+" trifft den Zielwert fast genau."});
   const peak = DATA.cells.reduce((a,b)=>Math.abs(a.drift)>Math.abs(b.drift)?a:b);
-  steps.push({wi:peak.window_index, pkey:peak.pillar_key, title:"Groesste Abweichung",
+  steps.push({wi:peak.window_index, pkey:peak.pillar_key, title:"Größte Abweichung",
     text:pillarTitle(peak.pillar_key)+" erreicht "+pct(peak.ist_anteil)+" gegen ein Soll von "+pct(peak.soll_anteil)+" ("+signed(peak.drift)+" PP). Rechts stehen die Nachrichten, aus denen dieser Wert entstand."});
   const wc = pillars.map(p=>cellMap[peak.window_index+":"+p.key]);
   const opp = wc.reduce((a,b)=>a.drift<b.drift?a:b);
   if(opp.pillar_key!==peak.pillar_key){
     steps.push({wi:peak.window_index, pkey:opp.pillar_key, title:"Die Kehrseite",
-      text:"Im selben Fenster faellt "+pillarTitle(opp.pillar_key)+" auf "+pct(opp.ist_anteil)+" ("+signed(opp.drift)+" PP). Was eine Saeule gewinnt, verliert eine andere."});
+      text:"Im selben Fenster fällt "+pillarTitle(opp.pillar_key)+" auf "+pct(opp.ist_anteil)+" ("+signed(opp.drift)+" PP). Was eine Säule gewinnt, verliert eine andere."});
   }
   const wl = pillars.map(p=>cellMap[lastW+":"+p.key]);
   const nearL = wl.reduce((a,b)=>Math.abs(a.drift)<Math.abs(b.drift)?a:b);
   const spread = Math.round(Math.max(...wl.map(c=>Math.abs(c.drift)))*100);
   steps.push({wi:lastW, pkey:nearL.pillar_key, title:"Zum Ende",
-    text:"Im letzten Fenster naehern sich die Saeulen wieder an. Die groesste verbleibende Abweichung betraegt "+spread+" Prozentpunkte."});
-  steps.push({wi:peak.window_index, pkey:peak.pillar_key, title:"So laesst sich jede Zahl pruefen",
-    text:"Eine Zelle anklicken, dann eine Nachricht aufklappen. Der Block darunter zeigt genau, welche Woerter die Engine erkannt hat und ob sie eine Saeule stuetzen oder ihr entgegenwirken. Das ist die lueckenlose Spur von der Behauptung zum Beleg."});
+    text:"Im letzten Fenster nähern sich die Säulen wieder an. Die größte verbleibende Abweichung beträgt "+spread+" Prozentpunkte."});
+  steps.push({wi:peak.window_index, pkey:peak.pillar_key, title:"So lässt sich jede Zahl prüfen",
+    text:"Eine Zelle anklicken, dann eine Nachricht aufklappen. Der Block darunter zeigt genau, welche Wörter die Engine erkannt hat und ob sie eine Säule stützen oder ihr entgegenwirken. Das ist die lückenlose Spur von der Behauptung zum Beleg."});
   return steps;
 }
 
@@ -592,7 +592,7 @@ function startTour(){
   tour.active=true; tour.i=0; tour.steps=buildTour();
   document.getElementById("grid").classList.add("touring");
   document.getElementById("tourbar").hidden=false;
-  document.getElementById("tourBtn").textContent="Tour laeuft";
+  document.getElementById("tourBtn").textContent="Tour läuft";
   showTourStep();
 }
 function showTourStep(){
@@ -608,7 +608,7 @@ function endTour(){
   tour.active=false;
   document.getElementById("grid").classList.remove("touring");
   document.getElementById("tourbar").hidden=true;
-  document.getElementById("tourBtn").textContent="Gefuehrte Tour";
+  document.getElementById("tourBtn").textContent="Geführte Tour";
 }
 document.getElementById("tourBtn").addEventListener("click",()=>{ tour.active?endTour():startTour(); });
 document.getElementById("tbPrev").addEventListener("click",()=>{ if(tour.i>0){tour.i--; showTourStep();} });
@@ -650,7 +650,7 @@ function openStrategy(){
   document.getElementById("strategyBody").innerHTML =
     '<div class="md-body">'+md+'</div>'+
     '<div class="modal-sep"></div>'+
-    '<div class="derived-title">Abgeleitete Saeulen</div>'+
+    '<div class="derived-title">Abgeleitete Säulen</div>'+
     '<div class="p-cards">'+cards+'</div>';
   document.getElementById("strategyModal").hidden = false;
   document.body.style.overflow = "hidden";
@@ -688,8 +688,8 @@ function renderFoot(){
   const tot = Object.values(DATA.evidence).reduce((a,v)=>a+v.length,0);
   document.getElementById("foot").innerHTML =
     '<span class="note">Synthetischer Demo-Datensatz, fiktives Unternehmen TechCo.</span>' + '<span class="dot">•</span>' +
-    windows.length+" Zeitfenster" + '<span class="dot">•</span>' + pillars.length+" Saeulen" +
-    '<span class="dot">•</span>' + tot+" verknuepfte Belege" + '<span class="dot">•</span>' + "Lauf "+DATA.run_id +
+    windows.length+" Zeitfenster" + '<span class="dot">•</span>' + pillars.length+" Säulen" +
+    '<span class="dot">•</span>' + tot+" verknüpfte Belege" + '<span class="dot">•</span>' + "Lauf "+DATA.run_id +
     '<span class="dot">•</span>' + '<a href="bauprozess.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px">So wurde das gebaut</a>' +
     '<span class="dot">•</span>' + 'Ein Demoprojekt von <a href="https://github.com/frankknebeljanssen-create/strategic-drift-engine" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px">Frank Knebel-Janssen</a>';
 }
