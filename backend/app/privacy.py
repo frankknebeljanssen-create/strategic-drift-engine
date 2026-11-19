@@ -1,10 +1,16 @@
-"""Pseudonymisierung der Ausgabe: Rolle plus Team statt Name oder Kuerzel.
+"""Pseudonymisierung der Ausgabe: Team-Label statt Name, Kuerzel oder Rolle.
 
 Die Analyse arbeitet auf den Originaldaten. Erst die Ausgabe (Dump fuer das
-Frontend, /evidence-API) wird bereinigt: Autoren-Kuerzel und Personennamen in
-Nachrichtentexten werden durch ein stabiles Label aus Team und Rolle ersetzt.
-Dieselbe Person bekommt ueberall dasselbe Label, damit Muster erkennbar
-bleiben, ohne dass ein Beleg auf einen Namen zurueckfuehrt.
+Frontend, /evidence-API) wird bereinigt: Autoren-Kuerzel, Personennamen und
+Rollenbezeichnungen in Nachrichtentexten werden durch ein Team-Label ersetzt.
+
+Schutzziel: Aus einem Label darf nie auf eine einzelne Person zu schliessen
+sein, auch nicht fuer jemanden, der die Organisation kennt. Deshalb:
+- keine Rollen im Label (Head of X, VP X, CEO, CTO sind einzigartig),
+- Mindestgruppengroesse: Teams mit weniger als MIN_GROUP Personen werden zu
+  einem gemeinsamen Sammel-Label zusammengefasst, sonst waere "Team Marketing"
+  mit einer Person genauso ein Name wie "Head of Marketing".
+Dieselbe Person bekommt ueberall dasselbe Label, damit Muster erkennbar bleiben.
 
 Reine Funktionen ohne DB- oder Anthropic-Abhaengigkeit.
 """
@@ -12,33 +18,45 @@ Reine Funktionen ohne DB- oder Anthropic-Abhaengigkeit.
 from __future__ import annotations
 
 import re
+from collections import Counter
+
+MIN_GROUP = 3
+POOLED_LABEL = "Leitung und Stabsfunktionen"
 
 
-def role_label(person: dict) -> str:
-    """Label aus Team und Rolle, z.B. "Engineering, Senior Engineer"."""
-    team = (person.get("team") or "").strip()
-    role = (person.get("role") or "").strip()
-    if not role:
-        return team or "Unbekannt"
-    if not team or team.lower() in role.lower():
-        return role  # Team steckt schon in der Rolle ("Head of Engineering")
-    return f"{team}, {role}"
+def build_labels(people: list[dict]) -> dict[str, str]:
+    """Team-Label je Person-ID, kleine Teams werden zusammengefasst."""
+    sizes = Counter((p.get("team") or "").strip() for p in people)
+    labels: dict[str, str] = {}
+    for p in people:
+        team = (p.get("team") or "").strip()
+        if not team:
+            labels[p["id"]] = POOLED_LABEL
+        elif sizes[team] >= MIN_GROUP:
+            labels[p["id"]] = f"Team {team}"
+        else:
+            labels[p["id"]] = POOLED_LABEL
+    return labels
 
 
 class Pseudonymizer:
-    """Ersetzt Autoren-IDs und Personennamen durch Rolle-plus-Team-Labels."""
+    """Ersetzt Autoren-IDs, Namen und Rollentitel durch Team-Labels."""
 
     def __init__(self, people: list[dict]):
-        self._labels = {p["id"]: role_label(p) for p in people}
+        self._labels = build_labels(people)
         pairs: list[tuple[str, str]] = []
         for p in people:
             label = self._labels[p["id"]]
             name = (p.get("name") or "").strip()
             parts = name.split()
-            for token in ([name, p["id"]] + (parts if len(parts) > 1 else [])):
+            tokens = [name, p["id"]] + (parts if len(parts) > 1 else [])
+            # Rollentitel sind einzigartig und damit selbst ein Identifikator.
+            role = (p.get("role") or "").strip()
+            if role:
+                tokens.append(role)
+            for token in tokens:
                 if len(token) >= 3:
                     pairs.append((token, label))
-        # Laengste Treffer zuerst, damit "Sarah Mendes" vor "Sarah" greift.
         pairs.sort(key=lambda t: -len(t[0]))
         self._pattern = None
         self._by_token: dict[str, str] = {}
@@ -52,10 +70,10 @@ class Pseudonymizer:
         """Label fuer eine Autoren-ID, None bleibt None (z.B. Kalender)."""
         if author_id is None:
             return None
-        return self._labels.get(author_id, "Unbekannt")
+        return self._labels.get(author_id, POOLED_LABEL)
 
     def text(self, value: str | None) -> str:
-        """Namen und Kuerzel im Text durch [Label] ersetzen."""
+        """Namen, Kuerzel und Rollentitel im Text durch [Label] ersetzen."""
         if not value or self._pattern is None:
             return value or ""
 

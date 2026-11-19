@@ -2,7 +2,7 @@
 
 - Unternehmen: TechCo
 - Zeitraum: 2026 H1
-- Sponsor: CEO (Leadership)
+- Sponsor: Unternehmensleitung
 - Freigabe: Leadership-Runde vom 15. April 2026
 - Stand: 1. Mai 2026
 

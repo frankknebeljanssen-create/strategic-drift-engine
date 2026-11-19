@@ -76,12 +76,12 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(26px,3.2vw,38px);
 .reading-viz{display:flex; align-items:center; gap:var(--s3); flex:0 0 auto}
 .rv-delta{font-family:var(--mono); font-weight:600; font-size:34px; line-height:1; letter-spacing:-.02em}
 .rv-delta small{font-size:12px; margin-left:4px; opacity:.8; letter-spacing:0}
-.rv-bars{display:flex; flex-direction:column; gap:6px; width:230px}
-.rv-row{display:grid; grid-template-columns:30px 1fr 38px; align-items:center; gap:var(--s1);
-  font-family:var(--mono); font-size:11px; color:var(--muted)}
-.rv-track{height:8px; border-radius:4px; background:rgba(255,255,255,.1); overflow:hidden}
-.rv-fill{display:block; height:100%; border-radius:4px}
-.rv-v{color:var(--ink); text-align:right}
+.rv-one{width:240px}
+.rv-cap{display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px;
+  color:var(--muted); margin-bottom:10px}
+.rv-cap b{color:var(--ink); font-weight:600}
+.rv-bar{position:relative; height:8px; border-radius:4px; background:rgba(255,255,255,.12)}
+.rv-fill{position:absolute; left:0; top:0; bottom:0; border-radius:4px}
 .reading b{font-family:var(--disp); font-weight:700}
 .reading .r-num{font-family:var(--mono); color:var(--amber)}
 
@@ -161,7 +161,7 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(26px,3.2vw,38px);
   background:linear-gradient(90deg,var(--rust),var(--neutral),var(--teal))}
 .scale-label{font-family:var(--mono); font-size:11px; color:var(--faint)}
 .legend-soll{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted)}
-.soll-mark{width:2px; height:16px; background:var(--amber); border-radius:2px; box-shadow:0 0 6px rgba(230,174,67,.5)}
+.tgt-legend{width:15px; height:15px; flex:none}
 
 .grid{display:grid; gap:var(--s1)}
 #grid{flex:1}
@@ -190,7 +190,8 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(26px,3.2vw,38px);
 .cell-drift{font-family:var(--mono); font-size:12px; opacity:.92}
 .cell-bar{position:relative; height:6px; border-radius:4px; background:rgba(255,255,255,.14); margin:10px 0 2px; overflow:visible}
 .cell-fill{position:absolute; left:0; top:0; bottom:0; border-radius:4px; background:rgba(255,255,255,.82)}
-.cell-tick{position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--amber); border-radius:2px; box-shadow:0 0 5px rgba(230,174,67,.7)}
+.tgt{position:absolute; top:50%; width:15px; height:15px; transform:translate(-50%,-50%);
+  pointer-events:none; filter:drop-shadow(0 0 3px rgba(0,0,0,.5))}
 
 .tourbar{margin-top:16px; border:1px solid var(--amber); border-radius:12px;
   background:linear-gradient(180deg, rgba(230,174,67,.09), rgba(230,174,67,.03));
@@ -211,9 +212,16 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(26px,3.2vw,38px);
 .drill-in{position:absolute; inset:0; padding:var(--s3); display:flex; flex-direction:column; min-height:0}
 .drill-head .d-pillar{font-family:var(--disp); font-weight:700; font-size:19px; line-height:1.1}
 .drill-head .d-win{font-family:var(--mono); font-size:12px; color:var(--muted); margin-top:4px}
-.d-stats{display:flex; gap:18px; margin:var(--s2) 0; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+.d-box{background:var(--panel2); border:1px solid var(--line); border-radius:12px; padding:var(--s2); margin:var(--s2) 0}
+.d-box-title{font-family:var(--disp); font-weight:600; font-size:13.5px}
+.d-box-sub{font-size:12px; color:var(--muted); margin:4px 0 var(--s2); line-height:1.45}
+.d-box-body{display:flex; gap:var(--s2); align-items:center}
+.d-ring{width:92px; height:92px; flex:0 0 auto}
+.d-stats{display:grid; grid-template-columns:1fr 1fr; gap:var(--s2); flex:1; min-width:0}
+.d-stat{cursor:help}
 .d-stat .k{font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint)}
 .d-stat .v{font-family:var(--mono); font-size:19px; font-weight:600; margin-top:3px}
+.d-stat .s{font-size:10.5px; color:var(--faint); margin-top:2px; line-height:1.3}
 .d-evhead{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:12px}
 .ev-list{display:flex; flex-direction:column; gap:12px; flex:1; min-height:0; overflow-y:auto; padding-right:4px}
 .ev-list::-webkit-scrollbar{width:8px}
@@ -295,7 +303,7 @@ footer .note{color:var(--faint); opacity:.85}
   <header>
     <div class="eyebrow">Strategic Drift Engine</div>
     <h1>Wohin die Aufmerksamkeit wirklich floss</h1>
-    <p class="sub">Jede Zelle vergleicht die gemessene Aufmerksamkeit auf eine strategische Säule mit ihrem Soll über die Zeit. Der amberfarbene senkrechte Strich markiert das Soll. Eine Zelle wählen, um die Nachrichten zu sehen, aus denen der Wert entstanden ist.</p>
+    <p class="sub">Jede Zelle vergleicht die gemessene Aufmerksamkeit auf eine strategische Säule mit ihrem Soll über die Zeit. Die Zielmarke markiert das Soll. Eine Zelle wählen, um die Nachrichten zu sehen, aus denen der Wert entstanden ist.</p>
     <div class="reading" id="reading"></div>
   </header>
 
@@ -314,7 +322,7 @@ footer .note{color:var(--faint); opacity:.85}
           <span class="scale-bar"></span>
           <span class="scale-label">über Soll</span>
         </div>
-        <div class="legend-soll"><span class="soll-mark"></span> Soll je Säule</div>
+        <div class="legend-soll"><svg class="tgt-legend" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.6" fill="#0F1E27" stroke="#E6AE43" stroke-width="1.6"/><circle cx="8" cy="8" r="3.2" fill="none" stroke="#E6AE43" stroke-width="1.4"/><circle cx="8" cy="8" r="1.1" fill="#E6AE43"/></svg> Zielmarke = Soll je Säule</div>
       </div>
       <div id="grid" class="grid"></div>
       <div class="tourbar" id="tourbar" hidden>
@@ -362,6 +370,22 @@ footer .note{color:var(--faint); opacity:.85}
 <script>
 const DATA = __DATA__;
 const STRATEGY = __STRATEGY__;
+
+// Zielmarken-Symbol (Bullseye) fuer alle Stellen, an denen das Soll auf einer Skala sitzt.
+const TGT_INNER = '<circle cx="8" cy="8" r="6.6" fill="#0F1E27" stroke="#E6AE43" stroke-width="1.6"/><circle cx="8" cy="8" r="3.2" fill="none" stroke="#E6AE43" stroke-width="1.4"/><circle cx="8" cy="8" r="1.1" fill="#E6AE43"/>';
+function tgtAt(leftPct){return '<svg class="tgt" style="left:'+leftPct+'%" viewBox="0 0 16 16" aria-hidden="true">'+TGT_INNER+'</svg>';}
+function ring(c){
+  const cx=46, cy=46, R=34, C=2*Math.PI*R;
+  const ist=Math.max(0,Math.min(1,c.ist_anteil)), soll=Math.max(0,Math.min(1,c.soll_anteil));
+  const col = c.drift<0 ? "#C85434" : "#2E90B4";
+  const a=(soll*360-90)*Math.PI/180, tx=cx+R*Math.cos(a)-8, ty=cy+R*Math.sin(a)-8;
+  return '<svg class="d-ring" viewBox="0 0 92 92" role="img" aria-label="Ist '+Math.round(ist*100)+' Prozent, Soll '+Math.round(soll*100)+' Prozent">'+
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="8"/>'+
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="'+col+'" stroke-width="8" stroke-linecap="round" stroke-dasharray="'+(C*ist)+' '+C+'" transform="rotate(-90 '+cx+' '+cy+')"/>'+
+    '<g transform="translate('+tx+' '+ty+')">'+TGT_INNER+'</g>'+
+    '<text x="'+cx+'" y="'+(cy+1)+'" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="17" font-weight="600" fill="#EAF1F4">'+Math.round(ist*100)+'%</text>'+
+    '<text x="'+cx+'" y="'+(cy+15)+'" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8.5" letter-spacing="1" fill="#8298A4">IST</text></svg>';
+}
 
 const MON = ["Jan","Feb","Mrz","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
 function fdate(iso){const [y,m,d]=iso.split("-").map(Number); return d+". "+MON[m-1];}
@@ -433,7 +457,7 @@ function renderGrid(){
       btn.innerHTML =
         '<div class="cell-ist">'+pct(c.ist_anteil)+'</div>'+
         '<div class="cell-bar"><div class="cell-fill" style="width:'+fill+'%"></div>'+
-          '<div class="cell-tick" style="left:'+tick+'%"></div></div>'+
+          tgtAt(tick)+'</div>'+
         '<div class="cell-drift">'+signed(c.drift)+' PP</div>';
       btn.dataset.key = w.index+":"+p.key;
       btn.addEventListener("click",()=>{ if(tour.active) endTour(); select(w.index,p.key); });
@@ -559,12 +583,17 @@ function renderDrill(wi, pkey){
   drill.innerHTML = '<div class="drill-in">'+
     '<div class="drill-head"><div class="d-pillar">'+p.title+'</div>'+
       '<div class="d-win">'+fdatefull(w.start)+' – '+fdatefull(w.end)+'</div></div>'+
-    '<div class="d-stats">'+
-      '<div class="d-stat"><div class="k">Ist</div><div class="v">'+pct(c.ist_anteil)+'</div></div>'+
-      '<div class="d-stat"><div class="k">Soll</div><div class="v" style="color:var(--amber)">'+pct(c.soll_anteil)+'</div></div>'+
-      '<div class="d-stat"><div class="k">Drift</div><div class="v" style="color:'+driftCol+'">'+signed(c.drift)+' PP</div></div>'+
-      '<div class="d-stat"><div class="k">Belege</div><div class="v">'+c.n_sources+'</div></div>'+
-    '</div><div class="d-evhead">Nachrichten hinter dieser Zahl</div>'+
+    '<div class="d-box">'+
+      '<div class="d-box-title">Diese Zelle im Überblick</div>'+
+      '<div class="d-box-sub">Gemessene gegen geplante Aufmerksamkeit für diese Säule in diesem Zeitfenster. Der Ring zeigt den Ist-Anteil, die Zielmarke das Soll.</div>'+
+      '<div class="d-box-body">'+ring(c)+
+        '<div class="d-stats">'+
+          '<div class="d-stat" title="Ist: Anteil der zugeordneten Nachrichten dieses Zeitfensters, der auf diese Säule entfällt."><div class="k">Ist</div><div class="v">'+pct(c.ist_anteil)+'</div><div class="s">gemessener Anteil</div></div>'+
+          '<div class="d-stat" title="Soll: Gewichtung dieser Säule laut Strategie."><div class="k">Soll</div><div class="v" style="color:var(--amber)">'+pct(c.soll_anteil)+'</div><div class="s">geplanter Anteil</div></div>'+
+          '<div class="d-stat" title="Drift: Ist minus Soll in Prozentpunkten. Positiv heißt mehr Aufmerksamkeit als geplant."><div class="k">Drift</div><div class="v" style="color:'+driftCol+'">'+signed(c.drift)+' PP</div><div class="s">Ist minus Soll, in Prozentpunkten</div></div>'+
+          '<div class="d-stat" title="Belege: Anzahl der Nachrichten, die in diese Zelle eingeflossen sind."><div class="k">Belege</div><div class="v">'+c.n_sources+'</div><div class="s">Nachrichten in dieser Zelle</div></div>'+
+        '</div></div></div>'+
+    '<div class="d-evhead">Nachrichten hinter dieser Zahl</div>'+
     '<div class="ev-list">'+(items||'<div style="color:var(--faint);padding:20px 0">Keine Belege in dieser Zelle.</div>')+'</div></div>';
 }
 
@@ -579,15 +608,15 @@ function renderReading(){
   if(low.pillar_key!==peak.pillar_key && low.drift<0){
     txt += ' Im selben Fenster fällt <b>'+pillarTitle(low.pillar_key)+'</b> auf <span class="r-num">'+pct(low.ist_anteil)+'</span>.';
   }
-  const scale = Math.max(peak.ist_anteil, peak.soll_anteil)*1.1 || 1;
   const col = peak.drift<0 ? "var(--rust)" : "var(--teal)";
+  const istW = Math.max(0,Math.min(100,peak.ist_anteil*100)), sollW = Math.max(0,Math.min(100,peak.soll_anteil*100));
   const viz =
     '<div class="reading-viz" role="img" aria-label="Ist '+Math.round(peak.ist_anteil*100)+' Prozent gegen Soll '+
       Math.round(peak.soll_anteil*100)+' Prozent, Abweichung '+signed(peak.drift)+' Prozentpunkte">'+
       '<div class="rv-delta" style="color:'+col+'">'+signed(peak.drift)+'<small>PP</small></div>'+
-      '<div class="rv-bars">'+
-        '<div class="rv-row"><span>Ist</span><span class="rv-track"><span class="rv-fill" style="width:'+(peak.ist_anteil/scale*100)+'%;background:'+col+'"></span></span><span class="rv-v">'+pct(peak.ist_anteil)+'</span></div>'+
-        '<div class="rv-row"><span>Soll</span><span class="rv-track"><span class="rv-fill" style="width:'+(peak.soll_anteil/scale*100)+'%;background:var(--amber)"></span></span><span class="rv-v">'+pct(peak.soll_anteil)+'</span></div>'+
+      '<div class="rv-one">'+
+        '<div class="rv-cap"><span>Ist <b>'+pct(peak.ist_anteil)+'</b></span><span>Soll <b>'+pct(peak.soll_anteil)+'</b></span></div>'+
+        '<div class="rv-bar"><span class="rv-fill" style="width:'+istW+'%;background:'+col+'"></span>'+tgtAt(sollW)+'</div>'+
       '</div></div>';
   document.getElementById("reading").innerHTML = '<div class="reading-text">'+txt+'</div>'+viz;
 }
