@@ -331,7 +331,7 @@ footer .note{color:var(--faint); opacity:.85}
           <span class="scale-bar"></span>
           <span class="scale-label">über Soll</span>
         </div>
-        <div class="legend-soll"><svg class="tgt-legend" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.6" fill="#0F1E27" stroke="#E6AE43" stroke-width="1.6"/><circle cx="8" cy="8" r="3.2" fill="none" stroke="#E6AE43" stroke-width="1.4"/><circle cx="8" cy="8" r="1.1" fill="#E6AE43"/></svg> Zielmarke = Soll je Säule</div>
+        <div class="legend-soll"><span id="legendTgt" style="display:inline-flex"></span> Zielmarke = Soll je Säule</div>
       </div>
       <div id="grid" class="grid"></div>
       <div class="tourbar" id="tourbar" hidden>
@@ -380,9 +380,12 @@ footer .note{color:var(--faint); opacity:.85}
 const DATA = __DATA__;
 const STRATEGY = __STRATEGY__;
 
-// Zielmarken-Symbol (Bullseye) fuer alle Stellen, an denen das Soll auf einer Skala sitzt.
-const TGT_INNER = '<circle cx="8" cy="8" r="6.6" fill="#0F1E27" stroke="#E6AE43" stroke-width="1.6"/><circle cx="8" cy="8" r="3.2" fill="none" stroke="#E6AE43" stroke-width="1.4"/><circle cx="8" cy="8" r="1.1" fill="#E6AE43"/>';
-function tgtAt(leftPct){return '<svg class="tgt" style="left:'+leftPct+'%" viewBox="0 0 16 16" aria-hidden="true">'+TGT_INNER+'</svg>';}
+// Zielmarke als Fadenkreuz: Kreis mit durchgehendem Kreuz, das ueber den Rand hinausragt.
+// Einzige Quelle fuer das Symbol, alle Soll-Positionen (Zellen, Ring, Kernaussage, Legende) nutzen sie.
+const TGT_INNER = '<circle cx="8" cy="8" r="4.8" fill="#0F1E27" fill-opacity=".6" stroke="#E6AE43" stroke-width="1.5"/>'+
+  '<path d="M8 .8V15.2M.8 8H15.2" stroke="#E6AE43" stroke-width="1.5" stroke-linecap="round" fill="none"/>';
+function tgtSvg(cls, style){return '<svg class="'+cls+'"'+(style?' style="'+style+'"':'')+' viewBox="0 0 16 16" aria-hidden="true">'+TGT_INNER+'</svg>';}
+function tgtAt(leftPct){return tgtSvg("tgt", "left:"+leftPct+"%");}
 function ring(c){
   const cx=46, cy=46, R=34, C=2*Math.PI*R;
   const ist=Math.max(0,Math.min(1,c.ist_anteil)), soll=Math.max(0,Math.min(1,c.soll_anteil));
@@ -772,6 +775,7 @@ function renderFoot(){
     '<span class="dot">•</span>' + 'Ein Demoprojekt von <a href="https://github.com/frankknebeljanssen-create/strategic-drift-engine" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px">Frank Knebel-Janssen</a>';
 }
 
+document.getElementById("legendTgt").innerHTML = tgtSvg("tgt-legend");
 renderGrid(); renderReading(); renderFoot();
 (function(){
   const best = DATA.cells.reduce((a,b)=>Math.abs(a.drift)>Math.abs(b.drift)?a:b);
