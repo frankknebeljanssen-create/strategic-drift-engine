@@ -149,6 +149,7 @@ h1{font-family:var(--disp); font-weight:700; font-size:clamp(26px,3.2vw,38px);
 .scale-label{font-family:var(--mono); font-size:11px; color:var(--faint)}
 .legend-soll{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted)}
 .tgt-legend{width:15px; height:15px; flex:none}
+.soll-w{color:var(--amber)}
 
 .grid{display:grid; gap:var(--s1)}
 #grid{flex:1}
@@ -364,6 +365,21 @@ const TGT_INNER = '<circle cx="8" cy="8" r="4.8" fill="#0F1E27" fill-opacity=".6
   '<path d="M8 .8V15.2M.8 8H15.2" stroke="#E6AE43" stroke-width="1.5" stroke-linecap="round" fill="none"/>';
 function tgtSvg(cls, style){return '<svg class="'+cls+'"'+(style?' style="'+style+'"':'')+' viewBox="0 0 16 16" aria-hidden="true">'+TGT_INNER+'</svg>';}
 function tgtAt(leftPct){return tgtSvg("tgt", "left:"+leftPct+"%");}
+
+// Das Wort "Soll" immer in der Farbe der Zielmarke (Amber), ausser in den Beleg-Texten aus den Daten.
+function colorSoll(root){
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode:n=>
+    (/\bSoll\b/.test(n.nodeValue) && !n.parentElement.closest(".soll-w,.ev-list,script,style")) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT});
+  const nodes = []; while(w.nextNode()) nodes.push(w.currentNode);
+  nodes.forEach(n=>{
+    const frag = document.createDocumentFragment();
+    n.nodeValue.split(/(\bSoll\b)/).forEach(part=>{
+      if(part==="Soll"){const sp=document.createElement("span"); sp.className="soll-w"; sp.textContent=part; frag.appendChild(sp);}
+      else if(part){frag.appendChild(document.createTextNode(part));}
+    });
+    n.parentNode.replaceChild(frag, n);
+  });
+}
 function ring(c){
   const cx=46, cy=46, R=34, C=2*Math.PI*R;
   const ist=Math.max(0,Math.min(1,c.ist_anteil)), soll=Math.max(0,Math.min(1,c.soll_anteil));
@@ -482,6 +498,7 @@ function select(wi, pkey){
   selected = wi+":"+pkey;
   document.querySelectorAll(".cell").forEach(c=>c.classList.toggle("sel", c.dataset.key===selected));
   renderDrill(wi, pkey);
+  colorSoll(document.body);
   if(window.matchMedia("(max-width:900px)").matches && !tour.active){
     document.getElementById("drill").scrollIntoView({behavior:"smooth", block:"start"});
   }
@@ -660,6 +677,7 @@ function showTourStep(){
   document.getElementById("tbStep").textContent="Schritt "+(tour.i+1)+" / "+tour.steps.length;
   document.getElementById("tbTitle").textContent=s.title;
   document.getElementById("tbText").textContent=s.text;
+  colorSoll(document.getElementById("tbText"));
   document.getElementById("tbPrev").disabled = tour.i===0;
   document.getElementById("tbNext").textContent = tour.i===tour.steps.length-1 ? "Von vorn" : "Weiter";
 }
