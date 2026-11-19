@@ -273,7 +273,6 @@ footer .note{color:var(--faint); opacity:.85}
 <div class="wrap">
   <header>
     <div class="eyebrow">Strategic Drift Engine</div>
-    <div class="byline">Ein Demoprojekt von <a href="https://github.com/frankknebeljanssen-create/strategic-drift-engine" target="_blank" rel="noopener">Frank Knebel-Janssen</a></div>
     <h1>Wohin die Aufmerksamkeit wirklich floss</h1>
     <p class="sub">Jede Zelle vergleicht die gemessene Aufmerksamkeit auf eine strategische Saeule mit ihrem Soll ueber die Zeit. Der amberfarbene Strich markiert das Soll. Eine Zelle waehlen, um die Nachrichten zu sehen, aus denen der Wert entstanden ist.</p>
     <div class="reading" id="reading"></div>
@@ -691,7 +690,8 @@ function renderFoot(){
     '<span class="note">Synthetischer Demo-Datensatz, fiktives Unternehmen TechCo.</span>' + '<span class="dot">•</span>' +
     windows.length+" Zeitfenster" + '<span class="dot">•</span>' + pillars.length+" Saeulen" +
     '<span class="dot">•</span>' + tot+" verknuepfte Belege" + '<span class="dot">•</span>' + "Lauf "+DATA.run_id +
-    '<span class="dot">•</span>' + '<a href="bauprozess.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px">So wurde das gebaut</a>';
+    '<span class="dot">•</span>' + '<a href="bauprozess.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px">So wurde das gebaut</a>' +
+    '<span class="dot">•</span>' + 'Ein Demoprojekt von <a href="https://github.com/frankknebeljanssen-create/strategic-drift-engine" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px">Frank Knebel-Janssen</a>';
 }
 
 renderGrid(); renderReading(); renderFoot();
