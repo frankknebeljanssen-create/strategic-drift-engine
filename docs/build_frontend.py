@@ -45,6 +45,17 @@ body{
   -webkit-font-smoothing:antialiased; line-height:1.5;
   background-image:radial-gradient(1200px 600px at 80% -10%, rgba(46,144,180,0.10), transparent 60%);
 }
+.gov{background:var(--panel2); border-bottom:1px solid var(--line)}
+.gov-in{max-width:1600px; margin:0 auto; padding:9px 28px; display:flex; flex-wrap:wrap;
+  align-items:center; gap:6px 22px; font-size:12px; color:var(--muted)}
+.gov-title{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--teal); font-weight:600; white-space:nowrap}
+.gov-list{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:4px 20px}
+.gov-list li{display:flex; align-items:baseline; gap:6px}
+.gov-list li::before{content:"\2713"; color:var(--teal); font-size:11px}
+.gov-link{font-family:var(--mono); font-size:11px; color:var(--faint); text-decoration:none;
+  border-bottom:1px solid rgba(130,152,164,.3); margin-left:-10px}
+.gov-link:hover{color:var(--ink); border-bottom-color:var(--amber)}
 .wrap{max-width:1600px; margin:0 auto; padding:40px 28px 64px}
 
 .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.28em;
@@ -247,6 +258,18 @@ footer .note{color:var(--faint); opacity:.85}
 </style>
 </head>
 <body>
+<div class="gov" role="note" aria-label="Governance">
+  <div class="gov-in">
+    <span class="gov-title">Governance by design</span>
+    <a class="gov-link" href="https://github.com/frankknebeljanssen-create/strategic-drift-engine#governance-und-datenschutz" target="_blank" rel="noopener">Details</a>
+    <ul class="gov-list">
+      <li>Channel-level opt-in only</li>
+      <li>Public channels only, never direct messages</li>
+      <li>Aggregated at strategy-pillar level, never individual scoring</li>
+      <li>Works council and data protection officer involved from day one, not after the fact</li>
+    </ul>
+  </div>
+</div>
 <div class="wrap">
   <header>
     <div class="eyebrow">Strategic Drift Engine</div>
